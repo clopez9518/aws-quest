@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCanvasStore } from '../../canvas/stores/useCanvasStore';
+import { useTrafficSimulationStore } from '../../canvas/stores/useTrafficSimulationStore';
 import { useAuthStore } from '../../../shared/stores/useAuthStore';
 import { ServicePaletteItem } from '../../canvas/types/canvas.types';
 import { ChallengeHint, ArchitectureRequirement } from '../types/challenge.types';
@@ -93,6 +94,11 @@ export function ChallengePage() {
   const setAllowedServices = useCanvasStore((state) => state.setAllowedServices);
   const loadSemanticGraph = useCanvasStore((state) => state.loadSemanticGraph);
   const nodeCount = useCanvasStore((state) => state.nodes.length);
+
+  // Selectores y acciones del Store de Simulación de Tráfico
+  const isSimulating = useTrafficSimulationStore((state) => state.isSimulating);
+  const startSimulation = useTrafficSimulationStore((state) => state.startSimulation);
+  const stopSimulation = useTrafficSimulationStore((state) => state.stopSimulation);
 
   // Mapeo de servicios permitidos
   const allowedServices: ServicePaletteItem[] = useMemo(() => {
@@ -297,6 +303,8 @@ export function ChallengePage() {
         nodeCount={nodeCount}
         hasBriefing={Boolean(challengeDto.briefing)}
         onOpenBriefing={() => setIsBriefingModalOpen(true)}
+        isSimulating={isSimulating}
+        onToggleSimulation={() => (isSimulating ? stopSimulation() : startSimulation())}
         onOpenHints={() => setIsHintsDrawerOpen(true)}
         onSubmit={handleSubmit}
         isSubmitting={isEvaluating}

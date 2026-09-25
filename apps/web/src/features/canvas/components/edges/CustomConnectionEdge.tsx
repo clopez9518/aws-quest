@@ -7,6 +7,8 @@ import {
 import { X } from 'lucide-react';
 import { AwsCanvasEdge, ConnectionType } from '../../types/canvas.types';
 import { useCanvasStore } from '../../stores/useCanvasStore';
+import { useTrafficSimulationStore } from '../../stores/useTrafficSimulationStore';
+import { evaluateEdgeTrafficFlow } from '../../utils/trafficFlowEvaluator';
 import { cn } from '../../../../shared/utils/cn';
 
 function formatConnectionType(type?: ConnectionType | string): string {
@@ -35,6 +37,8 @@ function formatConnectionType(type?: ConnectionType | string): string {
 
 export function CustomConnectionEdge({
   id,
+  source,
+  target,
   sourceX,
   sourceY,
   targetX,
@@ -48,6 +52,12 @@ export function CustomConnectionEdge({
   data
 }: EdgeProps<AwsCanvasEdge>) {
   const removeEdge = useCanvasStore((state) => state.removeEdge);
+  const nodes = useCanvasStore((state) => state.nodes);
+
+  const isSimulating = useTrafficSimulationStore((state) => state.isSimulating);
+  const isPaused = useTrafficSimulationStore((state) => state.isPaused);
+  const activeScenario = useTrafficSimulationStore((state) => state.activeScenario);
+  const simulationSpeed = useTrafficSimulationStore((state) => state.simulationSpeed);
 
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
@@ -76,6 +86,24 @@ export function CustomConnectionEdge({
 
   const strokeColor = getStrokeColor();
   const strokeWidth = selected ? 2.5 : 2;
+
+  // Evaluar flujo de tráfico simulado
+  const sourceNode = nodes.find((n) => n.id === source);
+  const targetNode = nodes.find((n) => n.id === target);
+  const currentEdge: AwsCanvasEdge = {
+    id,
+    source,
+    target,
+    data
+  };
+
+  const flowConfig = evaluateEdgeTrafficFlow(
+    currentEdge,
+    sourceNode,
+    targetNode,
+    activeScenario,
+    simulationSpeed
+  );
 
   return (
     <>
@@ -107,6 +135,38 @@ export function CustomConnectionEdge({
           strokeWidth
         }}
       />
+
+      {/* 2.1. Capa de Partículas Dinámicas de Tráfico (Visual Flow Simulator) */}
+      {isSimulating && (
+        <g data-testid="traffic-particles-group" className="pointer-events-none">
+          {Array.from({ length: flowConfig.particleCount }).map((_, idx) => {
+            const beginDelay = (
+              idx *
+              (flowConfig.baseDurationSeconds / flowConfig.particleCount)
+            ).toFixed(2);
+
+            return (
+              <circle
+                key={idx}
+                r={flowConfig.isBlocked ? 4 : 3.5}
+                fill={flowConfig.particleColor}
+                style={{
+                  filter: `drop-shadow(0 0 5px ${flowConfig.glowColor})`
+                }}
+              >
+                {!isPaused && (
+                  <animateMotion
+                    path={edgePath}
+                    dur={`${flowConfig.baseDurationSeconds}s`}
+                    begin={`${beginDelay}s`}
+                    repeatCount="indefinite"
+                  />
+                )}
+              </circle>
+            );
+          })}
+        </g>
+      )}
 
       {/* 3. Etiqueta Semántica Central y Botón de Eliminación Rápida */}
       <EdgeLabelRenderer>

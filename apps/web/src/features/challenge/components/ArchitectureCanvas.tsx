@@ -14,6 +14,7 @@ import { nodeTypes, edgeTypes } from '../../canvas/components/canvasElementTypes
 import { ServicePaletteItem } from '../../canvas/types/canvas.types';
 import { CanvasToolbar } from './CanvasToolbar';
 import { ResetCanvasModal } from './ResetCanvasModal';
+import { TrafficSimulationHUD } from '../../canvas/components/controls/TrafficSimulationHUD';
 
 function ArchitectureCanvasInner() {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
@@ -117,6 +118,9 @@ function ArchitectureCanvasInner() {
           nodeCount={nodes.length}
         />
       </ReactFlow>
+
+      {/* HUD flotante de simulación de tráfico */}
+      <TrafficSimulationHUD />
 
       {/* Modal de confirmación de reinicio */}
       <ResetCanvasModal

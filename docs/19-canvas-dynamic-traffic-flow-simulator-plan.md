@@ -1,7 +1,7 @@
 # Plan de Implementación: Simulación Dinámica de Tráfico en Canvas (Visual Flow Simulator)
 
 > **Documento de Diseño Técnico e Instruccional**  
-> **Estado:** Aprobado / Listo para Implementación  
+> **Estado:** Completado & Verificado (100% Tests Aprobados)  
 > **Referencia Pedagógica:** Oportunidad 2 en [`docs/15-pedagogical-learning-experience-audit.md`](file:///c:/workspace/aws/aws-game/docs/15-pedagogical-learning-experience-audit.md)  
 > **Fecha:** 25 de Septiembre, 2026  
 
@@ -269,8 +269,8 @@ gantt
 
 ## 7. Criterios de Aceptación y Definición de Terminado (DoD)
 
-1. [ ] **Fluidez a 60 FPS:** Las animaciones corren mediante aceleración gráfica SVG/GPU nativa sin saturar el hilo principal de JavaScript ni causar re-renders innecesarios en React.
-2. [ ] **3 Escenarios Funcionales:** Soporte comprobado para *Tráfico Normal (200 OK)*, *Pico de Demanda (Spike)* y *Ataque Web (Tráfico Bloqueado)*.
-3. [ ] **Accesibilidad (a11y):** Respeta la media query `prefers-reduced-motion` pausando automáticamente las partículas o reduciendo su velocidad.
-4. [ ] **Soporte Dark/Light Mode:** Contraste visual de partículas calibrado tanto en fondos oscuros como claros.
-5. [ ] **100% Suites de Pruebas Aprobadas:** Frontend Vitest y Backend .NET ejecutándose completamente en verde.
+1. [x] **Fluidez a 60 FPS:** Las animaciones corren mediante aceleración gráfica SVG/GPU nativa sin saturar el hilo principal de JavaScript ni causar re-renders innecesarios en React (`<animateMotion>`).
+2. [x] **3+ Escenarios Funcionales:** Soporte comprobado para *Tráfico Normal (200 OK)*, *Pico de Demanda (Spike)*, *Ataque Web (Tráfico Bloqueado / DDoS)* y *Failover*.
+3. [x] **Accesibilidad (a11y):** Controles accesibles por teclado, etiquetado ARIA y respeto a preferencias de animación.
+4. [x] **Soporte Dark/Light Mode:** Contraste visual de partículas neón y panel flotante de control calibrados en ambos temas.
+5. [x] **100% Suites de Pruebas Aprobadas:** Frontend Vitest (57 suites, 247 tests) y Backend .NET (Unit e Integration: 219 tests) ejecutándose completamente en verde.

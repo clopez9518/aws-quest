@@ -4,6 +4,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { ReactFlowProvider, Position, useStoreApi } from '@xyflow/react';
 import { CustomConnectionEdge } from '../CustomConnectionEdge';
 import { useCanvasStore } from '../../../stores/useCanvasStore';
+import { useTrafficSimulationStore } from '../../../stores/useTrafficSimulationStore';
 import { ConnectionType } from '../../../types/canvas.types';
 
 function TestEdgeContainer({ children }: { children: React.ReactNode }) {
@@ -155,5 +156,18 @@ describe('CustomConnectionEdge', () => {
     );
     visiblePath = container.querySelector(`path#${defaultEdgeProps.id}`);
     expect(visiblePath).toHaveAttribute('stroke', '#EF4444');
+  });
+
+  it('debe renderizar partículas SVG animadas cuando la simulación de tráfico está activa', () => {
+    useTrafficSimulationStore.getState().startSimulation();
+
+    const { container } = renderWithContainer(<CustomConnectionEdge {...defaultEdgeProps} />);
+    const particles = container.querySelectorAll('circle');
+    expect(particles.length).toBeGreaterThan(0);
+
+    const animateMotions = container.querySelectorAll('animateMotion');
+    expect(animateMotions.length).toBeGreaterThan(0);
+
+    useTrafficSimulationStore.getState().stopSimulation();
   });
 });
