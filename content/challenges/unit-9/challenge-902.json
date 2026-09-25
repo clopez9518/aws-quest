@@ -1,0 +1,94 @@
+{
+  "title": "Ejecución Serverless con Fargate",
+  "description": "¿Cómo ejecutas contenedores a escala sin la sobrecarga operativa de parchear y aprovisionar instancias EC2 subyacentes? Diseña una solución con AWS Fargate y Application Load Balancer.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 1150,
+  "orderIndex": 2,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ECS",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_FARGATE",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Cómo puedes evitar la administración de clústeres de servidores físicos o virtuales para correr tus microservicios?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Adopta cómputo serverless para contenedores, donde solo pagas por la CPU y memoria que consumen tus tareas activas.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Combina Amazon ECS con el tipo de lanzamiento AWS Fargate para ejecutar contenedores sin servidor detrás de un ALB.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca ALB, ECS y Fargate en el canvas. Conecta ALB con ECS mediante HTTP_TRAFFIC y ECS con Fargate mediante GENERIC.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_ALB",
+      "AWS_ECS",
+      "AWS_FARGATE"
+    ],
+    "forbiddenServices": [
+      "AWS_EC2"
+    ],
+    "minInstances": {
+      "AWS_ALB": 1,
+      "AWS_ECS": 1,
+      "AWS_FARGATE": 1
+    },
+    "maxInstances": {
+      "AWS_ALB": 1,
+      "AWS_ECS": 2,
+      "AWS_FARGATE": 2
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_ECS",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El Application Load Balancer debe distribuir tráfico HTTP/HTTPS hacia las tareas en Amazon ECS."
+      },
+      {
+        "fromServiceCode": "AWS_ECS",
+        "toServiceCode": "AWS_FARGATE",
+        "connectionType": "GENERIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Amazon ECS debe utilizar el motor de cómputo serverless AWS Fargate."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

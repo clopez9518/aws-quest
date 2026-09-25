@@ -1,0 +1,124 @@
+{
+  "title": "Arquitectura Web Global Resiliente",
+  "description": "¿Cómo diseñas una presencia web corporativa de nivel empresarial resistente a ataques DDoS masivos, con resolución DNS inteligente, aceleración en el borde y balanceo de carga redundante? Diseña la topología completa integrando Route 53, AWS WAF, CloudFront, ALB y múltiples instancias EC2.",
+  "difficulty": "Hard",
+  "mode": "BUILDER",
+  "baseXP": 200,
+  "requiredXP": 150,
+  "orderIndex": 4,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_ROUTE53",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_WAF",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_CLOUDFRONT",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 3,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Una infraestructura de borde de clase mundial divide la seguridad y el rendimiento en capas: resolución DNS, inspección perimetral y balanceo regional.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "El flujo de tráfico viaja desde Amazon Route 53 hacia Amazon CloudFront (protegido por AWS WAF), el cual envía las peticiones dinámicas al ALB y este a las instancias EC2.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Conecta: Route 53 -> CloudFront, WAF -> CloudFront, CloudFront -> ALB, y ALB -> EC2 (ambas instancias).",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca todos los componentes en el canvas y establece la cadena completa de conexiones perimetrales y de cómputo.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_ROUTE53",
+      "AWS_WAF",
+      "AWS_CLOUDFRONT",
+      "AWS_ALB",
+      "AWS_EC2"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_ROUTE53": 1,
+      "AWS_WAF": 1,
+      "AWS_CLOUDFRONT": 1,
+      "AWS_ALB": 1,
+      "AWS_EC2": 2
+    },
+    "maxInstances": {
+      "AWS_ROUTE53": 1,
+      "AWS_WAF": 1,
+      "AWS_CLOUDFRONT": 1,
+      "AWS_ALB": 1,
+      "AWS_EC2": 4
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ROUTE53",
+        "toServiceCode": "AWS_CLOUDFRONT",
+        "connectionType": "DNS_ROUTING",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Amazon Route 53 debe resolver el tráfico DNS apuntando a la distribución de Amazon CloudFront."
+      },
+      {
+        "fromServiceCode": "AWS_WAF",
+        "toServiceCode": "AWS_CLOUDFRONT",
+        "connectionType": "SECURITY_ATTACHMENT",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "AWS WAF debe inspeccionar el tráfico en el borde de Amazon CloudFront."
+      },
+      {
+        "fromServiceCode": "AWS_CLOUDFRONT",
+        "toServiceCode": "AWS_ALB",
+        "connectionType": "ORIGIN",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Amazon CloudFront debe enrutar el tráfico dinámico hacia el Application Load Balancer de origen."
+      },
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El Application Load Balancer debe distribuir tráfico hacia las instancias Amazon EC2."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

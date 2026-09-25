@@ -1,0 +1,532 @@
+{
+  "info": {
+    "_postman_id": "d8291410-7219-482a-92b1-09823ca87192",
+    "name": "AWS Architecture Quest - Master Services & System Config",
+    "description": "Colección de pruebas para el Módulo de Servicios Maestros y Configuración del Sistema (Fase 3 - Hito 3.5).\n\nCubre todos los endpoints de catálogo maestro de servicios AWS y configuración global según specs/master-services-config-module-spec.md y docs/08-api-spec.md:\n- POST /api/v1/auth/guest (Setup de sesión)\n- GET /api/v1/services (Listar todos los servicios activos)\n- GET /api/v1/services?category=Compute (Filtrar servicios por categoría)\n- GET /api/v1/system/config (Consultar política global de acceso)\n- PATCH /api/v1/system/config (Actualizar a Modo Progresivo o Modo Libre)\n- Escenarios de error (401 Unauthorized, 400 Bad Request por enum inválido)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7234",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Setup de Autenticación",
+      "item": [
+        {
+          "name": "POST Obtener Sesión para Pruebas (/auth/guest)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Guarda token JWT de sesión\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.accessToken).to.be.a(\"string\");",
+                  "    ",
+                  "    pm.collectionVariables.set(\"authToken\", json.data.accessToken);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/guest",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "guest"
+              ]
+            },
+            "description": "Obtiene un token JWT de sesión para autenticar peticiones de modificación de configuración."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01 - Catálogo Maestro de Servicios AWS (/services)",
+      "item": [
+        {
+          "name": "GET Listar Todos los Servicios Activos (/services)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida estructura del catálogo maestro de servicios\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.be.an(\"array\").that.is.not.empty;",
+                  "    ",
+                  "    var firstService = json.data[0];",
+                  "    pm.expect(firstService).to.have.property(\"id\");",
+                  "    pm.expect(firstService).to.have.property(\"code\");",
+                  "    pm.expect(firstService).to.have.property(\"name\");",
+                  "    pm.expect(firstService).to.have.property(\"category\");",
+                  "    pm.expect(firstService).to.have.property(\"shortDescription\");",
+                  "    pm.expect(firstService).to.have.property(\"iconUrl\");",
+                  "    pm.expect(firstService).to.have.property(\"isActive\", true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "services"
+              ]
+            },
+            "description": "Obtiene el listado completo de servicios AWS activos disponibles para diagramar en el workspace."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Filtrar Servicios por Categoría Compute (/services?category=Compute)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Verifica que todos los servicios pertenecen a la categoría Compute\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.be.an(\"array\").that.is.not.empty;",
+                  "    ",
+                  "    json.data.forEach(function(service) {",
+                  "        pm.expect(service.category.toLowerCase()).to.eql(\"compute\");",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/services?category=Compute",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "services"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Compute"
+                }
+              ]
+            },
+            "description": "Obtiene únicamente los servicios AWS correspondientes a la categoría Compute."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Filtrar Servicios por Categoría Storage (/services?category=Storage)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Verifica que todos los servicios pertenecen a la categoría Storage\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.be.an(\"array\").that.is.not.empty;",
+                  "    ",
+                  "    json.data.forEach(function(service) {",
+                  "        pm.expect(service.category.toLowerCase()).to.eql(\"storage\");",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/services?category=Storage",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "services"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Storage"
+                }
+              ]
+            },
+            "description": "Obtiene únicamente los servicios AWS correspondientes a la categoría Storage."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Configuración del Sistema (/system/config)",
+      "item": [
+        {
+          "name": "GET Consultar Política Global de Acceso (/system/config)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida estructura y campos de configuración global\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.have.property(\"accessMode\");",
+                  "    pm.expect(json.data).to.have.property(\"updatedAt\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/system/config",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "system",
+                "config"
+              ]
+            },
+            "description": "Obtiene la política global de accesibilidad actual (OpenAccess o Progressive)."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH Cambiar a Modo Progresivo (/system/config)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Verifica que la política cambió a Progressive\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.accessMode).to.be.oneOf([\"Progressive\", \"PROGRESSIVE\", 2]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessMode\": \"Progressive\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/system/config",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "system",
+                "config"
+              ]
+            },
+            "description": "Actualiza la modalidad de acceso a Progressive exigiendo prerrequisitos y XP mínima."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH Cambiar a Modo Libre / OpenAccess (/system/config)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Verifica que la política cambió a OpenAccess\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.accessMode).to.be.oneOf([\"OpenAccess\", \"OPEN_ACCESS\", 1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessMode\": \"OpenAccess\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/system/config",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "system",
+                "config"
+              ]
+            },
+            "description": "Restaura la modalidad de acceso a OpenAccess permitiendo acceso irrestricto a todos los desafíos."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Escenarios de Error y Casos Borde",
+      "item": [
+        {
+          "name": "PATCH Modificar Config sin Token (401 Unauthorized)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessMode\": \"Progressive\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/system/config",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "system",
+                "config"
+              ]
+            },
+            "description": "Intenta modificar la configuración global sin proporcionar encabezado de autorización Bearer."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH Payload con Enum Inválido (400 Bad Request)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Retorna código de error VALIDATION_ERROR\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"VALIDATION_ERROR\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessMode\": 999\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/system/config",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "system",
+                "config"
+              ]
+            },
+            "description": "Envía un valor fuera del rango del enum AccessMode provocando error de validación."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

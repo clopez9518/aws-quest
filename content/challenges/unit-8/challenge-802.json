@@ -1,0 +1,92 @@
+{
+  "title": "CDN Global con CloudFront y ALB",
+  "description": "¿Cómo aceleras tanto la entrega de contenido estático (imágenes/JS) como las peticiones de API dinámicas a nivel mundial? Diseña una solución donde Amazon CloudFront actúe como punto de entrada global conectado a dos orígenes: un bucket Amazon S3 para activos estáticos y un Application Load Balancer para tráfico dinámico.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 2,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_CLOUDFRONT",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Una red de entrega de contenido (CDN) no solo almacena en caché archivos estáticos; también optimiza las conexiones TCP/TLS de tráfico dinámico hacia el balanceador.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Una única distribución CloudFront puede configurar múltiples comportamientos de caché (cache behaviors) basados en la ruta de la URL (/api/* vs /static/*).",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Conecta Amazon CloudFront tanto al bucket Amazon S3 (origen estático) como al Application Load Balancer (origen dinámico).",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca CloudFront, ALB y S3 en el canvas. Conecta CloudFront con ALB y también CloudFront con S3 usando enlaces de tipo ORIGIN.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_CLOUDFRONT",
+      "AWS_ALB",
+      "AWS_S3"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_CLOUDFRONT": 1,
+      "AWS_ALB": 1,
+      "AWS_S3": 1
+    },
+    "maxInstances": {
+      "AWS_CLOUDFRONT": 1,
+      "AWS_ALB": 1,
+      "AWS_S3": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_CLOUDFRONT",
+        "toServiceCode": "AWS_ALB",
+        "connectionType": "ORIGIN",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "Amazon CloudFront debe estar conectado al Application Load Balancer como origen dinámico."
+      },
+      {
+        "fromServiceCode": "AWS_CLOUDFRONT",
+        "toServiceCode": "AWS_S3",
+        "connectionType": "ORIGIN",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "Amazon CloudFront debe estar conectado al bucket Amazon S3 como origen de activos estáticos."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

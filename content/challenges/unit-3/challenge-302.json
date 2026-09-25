@@ -1,0 +1,121 @@
+{
+  "title": "Conectar la VPC a Internet",
+  "description": "¿Cómo permites que tu servidor web dentro de la VPC reciba tráfico desde Internet? Diseña una VPC con una subred pública, un Internet Gateway adjunto y una instancia EC2 accesible desde la web.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 2,
+  "allowedServices": [
+    {
+      "serviceCode": "NET_VPC",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SUBNET",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_IGW",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Por defecto, una VPC es completamente privada y cerrada al exterior. ¿Qué componente sirve de puerta de enlace bidireccional entre la VPC e Internet?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Las instancias que responden a usuarios de Internet deben ubicarse en una subred configurada como pública y tener una ruta hacia la puerta de enlace de Internet.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Adjunta un Internet Gateway (NET_IGW) a la VPC y configura la subred como 'Public' con la instancia EC2 en su interior.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Crea una VPC, adjúntale un NET_IGW con una conexión ATTACHED_VPC, coloca una subred de nivel 'Public' dentro de la VPC y ubica la instancia EC2 dentro de esa subred.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "NET_VPC",
+      "NET_SUBNET",
+      "NET_IGW",
+      "AWS_EC2"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 1,
+      "NET_IGW": 1,
+      "AWS_EC2": 1
+    },
+    "maxInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 2,
+      "NET_IGW": 1,
+      "AWS_EC2": 1
+    },
+    "placementRules": [
+      {
+        "serviceCode": "NET_SUBNET",
+        "requiredContainerCode": "NET_VPC",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 25,
+        "description": "Las subredes deben estar contenidas dentro de la VPC."
+      },
+      {
+        "serviceCode": "AWS_EC2",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Public",
+        "penaltyIfViolated": 25,
+        "description": "El servidor web EC2 debe residir en una subred pública para recibir tráfico web directo."
+      }
+    ],
+    "routingRules": [
+      {
+        "subnetTier": "Public",
+        "requiresRouteTo": "NET_IGW",
+        "penaltyIfMissing": 25,
+        "description": "La subred pública debe contar con una ruta activa hacia el Internet Gateway para salida y entrada a Internet."
+      }
+    ],
+    "requiredConnections": [
+      {
+        "fromServiceCode": "NET_VPC",
+        "toServiceCode": "NET_IGW",
+        "connectionType": "ATTACHED_VPC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El Internet Gateway debe estar adjunto a la VPC."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

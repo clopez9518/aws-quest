@@ -1,0 +1,116 @@
+{
+  "title": "Arquitectura Serverless Completa",
+  "description": "¿Cómo construyes una aplicación web completa de alta disponibilidad con costo cero en reposo? Diseña una arquitectura web moderna donde la interfaz estática resida en Amazon S3, las llamadas REST ingresen por Amazon API Gateway, la lógica de negocio se procese en AWS Lambda y los datos se guarden en Amazon DynamoDB.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 4,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_APIGATEWAY",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_DYNAMODB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Una aplicación web serverless divide sus responsabilidades: presentación estática, puerta de enlace API, cómputo por eventos y persistencia administrada.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "El flujo completo viaja desde el cliente en S3 hacia API Gateway, el cual dispara la función Lambda que a su vez persiste registros en DynamoDB.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Conecta en cadena: S3 -> API Gateway -> Lambda -> DynamoDB para formar una pila serverless completa.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca los 4 componentes (S3, API Gateway, Lambda, DynamoDB) y enlázalos secuencialmente en el canvas.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_S3",
+      "AWS_APIGATEWAY",
+      "AWS_LAMBDA",
+      "AWS_DYNAMODB"
+    ],
+    "forbiddenServices": [
+      "AWS_EC2",
+      "AWS_RDS"
+    ],
+    "minInstances": {
+      "AWS_S3": 1,
+      "AWS_APIGATEWAY": 1,
+      "AWS_LAMBDA": 1,
+      "AWS_DYNAMODB": 1
+    },
+    "maxInstances": {
+      "AWS_S3": 1,
+      "AWS_APIGATEWAY": 1,
+      "AWS_LAMBDA": 1,
+      "AWS_DYNAMODB": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_S3",
+        "toServiceCode": "AWS_APIGATEWAY",
+        "connectionType": "HTTP_API",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El frontend alojado en Amazon S3 debe comunicarse con Amazon API Gateway."
+      },
+      {
+        "fromServiceCode": "AWS_APIGATEWAY",
+        "toServiceCode": "AWS_LAMBDA",
+        "connectionType": "INVOCATION",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "Amazon API Gateway debe invocar la función AWS Lambda."
+      },
+      {
+        "fromServiceCode": "AWS_LAMBDA",
+        "toServiceCode": "AWS_DYNAMODB",
+        "connectionType": "DATABASE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "La función AWS Lambda debe consultar y persistir registros en Amazon DynamoDB."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

@@ -1,0 +1,489 @@
+{
+  "info": {
+    "_postman_id": "c928419a-41ab-4dc9-9830-10492e71d34c",
+    "name": "AWS Architecture Quest - 06 Global Exception & Swagger",
+    "description": "Colección de pruebas para validar la documentación interactiva Swagger/OpenAPI y el manejo homogéneo de excepciones y errores canónicos en la API REST de AWS Architecture Quest.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 - Documentación Swagger y OpenAPI",
+      "item": [
+        {
+          "name": "GET /swagger/v1/swagger.json — Especificación OpenAPI / Swagger",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/swagger/v1/swagger.json",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "swagger",
+                "v1",
+                "swagger.json"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Swagger JSON contains title and Bearer security\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.info.title).to.include(\"AWS Architecture Quest API\");",
+                  "    pm.expect(jsonData.components.securitySchemes).to.have.property(\"Bearer\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /swagger/index.html — Interfaz Swagger UI",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/swagger/index.html",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "swagger",
+                "index.html"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Swagger UI HTML is returned\", function () {",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html\");",
+                  "    pm.expect(pm.response.text()).to.include(\"Swagger UI\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 - Escenarios de Error 400 Bad Request",
+      "item": [
+        {
+          "name": "POST /api/v1/auth/register — Error de Validación (Campos Inválidos)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"email-no-valido\",\n  \"password\": \"123\",\n  \"name\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Validation error envelope is well-structured\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.error.code).to.eql(\"VALIDATION_ERROR\");",
+                  "    pm.expect(res.error.details).to.be.an(\"array\");",
+                  "    pm.expect(res.error.details.length).to.be.above(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /api/v1/challenges/{id}/evaluate — Error Grafo Inválido (Array Vacío)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"graph\": {\n    \"components\": []\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/11111111-1111-1111-1111-111111111111/evaluate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "11111111-1111-1111-1111-111111111111",
+                "evaluate"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Error code is VALIDATION_ERROR or INVALID_GRAPH_PAYLOAD\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect([\"VALIDATION_ERROR\", \"INVALID_GRAPH_PAYLOAD\"]).to.include(res.error.code);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /api/v1/system/config — Error Tipo de Acceso Inválido",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessMode\": \"ValorInvalidoDeEnum\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/system/config",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "system",
+                "config"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Error code is VALIDATION_ERROR\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.error.code).to.eql(\"VALIDATION_ERROR\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - Escenarios de Error 401 Unauthorized",
+      "item": [
+        {
+          "name": "GET /api/v1/auth/me — No Autenticado (Sin Token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401 Unauthorized\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /api/v1/auth/login — Credenciales Inválidas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"usuario-inexistente@awsquest.dev\",\n  \"password\": \"ClaveIncorrecta123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401 Unauthorized\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test(\"Error code is INVALID_CREDENTIALS\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.error.code).to.eql(\"INVALID_CREDENTIALS\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - Escenarios de Error 403 Forbidden",
+      "item": [
+        {
+          "name": "GET /api/v1/challenges/{id} — Desafío Bloqueado",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/22222222-2222-2222-2222-222222222222",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "22222222-2222-2222-2222-222222222222"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 403 Forbidden o 404 (según estado de configuración)\", function () {",
+                  "    pm.expect([403, 404]).to.include(pm.response.code);",
+                  "});",
+                  "",
+                  "pm.test(\"Error envelope is standardized\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.error).to.have.property(\"code\");",
+                  "    pm.expect(res.error).to.have.property(\"message\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 - Escenarios de Error 404 Not Found",
+      "item": [
+        {
+          "name": "GET /api/v1/challenges/00000000-0000-0000-0000-000000000000 — Desafío Inexistente",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/00000000-0000-0000-0000-000000000000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "00000000-0000-0000-0000-000000000000"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404 Not Found\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Error code is CHALLENGE_NOT_FOUND\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.error.code).to.eql(\"CHALLENGE_NOT_FOUND\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 - Escenarios de Error 409 Conflict",
+      "item": [
+        {
+          "name": "POST /api/v1/auth/register — Email Duplicado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"duplicado@awsquest.dev\",\n  \"password\": \"Password123!\",\n  \"name\": \"Usuario Duplicado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 409 Conflict o 201 Created (primer registro)\", function () {",
+                  "    pm.expect([201, 409]).to.include(pm.response.code);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 409) {",
+                  "    pm.test(\"Error code is EMAIL_ALREADY_EXISTS\", function () {",
+                  "        var res = pm.response.json();",
+                  "        pm.expect(res.success).to.be.false;",
+                  "        pm.expect(res.error.code).to.eql(\"EMAIL_ALREADY_EXISTS\");",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

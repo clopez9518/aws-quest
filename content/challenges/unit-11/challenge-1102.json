@@ -1,0 +1,100 @@
+{
+  "title": "Despliegue automatizado con CloudFormation",
+  "description": "¿Cómo despliegas una solución serverless basada en eventos de forma consistente? Modela un stack con AWS CloudFormation que aprovisione almacenamiento en Amazon S3 y funciones de cómputo con AWS Lambda.",
+  "difficulty": "Hard",
+  "mode": "BUILDER",
+  "baseXP": 200,
+  "requiredXP": 1650,
+  "orderIndex": 2,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_CLOUDFORMATION",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Cómo aseguras que el bucket S3 y la función Lambda que procesa sus eventos se desplieguen coordinadamente?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Define ambos recursos acoplados dentro de la misma plantilla declarativa de IaC junto con su relación de eventos.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Usa AWS CloudFormation para crear el bucket S3 y la función Lambda, y conecta la notificación de eventos entre S3 y Lambda.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Conecta CloudFormation a S3 y Lambda (GENERIC), y enlaza S3 a Lambda mediante EVENT_NOTIFICATION.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_CLOUDFORMATION",
+      "AWS_S3",
+      "AWS_LAMBDA"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_CLOUDFORMATION": 1,
+      "AWS_S3": 1,
+      "AWS_LAMBDA": 1
+    },
+    "maxInstances": {
+      "AWS_CLOUDFORMATION": 1,
+      "AWS_S3": 1,
+      "AWS_LAMBDA": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_CLOUDFORMATION",
+        "toServiceCode": "AWS_S3",
+        "connectionType": "GENERIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "CloudFormation debe aprovisionar el bucket S3."
+      },
+      {
+        "fromServiceCode": "AWS_CLOUDFORMATION",
+        "toServiceCode": "AWS_LAMBDA",
+        "connectionType": "GENERIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "CloudFormation debe aprovisionar la función Lambda."
+      },
+      {
+        "fromServiceCode": "AWS_S3",
+        "toServiceCode": "AWS_LAMBDA",
+        "connectionType": "EVENT_NOTIFICATION",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "S3 debe enviar notificaciones de eventos a la función Lambda."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

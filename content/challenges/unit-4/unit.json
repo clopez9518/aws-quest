@@ -1,0 +1,5 @@
+{
+  "title": "Datos y Seguridad",
+  "description": "¿Dónde viven los datos y quién puede acceder a ellos? Aprende a aprovisionar bases de datos relacionales administradas (RDS), aislarlas en subredes privadas, conectar capas de aplicación de forma segura y gestionar credenciales con Secrets Manager.",
+  "orderIndex": 4
+}

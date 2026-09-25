@@ -1,0 +1,81 @@
+{
+  "title": "Persistencia: EBS",
+  "description": "¿Qué ocurre con los datos de tu servidor si se apaga? Diseña un sistema donde una instancia Amazon EC2 cuente con un volumen de almacenamiento en bloque persistente (Amazon EBS) que sobreviva al ciclo de vida de la máquina virtual.",
+  "difficulty": "Easy",
+  "mode": "BUILDER",
+  "baseXP": 100,
+  "requiredXP": 100,
+  "orderIndex": 2,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EBS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Si una instancia virtual se detiene o destruye, el almacenamiento efímero interno se pierde. ¿Qué mecanismo desacopla el disco del ciclo de vida del servidor?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "El almacenamiento en bloque a nivel de raw device permite persistir bases de datos y sistemas de archivos montados directamente como discos duros virtuales.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Amazon EBS (Elastic Block Store) ofrece volúmenes de almacenamiento en bloque de alto rendimiento diseñados para ser adjuntados a una instancia EC2.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Arrastra una instancia Amazon EC2 y un volumen Amazon EBS al canvas, y conéctalos entre sí mediante un enlace de tipo ATTACHED_STORAGE.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_EC2",
+      "AWS_EBS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_EC2": 1,
+      "AWS_EBS": 1
+    },
+    "maxInstances": {
+      "AWS_EC2": 1,
+      "AWS_EBS": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_EBS",
+        "connectionType": "ATTACHED_STORAGE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 30,
+        "description": "El volumen de almacenamiento persistente Amazon EBS debe estar adjunto a la instancia Amazon EC2."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

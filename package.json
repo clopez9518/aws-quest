@@ -1,0 +1,30 @@
+{
+  "name": "aws-architecture-quest",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=@aws-quest/web",
+    "build:web": "npm run build --workspace=@aws-quest/web",
+    "test:web": "npm run test --workspace=@aws-quest/web",
+    "test:e2e": "npm run test:e2e --workspace=@aws-quest/web",
+    "test:unit:frontend": "npm run test --workspace=@aws-quest/web",
+    "test:e2e:frontend": "npm run test:e2e --workspace=@aws-quest/web",
+    "test:unit:backend": "dotnet test apps/api/tests/AwsQuest.UnitTests/AwsQuest.UnitTests.csproj",
+    "test:integration:backend": "dotnet test apps/api/tests/AwsQuest.IntegrationTests/AwsQuest.IntegrationTests.csproj",
+    "test:backend": "dotnet test apps/api/AwsQuest.slnx",
+    "test:all": "npm run test:unit:frontend && npm run test:unit:backend && npm run test:integration:backend && npm run test:e2e:frontend",
+    "preview:web": "npm run preview --workspace=@aws-quest/web",
+    "lint:web": "npm run lint --workspace=@aws-quest/web",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "docker:restart": "docker compose restart",
+    "docker:clean": "docker compose down -v --remove-orphans",
+    "docker:smoke": "node scripts/docker-smoke-test.js"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "title": "Infraestructura como código con CloudFormation",
+  "description": "¿Cómo garantizas que tu infraestructura sea reproducible y libre de configuraciones manuales propensas a errores? Modela una plantilla declarativa con AWS CloudFormation para aprovisionar instancias Amazon EC2.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 1500,
+  "orderIndex": 1,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_CLOUDFORMATION",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Por qué configurar servidores manualmente en la consola introduce riesgos de inconsistencia y falta de auditoría?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Adopta el patrón de Infraestructura como Código (IaC) para definir el estado deseado en plantillas versionables.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Usa AWS CloudFormation para modelar y desplegar automáticamente tus instancias de cómputo.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca CloudFormation y EC2 en el canvas y conéctalos con una relación GENERIC.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_CLOUDFORMATION",
+      "AWS_EC2"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_CLOUDFORMATION": 1,
+      "AWS_EC2": 1
+    },
+    "maxInstances": {
+      "AWS_CLOUDFORMATION": 1,
+      "AWS_EC2": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_CLOUDFORMATION",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "GENERIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "AWS CloudFormation debe gestionar y aprovisionar la instancia EC2."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

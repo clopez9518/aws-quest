@@ -1,0 +1,76 @@
+{
+  "title": "Auditoría de actividad con CloudTrail",
+  "description": "¿Cómo registras de forma inmutable quién creó una máquina virtual o modificó una regla de seguridad en tu cuenta de AWS? Configura AWS CloudTrail con almacenamiento seguro en Amazon S3.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 1500,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_CLOUDTRAIL",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Cómo mantienes trazabilidad y cumplimiento normativo (compliance) ante cualquier modificación en tu infraestructura de nube?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Aplica el patrón de auditoría inmutable de API calls, enviando registros de eventos de gobernanza a un bucket de almacenamiento seguro y duradero.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Habilita AWS CloudTrail y dirígelo hacia un bucket Amazon S3 configurado para recibir y retener los logs de auditoría.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Arrastra AWS CloudTrail y Amazon S3 al canvas y conéctalos mediante una relación OBJECT_ACCESS.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_CLOUDTRAIL",
+      "AWS_S3"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_CLOUDTRAIL": 1,
+      "AWS_S3": 1
+    },
+    "maxInstances": {
+      "AWS_CLOUDTRAIL": 1,
+      "AWS_S3": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_CLOUDTRAIL",
+        "toServiceCode": "AWS_S3",
+        "connectionType": "OBJECT_ACCESS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "AWS CloudTrail debe almacenar de forma continua sus registros de eventos en el bucket Amazon S3."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

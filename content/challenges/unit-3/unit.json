@@ -1,0 +1,5 @@
+{
+  "title": "Redes: Construir el Camino",
+  "description": "¿Cómo viaja el tráfico de forma segura? Aprende a diseñar la topología de red virtual (VPC), segmentar subredes públicas y privadas, habilitar puertas de enlace hacia Internet y proteger recursos con firewalls de capa de red (Security Groups).",
+  "orderIndex": 3
+}

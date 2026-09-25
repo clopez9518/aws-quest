@@ -1,0 +1,125 @@
+{
+  "title": "Reparación de un Sistema Acoplado",
+  "description": "REPORTE DE RENDIMIENTO: Los usuarios reportan que la interfaz web se congela y arroja errores HTTP 504 Gateway Timeout cada vez que solicitan la generación de un reporte financiero pesado. El servidor web está intentando procesar cálculos intensivos de forma síncrona mientras atiende peticiones web. Rediseña la arquitectura introduciendo procesamiento asíncrono desacoplado.",
+  "difficulty": "Intermediate",
+  "mode": "REPAIR",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 4,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_SQS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Ejecutar tareas pesadas de larga duración dentro del hilo principal de peticiones web satura los recursos del servidor y bloquea a otros usuarios.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "El servidor web debe responder inmediatamente al usuario confirmando la recepción del trabajo y delegar el procesamiento a una cola de mensajes en segundo plano.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Interpón una cola Amazon SQS entre el servidor web y un servidor worker independiente que procese los trabajos y guarde el resultado en la base de datos.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Conecta el servidor web (EC2) a la cola SQS con MESSAGE_QUEUE, la cola SQS al worker (segundo EC2), y el worker a la base de datos RDS con DATABASE.",
+      "penaltyPoints": 20
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "ec2-monolith-coupled",
+        "serviceCode": "AWS_EC2",
+        "containerId": null,
+        "config": {}
+      },
+      {
+        "id": "rds-db",
+        "serviceCode": "AWS_RDS",
+        "containerId": null,
+        "config": {
+          "isPublic": false
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn-direct",
+        "fromComponentId": "ec2-monolith-coupled",
+        "toComponentId": "rds-db",
+        "connectionType": "DATABASE"
+      }
+    ]
+  },
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_EC2",
+      "AWS_SQS",
+      "AWS_RDS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_EC2": 2,
+      "AWS_SQS": 1,
+      "AWS_RDS": 1
+    },
+    "maxInstances": {
+      "AWS_EC2": 2,
+      "AWS_SQS": 1,
+      "AWS_RDS": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_SQS",
+        "connectionType": "MESSAGE_QUEUE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "El servidor web debe encolar tareas en Amazon SQS de forma asíncrona."
+      },
+      {
+        "fromServiceCode": "AWS_SQS",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "MESSAGE_QUEUE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "La cola Amazon SQS debe entregar tareas al servidor worker de procesamiento."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE",
+        "penaltyIfMissing": 20,
+        "description": "El worker procesador debe conectarse a la base de datos Amazon RDS."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

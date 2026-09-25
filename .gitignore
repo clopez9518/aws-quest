@@ -1,0 +1,41 @@
+## Build and compilation outputs
+bin/
+obj/
+out/
+dist/
+build/
+.vs/
+.vscode/
+.idea/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+## Package caches and dependencies
+node_modules/
+.pnpm-store/
+packages/
+*.nupkg
+
+## Test Results and Coverage
+TestResults/
+*.trx
+coverage/
+*.cobertura.xml
+
+## Environment & Secrets
+.env
+.env.local
+.env.*.local
+appsettings.*.local.json
+appsettings.Production.json
+
+## Logs & OS files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+## Docker volumes
+postgres_data/

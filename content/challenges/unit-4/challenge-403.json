@@ -1,0 +1,201 @@
+{
+  "title": "Incidente de Seguridad: Base de Datos Expuesta",
+  "description": "Una auditoría de seguridad automática ha detectado una vulnerabilidad crítica de cumplimiento: los registros de producción y la base de datos están recibiendo escaneos no autorizados desde Internet. Analiza la topología actual y remedia la vulnerabilidad aislando los recursos sensibles de acuerdo con el marco Well-Architected.",
+  "difficulty": "Intermediate",
+  "mode": "REPAIR",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "NET_VPC",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SUBNET",
+      "maxInstances": 4,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_IGW",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SECURITY_GROUP",
+      "maxInstances": 3,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Revisa la ubicación de cada componente en la red. ¿Por qué la base de datos es accesible desde el exterior si solo el servidor web debería comunicarse con ella?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Las bases de datos transaccionales nunca deben compartir una subred pública con salida directa a Internet. Deben residir en una subred privada.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Crea una subred privada (tier = Private) dentro de la VPC, traslada la base de datos RDS a esta subred y asegura el tráfico con un Security Group.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Mueve el nodo RDS a una nueva subred privada, conéctalo a la instancia EC2 con una conexión DATABASE y asegúrate de que no haya rutas públicas hacia RDS.",
+      "penaltyPoints": 20
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "vpc-1",
+        "serviceCode": "NET_VPC",
+        "containerId": null,
+        "config": {
+          "cidr": "10.0.0.0/16"
+        }
+      },
+      {
+        "id": "subnet-pub-1",
+        "serviceCode": "NET_SUBNET",
+        "containerId": "vpc-1",
+        "config": {
+          "tier": "Public",
+          "cidr": "10.0.1.0/24"
+        }
+      },
+      {
+        "id": "igw-1",
+        "serviceCode": "NET_IGW",
+        "containerId": null,
+        "config": {}
+      },
+      {
+        "id": "ec2-web",
+        "serviceCode": "AWS_EC2",
+        "containerId": "subnet-pub-1",
+        "config": {}
+      },
+      {
+        "id": "rds-db-vuln",
+        "serviceCode": "AWS_RDS",
+        "containerId": "subnet-pub-1",
+        "config": {
+          "isPublic": true
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn-vpc-igw",
+        "fromComponentId": "vpc-1",
+        "toComponentId": "igw-1",
+        "connectionType": "ATTACHED_VPC"
+      },
+      {
+        "id": "conn-ec2-rds",
+        "fromComponentId": "ec2-web",
+        "toComponentId": "rds-db-vuln",
+        "connectionType": "DATABASE"
+      }
+    ]
+  },
+  "evaluationRules": {
+    "requiredServices": [
+      "NET_VPC",
+      "NET_SUBNET",
+      "NET_IGW",
+      "AWS_EC2",
+      "AWS_RDS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 2,
+      "NET_IGW": 1,
+      "AWS_EC2": 1,
+      "AWS_RDS": 1
+    },
+    "maxInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 4,
+      "NET_IGW": 1,
+      "AWS_EC2": 2,
+      "AWS_RDS": 1
+    },
+    "placementRules": [
+      {
+        "serviceCode": "NET_SUBNET",
+        "requiredContainerCode": "NET_VPC",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 20,
+        "description": "Todas las subredes deben estar dentro de la VPC."
+      },
+      {
+        "serviceCode": "AWS_EC2",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Public",
+        "penaltyIfViolated": 25,
+        "description": "El servidor web EC2 debe residir en una subred pública."
+      },
+      {
+        "serviceCode": "AWS_RDS",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Private",
+        "penaltyIfViolated": 30,
+        "description": "La base de datos RDS debe ubicarse obligatoriamente en una subred privada para remediar la vulnerabilidad."
+      }
+    ],
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE",
+        "penaltyIfMissing": 20,
+        "description": "El servidor web EC2 debe mantener la conexión a la base de datos RDS."
+      },
+      {
+        "fromServiceCode": "NET_VPC",
+        "toServiceCode": "NET_IGW",
+        "connectionType": "ATTACHED_VPC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 15,
+        "description": "El Internet Gateway debe estar adjunto a la VPC."
+      }
+    ],
+    "forbiddenConnections": [
+      {
+        "fromServiceCode": "NET_IGW",
+        "toServiceCode": "AWS_RDS",
+        "reason": "La base de datos no debe recibir tráfico directo desde el Internet Gateway.",
+        "penalty": 30
+      }
+    ],
+    "antiPatterns": [
+      {
+        "code": "PUBLIC_DATABASE_EXPOSURE",
+        "type": "PublicDatabaseExposure",
+        "penalty": 30,
+        "category": "Security",
+        "title": "Base de Datos Expuesta",
+        "feedback": "La base de datos RDS sigue en una subred pública accesible desde el exterior. Trasládala a una subred privada."
+      }
+    ],
+    "passingScoreThreshold": 70
+  }
+}

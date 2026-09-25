@@ -1,0 +1,97 @@
+{
+  "title": "Arquitectura Event-Driven con EventBridge",
+  "description": "¿Cómo enrutas eventos del sistema con filtrado inteligente de contenido JSON hacia diferentes microservicios sin escribir código de integración intermediario? Diseña una solución orientada a eventos utilizando Amazon EventBridge como bus central de eventos conectado a Lambda y SQS.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_EVENTBRIDGE",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_SQS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Cuando distintos servicios generan eventos heterogéneos, se requiere un bus central capaz de filtrar y enrutar eventos según su contenido estructural sin acoplar emisores con receptores.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Un bus de eventos serverless evalúa reglas declarativas sobre la carga útil (payload) del evento y lo envía automáticamente a los destinos configurados.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Amazon EventBridge permite construir arquitecturas dirigidas por eventos conectando orígenes de datos con destinos como AWS Lambda y Amazon SQS.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca Amazon EventBridge en el canvas y conéctalo hacia la función AWS Lambda y hacia la cola Amazon SQS para habilitar el enrutamiento de eventos.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_EVENTBRIDGE",
+      "AWS_LAMBDA",
+      "AWS_SQS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_EVENTBRIDGE": 1,
+      "AWS_LAMBDA": 1,
+      "AWS_SQS": 1
+    },
+    "maxInstances": {
+      "AWS_EVENTBRIDGE": 1,
+      "AWS_LAMBDA": 1,
+      "AWS_SQS": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_EVENTBRIDGE",
+        "toServiceCode": "AWS_LAMBDA",
+        "connectionType": "INVOCATION",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "Amazon EventBridge debe enrutar eventos hacia la función AWS Lambda."
+      },
+      {
+        "fromServiceCode": "AWS_EVENTBRIDGE",
+        "toServiceCode": "AWS_SQS",
+        "connectionType": "MESSAGE_QUEUE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "Amazon EventBridge debe enrutar eventos hacia la cola Amazon SQS."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

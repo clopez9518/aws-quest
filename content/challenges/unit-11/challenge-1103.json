@@ -1,0 +1,118 @@
+{
+  "title": "Reparar infraestructura inconsistente",
+  "description": "Una pila de CloudFormation presenta desviaciones de configuración (drift) con una instancia EC2 y una base de datos RDS desconectadas de la gestión declarativa. Reincorpora los recursos bajo el control del stack y conecta la aplicación a la base de datos.",
+  "difficulty": "Hard",
+  "mode": "REPAIR",
+  "baseXP": 200,
+  "requiredXP": 1850,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_CLOUDFORMATION",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "cfn-1",
+        "serviceCode": "AWS_CLOUDFORMATION",
+        "label": "CloudFormation Stack",
+        "config": {}
+      },
+      {
+        "id": "ec2-1",
+        "serviceCode": "AWS_EC2",
+        "label": "Instancia EC2 Huérfana",
+        "config": {}
+      },
+      {
+        "id": "rds-1",
+        "serviceCode": "AWS_RDS",
+        "label": "Base de Datos RDS Huérfana",
+        "config": {}
+      }
+    ],
+    "connections": []
+  },
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Qué problemas operacionales surgen cuando los recursos se encuentran fuera de la administración del stack de infraestructura como código?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Vincula todos los recursos bajo la plantilla de CloudFormation y establece la comunicación cliente-servidor entre la aplicación y la base de datos.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Conecta CloudFormation tanto a EC2 como a RDS, y conecta EC2 a RDS con DATABASE_QUERY.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Establece conexiones GENERIC desde CloudFormation hacia EC2 y RDS, y una conexión DATABASE_QUERY desde EC2 hacia RDS.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_CLOUDFORMATION",
+      "AWS_EC2",
+      "AWS_RDS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_CLOUDFORMATION": 1,
+      "AWS_EC2": 1,
+      "AWS_RDS": 1
+    },
+    "maxInstances": {
+      "AWS_CLOUDFORMATION": 1,
+      "AWS_EC2": 1,
+      "AWS_RDS": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_CLOUDFORMATION",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "GENERIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "CloudFormation debe gestionar la instancia EC2."
+      },
+      {
+        "fromServiceCode": "AWS_CLOUDFORMATION",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "GENERIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "CloudFormation debe gestionar la base de datos RDS."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE_QUERY",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "La instancia EC2 debe conectarse con la base de datos RDS."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

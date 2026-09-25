@@ -1,0 +1,137 @@
+{
+  "title": "Subnets Públicas y Privadas con NAT Gateway",
+  "description": "¿Cómo permites que un servidor privado descargue parches de seguridad de Internet sin quedar expuesto a ataques externos? Diseña una VPC con subred pública (con Internet Gateway y NAT Gateway) y subred privada para el servidor de aplicaciones.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "NET_VPC",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SUBNET",
+      "maxInstances": 4,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_IGW",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_NAT_GATEWAY",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Los servidores en subredes privadas no deben tener IP pública directa, pero necesitan comunicarse con el exterior para descargar actualizaciones. ¿Qué componente realiza la traducción de direcciones de red?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Un NAT Gateway ubicado en una subred pública permite el tráfico saliente desde subredes privadas bloqueando cualquier conexión entrante no solicitada.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Coloca un NAT Gateway (NET_NAT_GATEWAY) en la subred pública conectada al IGW, y configura la subred privada con una ruta hacia el NAT Gateway.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Diseña una VPC con dos subredes (Public y Private). Ubica el NAT Gateway en la subred pública, la instancia EC2 en la subred privada, y conecta el IGW a la VPC.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "NET_VPC",
+      "NET_SUBNET",
+      "NET_IGW",
+      "NET_NAT_GATEWAY",
+      "AWS_EC2"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 2,
+      "NET_IGW": 1,
+      "NET_NAT_GATEWAY": 1,
+      "AWS_EC2": 1
+    },
+    "maxInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 4,
+      "NET_IGW": 1,
+      "NET_NAT_GATEWAY": 1,
+      "AWS_EC2": 2
+    },
+    "placementRules": [
+      {
+        "serviceCode": "NET_SUBNET",
+        "requiredContainerCode": "NET_VPC",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 20,
+        "description": "Todas las subredes deben estar contenidas dentro de la VPC."
+      },
+      {
+        "serviceCode": "NET_NAT_GATEWAY",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Public",
+        "penaltyIfViolated": 25,
+        "description": "El NAT Gateway debe residir obligatoriamente en una subred pública para acceder al Internet Gateway."
+      },
+      {
+        "serviceCode": "AWS_EC2",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Private",
+        "penaltyIfViolated": 25,
+        "description": "La instancia de procesamiento debe ubicarse en la subred privada para protegerla del acceso directo desde Internet."
+      }
+    ],
+    "routingRules": [
+      {
+        "subnetTier": "Public",
+        "requiresRouteTo": "NET_IGW",
+        "penaltyIfMissing": 20,
+        "description": "La subred pública debe tener una ruta activa hacia el Internet Gateway."
+      },
+      {
+        "subnetTier": "Private",
+        "requiresRouteTo": "NET_NAT_GATEWAY",
+        "penaltyIfMissing": 20,
+        "description": "La subred privada debe tener una ruta hacia el NAT Gateway para permitir salida segura a Internet."
+      }
+    ],
+    "requiredConnections": [
+      {
+        "fromServiceCode": "NET_VPC",
+        "toServiceCode": "NET_IGW",
+        "connectionType": "ATTACHED_VPC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 15,
+        "description": "El Internet Gateway debe estar adjunto a la VPC."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

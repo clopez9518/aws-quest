@@ -1,0 +1,172 @@
+{
+  "title": "Aplicación + RDS en Arquitectura de Capas",
+  "description": "¿Cómo conectas tu servidor web con la base de datos protegiendo los datos contra accesos directos? Diseña una arquitectura de dos capas con servidor web en subred pública y base de datos relacional RDS en subred privada protegida con Security Groups.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 2,
+  "allowedServices": [
+    {
+      "serviceCode": "NET_VPC",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SUBNET",
+      "maxInstances": 4,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_IGW",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SECURITY_GROUP",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Una aplicación web de 2 capas debe separar la capa de presentación (pública) de la capa de persistencia (privada).",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "La instancia web reside en la subred pública para atender usuarios, mientras que la base de datos debe residir en la subred privada recibiendo tráfico únicamente desde la capa web.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Configura un Security Group en la base de datos RDS que permita conexiones en el puerto 5432 provenientes exclusivamente de la instancia EC2.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca EC2 en la subred pública, RDS en la subred privada, crea una conexión DATABASE entre ellos y asocia las reglas de Security Group correspondientes.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "NET_VPC",
+      "NET_SUBNET",
+      "NET_IGW",
+      "AWS_EC2",
+      "AWS_RDS",
+      "NET_SECURITY_GROUP"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 2,
+      "NET_IGW": 1,
+      "AWS_EC2": 1,
+      "AWS_RDS": 1,
+      "NET_SECURITY_GROUP": 1
+    },
+    "maxInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 4,
+      "NET_IGW": 1,
+      "AWS_EC2": 2,
+      "AWS_RDS": 1,
+      "NET_SECURITY_GROUP": 3
+    },
+    "placementRules": [
+      {
+        "serviceCode": "NET_SUBNET",
+        "requiredContainerCode": "NET_VPC",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 20,
+        "description": "Todas las subredes deben estar contenidas dentro de la VPC."
+      },
+      {
+        "serviceCode": "AWS_EC2",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Public",
+        "penaltyIfViolated": 25,
+        "description": "El servidor web EC2 debe residir en una subred pública para atender clientes."
+      },
+      {
+        "serviceCode": "AWS_RDS",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Private",
+        "penaltyIfViolated": 30,
+        "description": "La base de datos RDS debe ubicarse en una subred privada."
+      }
+    ],
+    "routingRules": [
+      {
+        "subnetTier": "Public",
+        "requiresRouteTo": "NET_IGW",
+        "penaltyIfMissing": 20,
+        "description": "La subred pública debe contar con ruta hacia el Internet Gateway."
+      }
+    ],
+    "securityGroupRules": [
+      {
+        "targetServiceCode": "AWS_RDS",
+        "allowedSourceServiceCode": "AWS_EC2",
+        "protocol": "TCP",
+        "port": 5432,
+        "penaltyIfViolated": 20,
+        "description": "El Security Group de RDS debe autorizar tráfico en el puerto 5432 exclusivamente desde la instancia EC2."
+      }
+    ],
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE",
+        "penaltyIfMissing": 15,
+        "description": "La instancia EC2 debe estar conectada a la base de datos RDS."
+      },
+      {
+        "fromServiceCode": "NET_VPC",
+        "toServiceCode": "NET_IGW",
+        "connectionType": "ATTACHED_VPC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 15,
+        "description": "El Internet Gateway debe estar adjunto a la VPC."
+      }
+    ],
+    "forbiddenConnections": [
+      {
+        "fromServiceCode": "NET_IGW",
+        "toServiceCode": "AWS_RDS",
+        "reason": "La base de datos no debe recibir tráfico directo desde el Internet Gateway.",
+        "penalty": 30
+      }
+    ],
+    "antiPatterns": [
+      {
+        "code": "PUBLIC_DATABASE_EXPOSURE",
+        "type": "PublicDatabaseExposure",
+        "penalty": 30,
+        "category": "Security",
+        "title": "Base de Datos Expuesta",
+        "feedback": "La base de datos RDS no debe estar en una subred pública ni accesible directamente desde Internet."
+      }
+    ],
+    "passingScoreThreshold": 70
+  }
+}

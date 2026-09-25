@@ -1,0 +1,381 @@
+{
+  "info": {
+    "_postman_id": "b832549c-9562-488b-a74f-74a9cca096d9",
+    "name": "AWS Architecture Quest - Catalog & Challenges Module",
+    "description": "Colección de pruebas para el Módulo de Catálogo y Desafíos (Fase 3 - Hito 3.3).\n\nCubre todos los endpoints del catálogo y espacio de trabajo de desafíos según las especificaciones specs/catalog-challenges-module-spec.md y docs/08-api-spec.md:\n- POST /api/v1/auth/guest (Setup de sesión y obtención de JWT)\n- GET /api/v1/units (Catálogo jerárquico de unidades, desafíos, estado de bloqueo y progreso)\n- GET /api/v1/challenges/{id} (Contexto de workspace, servicios permitidos, distractores y pistas sanitizadas)\n- Escenarios de error (401 Unauthorized, 404 Challenge Not Found, 403 Challenge Locked)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7234",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "challengeId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Setup de Autenticación",
+      "item": [
+        {
+          "name": "POST Obtener Sesión para Pruebas (/auth/guest)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Guarda token JWT de sesión\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.accessToken).to.be.a(\"string\");",
+                  "    ",
+                  "    // Almacenar token en variable de colección para usar en las siguientes peticiones",
+                  "    pm.collectionVariables.set(\"authToken\", json.data.accessToken);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/guest",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "guest"
+              ]
+            },
+            "description": "Obtiene un token JWT de sesión para autenticar las peticiones del catálogo y desafíos."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01 - Catálogo de Unidades y Desafíos (/units)",
+      "item": [
+        {
+          "name": "GET Listar Catálogo Completo (/units)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida estructura del catálogo jerárquico\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.be.an(\"array\");",
+                  "    pm.expect(json.data.length).to.be.above(0);",
+                  "    ",
+                  "    var firstUnit = json.data[0];",
+                  "    pm.expect(firstUnit.id).to.be.a(\"string\");",
+                  "    pm.expect(firstUnit.title).to.be.a(\"string\");",
+                  "    pm.expect(firstUnit.orderIndex).to.be.a(\"number\");",
+                  "    pm.expect(firstUnit.challenges).to.be.an(\"array\");",
+                  "    pm.expect(firstUnit.challenges.length).to.be.above(0);",
+                  "    ",
+                  "    var firstChallenge = firstUnit.challenges[0];",
+                  "    pm.expect(firstChallenge.id).to.be.a(\"string\");",
+                  "    pm.expect(firstChallenge.title).to.be.a(\"string\");",
+                  "    pm.expect(firstChallenge.isLocked).to.be.a(\"boolean\");",
+                  "    pm.expect(firstChallenge.userProgress).to.be.an(\"object\");",
+                  "    pm.expect(firstChallenge.userProgress.status).to.be.a(\"string\");",
+                  "    ",
+                  "    // Guardar ID del primer desafío para probar GET /challenges/{id}",
+                  "    pm.collectionVariables.set(\"challengeId\", firstChallenge.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/units",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "units"
+              ]
+            },
+            "description": "Obtiene la lista de unidades temáticas con sus desafíos ordenados y el progreso del usuario activo (CU-01)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Listar Catálogo Sin Autenticación (Error 401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test(\"Envelope canónico UNAUTHORIZED\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"UNAUTHORIZED\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/units",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "units"
+              ]
+            },
+            "description": "Verifica que la consulta al catálogo sin Bearer Token sea rechazada con 401 Unauthorized."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Detalle y Workspace del Desafío (/challenges)",
+      "item": [
+        {
+          "name": "GET Obtener Detalle de Desafío (/challenges/:id)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida contexto de workspace y servicios permitidos\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.id).to.eql(pm.collectionVariables.get(\"challengeId\"));",
+                  "    pm.expect(json.data.title).to.be.a(\"string\");",
+                  "    pm.expect(json.data.description).to.be.a(\"string\");",
+                  "    pm.expect(json.data.allowedServices).to.be.an(\"array\");",
+                  "    pm.expect(json.data.allowedServices.length).to.be.above(0);",
+                  "    ",
+                  "    var service = json.data.allowedServices[0];",
+                  "    pm.expect(service.code).to.be.a(\"string\");",
+                  "    pm.expect(service.name).to.be.a(\"string\");",
+                  "    pm.expect(service.isDistractor).to.be.a(\"boolean\");",
+                  "    ",
+                  "    // Valida resumen de pistas y protección anti-cheat",
+                  "    pm.expect(json.data.hintsSummary).to.be.an(\"object\");",
+                  "    pm.expect(json.data.hintsSummary.totalHints).to.be.a(\"number\");",
+                  "    pm.expect(json.data.hintsSummary.unlockedCount).to.be.a(\"number\");",
+                  "    pm.expect(json.data.hintsSummary.unlockedHints).to.be.an(\"array\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "Obtiene la especificación y contexto completo para inicializar el workspace de diseño arquitectónico (CU-02)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Desafío Inexistente (Error 404 Not Found)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 404 Not Found\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Envelope canónico CHALLENGE_NOT_FOUND\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"CHALLENGE_NOT_FOUND\");",
+                  "    pm.expect(json.error.message).to.contain(\"No se encontró el desafío\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/00000000-0000-0000-0000-000000000000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "00000000-0000-0000-0000-000000000000"
+              ]
+            },
+            "description": "Verifica que solicitar un ID de desafío inexistente retorne 404 Not Found con código CHALLENGE_NOT_FOUND."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Detalle de Desafío Sin Autenticación (Error 401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test(\"Envelope canónico UNAUTHORIZED\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"UNAUTHORIZED\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/{{challengeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "{{challengeId}}"
+              ]
+            },
+            "description": "Verifica que el acceso al detalle de un desafío sin Bearer Token devuelva 401 Unauthorized."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

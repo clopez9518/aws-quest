@@ -1,0 +1,81 @@
+{
+  "title": "Contenedores con ECS + ECR",
+  "description": "¿Cómo despliegas aplicaciones contenerizadas con Docker de forma automatizada y escalable? Construye una arquitectura que almacene imágenes en Amazon ECR y orqueste tareas con Amazon ECS.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 1000,
+  "orderIndex": 1,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_ECR",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ECS",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Cómo empaquetas tu aplicación para que se ejecute de manera idéntica en cualquier entorno sin depender del sistema operativo de un host específico?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Aplica el patrón de contenedorización: almacena artefactos inmutables en un registro de imágenes y orquétalos en un clúster gestionado.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Usa Amazon Elastic Container Registry (ECR) para almacenar las imágenes Docker y Amazon Elastic Container Service (ECS) para correr los contenedores.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Arrastra un registro ECR y un clúster ECS al canvas, y conecta ECR con ECS mediante una conexión CONTAINER_IMAGE.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_ECR",
+      "AWS_ECS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_ECR": 1,
+      "AWS_ECS": 1
+    },
+    "maxInstances": {
+      "AWS_ECR": 1,
+      "AWS_ECS": 2
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ECR",
+        "toServiceCode": "AWS_ECS",
+        "connectionType": "CONTAINER_IMAGE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "Amazon ECS debe descargar imágenes del registro de contenedores Amazon ECR."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

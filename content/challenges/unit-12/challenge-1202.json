@@ -1,0 +1,108 @@
+{
+  "title": "Arquitectura para tráfico impredecible",
+  "description": "Construye una arquitectura serverless altamente elástica capaz de absorber picos masivos de tráfico mediante buffers asíncronos y bases de datos NoSQL.",
+  "difficulty": "Hard",
+  "mode": "BUILDER",
+  "baseXP": 200,
+  "requiredXP": 2250,
+  "orderIndex": 2,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_APIGATEWAY",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_SQS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_DYNAMODB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Cómo evitas que una oleada repentina de peticiones sature el backend o agote los límites de conexiones sincrónicas?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Implementa el patrón Queue-Based Load Leveling para amortiguar las peticiones en una cola antes de procesarlas de manera asíncrona.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Conecta Amazon API Gateway directamente a Amazon SQS, procesa los mensajes con AWS Lambda y persiste los datos en Amazon DynamoDB.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Conecta API Gateway a SQS mediante MESSAGE_ENQUEUE, SQS a Lambda mediante ASYNC_INVOKE, y Lambda a DynamoDB con DATABASE_QUERY.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_APIGATEWAY",
+      "AWS_SQS",
+      "AWS_LAMBDA",
+      "AWS_DYNAMODB"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_APIGATEWAY": 1,
+      "AWS_SQS": 1,
+      "AWS_LAMBDA": 1,
+      "AWS_DYNAMODB": 1
+    },
+    "maxInstances": {
+      "AWS_APIGATEWAY": 1,
+      "AWS_SQS": 1,
+      "AWS_LAMBDA": 1,
+      "AWS_DYNAMODB": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_APIGATEWAY",
+        "toServiceCode": "AWS_SQS",
+        "connectionType": "MESSAGE_ENQUEUE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "API Gateway debe encolar mensajes en Amazon SQS."
+      },
+      {
+        "fromServiceCode": "AWS_SQS",
+        "toServiceCode": "AWS_LAMBDA",
+        "connectionType": "ASYNC_INVOKE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Amazon SQS debe invocar la función AWS Lambda para procesamiento."
+      },
+      {
+        "fromServiceCode": "AWS_LAMBDA",
+        "toServiceCode": "AWS_DYNAMODB",
+        "connectionType": "DATABASE_QUERY",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "AWS Lambda debe escribir los resultados procesados en Amazon DynamoDB."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "title": "Publicación de Eventos con SNS",
+  "description": "¿Cómo notificas simultáneamente a múltiples sistemas independientes (como facturación, inventario y notificaciones por correo) ante la confirmación de una compra? Diseña una arquitectura con el patrón Fan-Out utilizando Amazon SNS distribuyendo mensajes en paralelo a una cola SQS y una función Lambda.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 2,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_SNS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_SQS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Si el emisor del evento debe conectarse individualmente a cada suscriptor, cualquier cambio o nuevo consumidor requerirá modificar el código del emisor.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "El patrón Fan-Out (Publicar/Suscribir) permite que un único tópico de mensajería replique y entregue copias de un mensaje a múltiples destinos de forma asíncrona.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Utiliza Amazon SNS (Simple Notification Service) como tópico emisor y suscribe tanto una cola Amazon SQS como una función AWS Lambda.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca un tópico Amazon SNS, una cola SQS y una función Lambda en el canvas, y conecta SNS a ambos destinos mediante enlaces de suscripción.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_SNS",
+      "AWS_SQS",
+      "AWS_LAMBDA"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_SNS": 1,
+      "AWS_SQS": 1,
+      "AWS_LAMBDA": 1
+    },
+    "maxInstances": {
+      "AWS_SNS": 1,
+      "AWS_SQS": 1,
+      "AWS_LAMBDA": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_SNS",
+        "toServiceCode": "AWS_SQS",
+        "connectionType": "MESSAGE_QUEUE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "El tópico Amazon SNS debe entregar mensajes a la cola Amazon SQS suscrita."
+      },
+      {
+        "fromServiceCode": "AWS_SNS",
+        "toServiceCode": "AWS_LAMBDA",
+        "connectionType": "INVOCATION",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "El tópico Amazon SNS debe invocar la función AWS Lambda suscrita."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

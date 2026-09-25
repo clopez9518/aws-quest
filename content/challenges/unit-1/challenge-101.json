@@ -1,0 +1,100 @@
+{
+  "title": "Mi primer servidor con EC2",
+  "description": "¿Dónde vive mi aplicación? Diseña la infraestructura computacional inicial para desplegar un servidor virtual utilizando Amazon EC2.",
+  "difficulty": "Easy",
+  "mode": "BUILDER",
+  "baseXP": 100,
+  "requiredXP": 0,
+  "orderIndex": 1,
+  "briefing": {
+    "keyConcept": "Cómputo Elástico en la Nube (IaaS)",
+    "businessScenario": "Una startup necesita alojar su primera aplicación backend sin comprar ni mantener servidores físicos en un datacenter.",
+    "learningObjective": "Aprender a aprovisionar capacidad de cómputo virtual elástica y segura bajo demanda con Amazon EC2.",
+    "keyTakeaways": [
+      "Amazon EC2 proporciona capacidad de cómputo escalable y redimensionable en la nube.",
+      "Permite elegir sistemas operativos, tipos de instancia (CPU/RAM) y configuraciones de red personalizadas.",
+      "Pagas únicamente por los recursos de cómputo que realmente utilizas."
+    ],
+    "estimatedReadTime": "30 seg"
+  },
+  "reflectionPrompt": {
+    "question": "Al desplegar un servidor en Amazon EC2 para una aplicación web productiva, ¿cuál de los siguientes principios de diseño del pilar de Fiabilidad (Reliability) es fundamental?",
+    "pillar": "Reliability",
+    "bonusXP": 25,
+    "options": [
+      {
+        "id": "opt-a",
+        "text": "Alojar la base de datos, el servidor web y los respaldos en el mismo disco raíz para reducir costos de red.",
+        "isCorrect": false,
+        "explanation": "Incorrecto. Concentrar todos los componentes en una sola instancia genera un único punto de falla (SPOF) catastrófico."
+      },
+      {
+        "id": "opt-b",
+        "text": "Tratar las instancias EC2 como recursos efímeros y reemplazables (stateless) para permitir escalabilidad horizontal y recuperación automática.",
+        "isCorrect": true,
+        "explanation": "¡Correcto! Diseñar servidores sin estado permite destruirlos, actualizarlos o escalarlos automáticamente mediante Auto Scaling sin perder datos de usuario."
+      },
+      {
+        "id": "opt-c",
+        "text": "Asignar siempre la IP pública estática directamente a la máquina virtual sin usar Security Groups ni subredes.",
+        "isCorrect": false,
+        "explanation": "Incorrecto. Exponer instancias directamente sin firewalls virtuales viola el principio de menor privilegio del pilar de Seguridad."
+      }
+    ]
+  },
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Qué componente de nube permite ejecutar sistemas operativos y aplicaciones como si fuera un servidor físico propio?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Para ejecutar una carga de trabajo general con control completo sobre el sistema operativo, se requiere una máquina virtual dedicada.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "El servicio Amazon EC2 (Elastic Compute Cloud) proporciona capacidad de cómputo reescalable en la nube.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Arrastra una instancia Amazon EC2 desde la paleta izquierda hacia el canvas para completar el objetivo.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_EC2"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_EC2": 1
+    },
+    "maxInstances": {
+      "AWS_EC2": 1
+    },
+    "requiredConnections": [],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

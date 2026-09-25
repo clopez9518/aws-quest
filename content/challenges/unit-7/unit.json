@@ -1,0 +1,5 @@
+{
+  "title": "Comunicación y Eventos",
+  "description": "¿Cómo desacoplo mis componentes para soportar cargas masivas e impredecibles? Aprende a implementar arquitecturas asíncronas con colas de mensajes en Amazon SQS, distribución de notificaciones pub/sub con Amazon SNS y buses de eventos serverless con Amazon EventBridge.",
+  "orderIndex": 7
+}

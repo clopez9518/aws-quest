@@ -1,0 +1,135 @@
+{
+  "title": "Arquitectura bajo incidente de saturación",
+  "description": "Un servidor web único conectado a una base de datos sin réplicas se ha colapsado bajo una ráfaga de tráfico. Diagnostica la causa raíz agregando balanceo de carga, redundancia horizontal, réplica Multi-AZ y observabilidad con CloudWatch.",
+  "difficulty": "Hard",
+  "mode": "DIAGNOSE",
+  "baseXP": 200,
+  "requiredXP": 1650,
+  "orderIndex": 4,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 3,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_CLOUDWATCH",
+      "maxInstances": 1,
+      "isDistractor": false
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "ec2-overloaded",
+        "serviceCode": "AWS_EC2",
+        "label": "Servidor Saturado",
+        "config": {}
+      },
+      {
+        "id": "rds-single",
+        "serviceCode": "AWS_RDS",
+        "label": "RDS Single-AZ Saturado",
+        "config": { "isMultiAz": false }
+      }
+    ],
+    "connections": [
+      {
+        "id": "e1",
+        "fromComponentId": "ec2-overloaded",
+        "toComponentId": "rds-single",
+        "connectionType": "DATABASE_QUERY"
+      }
+    ]
+  },
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Por qué un servidor único y una base de datos sin réplica provocan caídas completas del sistema durante un pico de demanda?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Soluciona el incidente agregando un Application Load Balancer, al menos 2 instancias EC2 redundantes, habilitando Multi-AZ en RDS y conectando telemetría a CloudWatch.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Conecta: ALB -> EC2 (ambas), EC2 -> RDS, y EC2/RDS -> CloudWatch.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Configura ALB con 2 EC2, habilita multiAz=true en RDS y conecta EC2 y RDS a CloudWatch mediante MONITORING_METRICS.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_ALB",
+      "AWS_EC2",
+      "AWS_RDS",
+      "AWS_CLOUDWATCH"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_ALB": 1,
+      "AWS_EC2": 2,
+      "AWS_RDS": 1,
+      "AWS_CLOUDWATCH": 1
+    },
+    "maxInstances": {
+      "AWS_ALB": 1,
+      "AWS_EC2": 3,
+      "AWS_RDS": 1,
+      "AWS_CLOUDWATCH": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El Application Load Balancer debe distribuir el tráfico hacia las instancias EC2 redundantes."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE_QUERY",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Las instancias EC2 deben conectarse a la base de datos relacional RDS."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_CLOUDWATCH",
+        "connectionType": "MONITORING_METRICS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Las instancias EC2 deben enviar telemetría a Amazon CloudWatch."
+      },
+      {
+        "fromServiceCode": "AWS_RDS",
+        "toServiceCode": "AWS_CLOUDWATCH",
+        "connectionType": "MONITORING_METRICS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "La base de datos RDS debe emitir métricas a Amazon CloudWatch."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

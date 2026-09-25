@@ -1,0 +1,84 @@
+services:
+  # Servicio 1: Base de Datos Relacional PostgreSQL 15 con JSONB y pgcrypto
+  postgres:
+    image: postgres:15.3-alpine
+    container_name: awsquest-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-awsquest_db}
+    ports:
+      - "${POSTGRES_PORT:-5437}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/01-init-extensions.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-awsquest_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - awsquest-network
+
+  # Servicio 2: Backend API REST .NET 10
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: awsquest-api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-awsquest_db};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres};Include Error Detail=false"
+      JwtSettings__Secret: ${JWT_SECRET:-SuperSecretKeyForProductionMustBeAtLeast32CharsLong123!}
+      JwtSettings__Issuer: ${JWT_ISSUER:-AwsQuestApi}
+      JwtSettings__Audience: ${JWT_AUDIENCE:-AwsQuestClient}
+      JwtSettings__ExpirationHours: ${JWT_EXPIRATION_HOURS:-24}
+      JwtSettings__GuestExpirationDays: ${JWT_GUEST_EXPIRATION_DAYS:-30}
+      ContentSettings__ChallengesPath: /app/content/challenges
+    ports:
+      - "${API_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - awsquest-network
+
+  # Servicio 3: Frontend Web SPA React + Nginx
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: awsquest-web
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-3000}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:80/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    networks:
+      - awsquest-network
+
+volumes:
+  postgres_data:
+    name: awsquest_postgres_data
+
+networks:
+  awsquest-network:
+    name: awsquest-network
+    driver: bridge

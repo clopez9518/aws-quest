@@ -1,0 +1,83 @@
+{
+  "title": "Archivos compartidos con EFS",
+  "description": "¿Cómo comparten archivos dos servidores web concurrentes sin duplicar datos? Diseña una infraestructura donde dos instancias Amazon EC2 monten simultáneamente un sistema de archivos elástico y compartido mediante Amazon EFS.",
+  "difficulty": "Easy",
+  "mode": "BUILDER",
+  "baseXP": 120,
+  "requiredXP": 100,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EFS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EBS",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Los volúmenes estándar de EBS están diseñados para una sola instancia. ¿Qué tipo de almacenamiento permite que múltiples servidores lean y escriban en el mismo directorio a la vez?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Se necesita un sistema de archivos jerárquico en red compatible con el protocolo NFS que escale automáticamente en capacidad.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Amazon EFS (Elastic File System) es un sistema de archivos gestionado y sin servidor que puede ser montado concurrentemente por cientos de instancias EC2.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca 2 instancias Amazon EC2 y 1 sistema Amazon EFS en el canvas, y conecta cada una de las instancias EC2 al recurso EFS con una conexión de tipo NFS_MOUNT.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_EC2",
+      "AWS_EFS"
+    ],
+    "forbiddenServices": [
+      "AWS_EBS"
+    ],
+    "minInstances": {
+      "AWS_EC2": 2,
+      "AWS_EFS": 1
+    },
+    "maxInstances": {
+      "AWS_EC2": 2,
+      "AWS_EFS": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_EFS",
+        "connectionType": "NFS_MOUNT",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "Ambas instancias Amazon EC2 deben tener montado el sistema de archivos compartido Amazon EFS."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

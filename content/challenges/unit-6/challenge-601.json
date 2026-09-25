@@ -1,0 +1,102 @@
+{
+  "title": "Ejecutar código con Lambda",
+  "description": "¿Cómo procesas eventos y ejecutas funciones de código sin configurar un sistema operativo ni pagar por servidores ociosos? Diseña una solución que utilice cómputo serverless con AWS Lambda.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 1,
+  "briefing": {
+    "keyConcept": "Cómputo Serverless Basado en Eventos (FaaS)",
+    "businessScenario": "Una aplicación procesa pagos esporádicos durante el día. Mantener servidores EC2 encendidos las 24 horas genera un costo fijo innecesario y mantenimiento de parches del sistema operativo.",
+    "learningObjective": "Aprender a ejecutar código bajo demanda sin administrar servidores mediante AWS Lambda.",
+    "keyTakeaways": [
+      "AWS Lambda ejecuta código en respuesta a eventos y administra automáticamente los recursos de cómputo.",
+      "Solo pagas por los milisegundos de cómputo consumidos durante la ejecución.",
+      "Escala automáticamente desde cero hasta miles de solicitudes concurrentes."
+    ],
+    "estimatedReadTime": "30 seg"
+  },
+  "reflectionPrompt": {
+    "question": "En términos de optimización de costos y arquitectura basada en eventos (Cost Optimization), ¿cuándo es más conveniente utilizar AWS Lambda en lugar de instancias Amazon EC2 24/7?",
+    "pillar": "CostOptimization",
+    "bonusXP": 25,
+    "options": [
+      {
+        "id": "opt-a",
+        "text": "Cuando las cargas de trabajo son intermitentes, impulsadas por eventos esporádicos o con patrones de tráfico impredecibles, ya que Lambda escala a cero y no cobra por tiempo ocioso.",
+        "isCorrect": true,
+        "explanation": "¡Correcto! Lambda cobra estrictamente por milisegundo de ejecución y número de invocaciones, eliminando el desperdicio financiero de mantener servidores ociosos."
+      },
+      {
+        "id": "opt-b",
+        "text": "Cuando se necesita ejecutar un proceso monolítico continuo que corre ininterrumpidamente durante 6 meses seguidos sin pausas.",
+        "isCorrect": false,
+        "explanation": "Incorrecto. Lambda tiene un límite de tiempo máximo de ejecución de 15 minutos por invocación; no está diseñado para procesos continuos de larga duración."
+      },
+      {
+        "id": "opt-c",
+        "text": "Cuando se requiere acceso root directo al kernel de Linux para instalar drivers propietarios de hardware.",
+        "isCorrect": false,
+        "explanation": "Incorrecto. Lambda es un entorno administrado sin acceso directo ni privilegios root al sistema operativo anfitrión."
+      }
+    ]
+  },
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Mantener una máquina virtual EC2 encendida las 24 horas para ejecutar una tarea ocasional genera costos innecesarios y sobrecarga de mantenimiento.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "El modelo de ejecución basada en eventos (Function as a Service) solo cobra por los milisegundos exactos de cómputo utilizados durante la ejecución del código.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Utiliza AWS Lambda para ejecutar tu código sin aprovisionar ni administrar infraestructura de servidores.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Arrastra una función AWS Lambda desde la paleta de servicios al canvas para completar el objetivo.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_LAMBDA"
+    ],
+    "forbiddenServices": [
+      "AWS_EC2"
+    ],
+    "minInstances": {
+      "AWS_LAMBDA": 1
+    },
+    "maxInstances": {
+      "AWS_LAMBDA": 1
+    },
+    "requiredConnections": [],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

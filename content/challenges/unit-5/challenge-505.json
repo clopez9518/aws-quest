@@ -1,0 +1,220 @@
+{
+  "title": "Incidente SRE: Servidor Saturado",
+  "description": "ALERTA CRÍTICA DE PRODUCCIÓN: La tienda online ha colapsado durante el lanzamiento de un producto debido a saturación de CPU y saturación de conexiones en el servidor web único. El tráfico no está balanceado y la base de datos comparte la subred pública. Como ingeniero SRE de guardia, mitiga la caída rediseñando la arquitectura con balanceo de carga, alta disponibilidad y aislamiento de base de datos.",
+  "difficulty": "Intermediate",
+  "mode": "REPAIR",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 5,
+  "allowedServices": [
+    {
+      "serviceCode": "NET_VPC",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SUBNET",
+      "maxInstances": 4,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_IGW",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 3,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Analiza las dos causas principales del fallo: hay un único servidor recibiendo todas las conexiones y la base de datos carece de aislamiento.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Para mitigar la sobrecarga, el tráfico web debe ser absorbido por un balanceador de carga que distribuya las peticiones entre múltiples instancias en paralelo.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Agrega un Application Load Balancer (AWS_ALB), una segunda instancia EC2, y traslada la base de datos RDS a una subred privada.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Configura el ALB conectado a ambas instancias EC2 con enlaces HTTP_TRAFFIC, y conecta las instancias EC2 a la base de datos RDS ubicada en la subred privada.",
+      "penaltyPoints": 20
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "vpc-crash",
+        "serviceCode": "NET_VPC",
+        "containerId": null,
+        "config": {
+          "cidr": "10.0.0.0/16"
+        }
+      },
+      {
+        "id": "subnet-crashed-1",
+        "serviceCode": "NET_SUBNET",
+        "containerId": "vpc-crash",
+        "config": {
+          "tier": "Public",
+          "cidr": "10.0.1.0/24"
+        }
+      },
+      {
+        "id": "igw-crash",
+        "serviceCode": "NET_IGW",
+        "containerId": null,
+        "config": {}
+      },
+      {
+        "id": "ec2-overloaded",
+        "serviceCode": "AWS_EC2",
+        "containerId": "subnet-crashed-1",
+        "config": {}
+      },
+      {
+        "id": "rds-crashed",
+        "serviceCode": "AWS_RDS",
+        "containerId": "subnet-crashed-1",
+        "config": {
+          "isPublic": true
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn-vpc-igw",
+        "fromComponentId": "vpc-crash",
+        "toComponentId": "igw-crash",
+        "connectionType": "ATTACHED_VPC"
+      },
+      {
+        "id": "conn-ec2-rds",
+        "fromComponentId": "ec2-overloaded",
+        "toComponentId": "rds-crashed",
+        "connectionType": "DATABASE"
+      }
+    ]
+  },
+  "evaluationRules": {
+    "requiredServices": [
+      "NET_VPC",
+      "NET_SUBNET",
+      "NET_IGW",
+      "AWS_ALB",
+      "AWS_EC2",
+      "AWS_RDS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 2,
+      "NET_IGW": 1,
+      "AWS_ALB": 1,
+      "AWS_EC2": 2,
+      "AWS_RDS": 1
+    },
+    "maxInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 4,
+      "NET_IGW": 1,
+      "AWS_ALB": 1,
+      "AWS_EC2": 4,
+      "AWS_RDS": 1
+    },
+    "placementRules": [
+      {
+        "serviceCode": "NET_SUBNET",
+        "requiredContainerCode": "NET_VPC",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 20,
+        "description": "Todas las subredes deben estar dentro de la VPC."
+      },
+      {
+        "serviceCode": "AWS_EC2",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Public",
+        "penaltyIfViolated": 25,
+        "description": "Los servidores web EC2 deben residir en subredes públicas."
+      },
+      {
+        "serviceCode": "AWS_RDS",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Private",
+        "penaltyIfViolated": 30,
+        "description": "La base de datos RDS debe ubicarse en una subred privada para protegerla del tráfico directo."
+      }
+    ],
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El balanceador ALB debe distribuir tráfico hacia las instancias web EC2."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE",
+        "penaltyIfMissing": 20,
+        "description": "Las instancias web deben conectarse a la base de datos RDS."
+      },
+      {
+        "fromServiceCode": "NET_VPC",
+        "toServiceCode": "NET_IGW",
+        "connectionType": "ATTACHED_VPC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 15,
+        "description": "El Internet Gateway debe estar adjunto a la VPC."
+      }
+    ],
+    "forbiddenConnections": [
+      {
+        "fromServiceCode": "NET_IGW",
+        "toServiceCode": "AWS_RDS",
+        "reason": "La base de datos no debe recibir tráfico directo desde Internet Gateway.",
+        "penalty": 30
+      }
+    ],
+    "antiPatterns": [
+      {
+        "code": "SINGLE_POINT_OF_FAILURE",
+        "type": "SinglePointOfFailure",
+        "penalty": 35,
+        "category": "Reliability",
+        "title": "Punto Único de Fallo",
+        "feedback": "Se requiere al menos 2 instancias EC2 detrás de un balanceador ALB para asegurar alta disponibilidad."
+      },
+      {
+        "code": "PUBLIC_DATABASE_EXPOSURE",
+        "type": "PublicDatabaseExposure",
+        "penalty": 30,
+        "category": "Security",
+        "title": "Base de Datos Expuesta",
+        "feedback": "La base de datos RDS debe estar en una subred privada."
+      }
+    ],
+    "passingScoreThreshold": 70
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "title": "Métricas y Logs con CloudWatch",
+  "description": "¿Cómo sabes cuándo tu servidor web se queda sin memoria o tu base de datos sufre picos de latencia? Centraliza la telemetría conectando tus recursos a Amazon CloudWatch.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 1200,
+  "orderIndex": 1,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_CLOUDWATCH",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Cómo supervisas el estado de salud, utilización de CPU y logs de tus aplicaciones distribuidas en tiempo real?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Adopta observabilidad continua recolectando métricas y registros centralizados en un único panel de monitoreo y alarmas.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Utiliza Amazon CloudWatch para recopilar métricas de instancias EC2 y de bases de datos relacionales Amazon RDS.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca EC2, RDS y CloudWatch en el canvas. Conecta EC2 a RDS (DATABASE_QUERY) y conecta tanto EC2 como RDS a CloudWatch mediante MONITORING_METRICS.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_EC2",
+      "AWS_RDS",
+      "AWS_CLOUDWATCH"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_EC2": 1,
+      "AWS_RDS": 1,
+      "AWS_CLOUDWATCH": 1
+    },
+    "maxInstances": {
+      "AWS_EC2": 1,
+      "AWS_RDS": 1,
+      "AWS_CLOUDWATCH": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE_QUERY",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "La instancia EC2 debe comunicarse con la base de datos RDS."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_CLOUDWATCH",
+        "connectionType": "MONITORING_METRICS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "La instancia EC2 debe emitir métricas a Amazon CloudWatch."
+      },
+      {
+        "fromServiceCode": "AWS_RDS",
+        "toServiceCode": "AWS_CLOUDWATCH",
+        "connectionType": "MONITORING_METRICS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "La base de datos RDS debe emitir métricas a Amazon CloudWatch."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "title": "Computación y Almacenamiento",
+  "description": "¿Dónde vive mi aplicación? Domina los tipos de cómputo en servidores virtuales y la diferenciación esencial entre almacenamiento en bloque (EBS), archivos compartidos (EFS) y almacenamiento de objetos (S3).",
+  "orderIndex": 1
+}

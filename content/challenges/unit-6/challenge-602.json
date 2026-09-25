@@ -1,0 +1,83 @@
+{
+  "title": "API Serverless con API Gateway + Lambda",
+  "description": "¿Cómo permites que clientes web y móviles invoquen funciones backend mediante peticiones HTTP REST seguras? Diseña una solución donde Amazon API Gateway reciba solicitudes de los clientes y desencadene la ejecución de funciones en AWS Lambda.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 2,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_APIGATEWAY",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Las funciones Lambda no tienen una URL pública directa por defecto. ¿Qué servicio actúa como puerta de enlace HTTP administrada para tus APIs?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Un API Gateway traduce las solicitudes HTTP entrantes (GET, POST) en eventos JSON que alimentan las funciones de cómputo serverless.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Amazon API Gateway gestiona la autenticación, limitación de tasa (rate limiting) y enrutamiento hacia funciones AWS Lambda.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Arrastra un Amazon API Gateway y una función AWS Lambda al canvas, y conéctalos mediante un enlace de invocación HTTP_API.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_APIGATEWAY",
+      "AWS_LAMBDA"
+    ],
+    "forbiddenServices": [
+      "AWS_EC2"
+    ],
+    "minInstances": {
+      "AWS_APIGATEWAY": 1,
+      "AWS_LAMBDA": 1
+    },
+    "maxInstances": {
+      "AWS_APIGATEWAY": 1,
+      "AWS_LAMBDA": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_APIGATEWAY",
+        "toServiceCode": "AWS_LAMBDA",
+        "connectionType": "INVOCATION",
+        "isBidirectional": true,
+        "penaltyIfMissing": 30,
+        "description": "Amazon API Gateway debe estar conectado a AWS Lambda para invocar la función al recibir peticiones HTTP."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

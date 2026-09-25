@@ -1,0 +1,109 @@
+{
+  "title": "Controlar el tráfico con Security Groups",
+  "description": "¿Cómo proteges tu servidor web a nivel de capa de transporte frente a accesos no autorizados? Configura un Security Group como firewall virtual stateful que autorice el tráfico web entrante en los puertos 80 y 443.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 4,
+  "allowedServices": [
+    {
+      "serviceCode": "NET_VPC",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SUBNET",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SECURITY_GROUP",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Tener una subred no es suficiente para la seguridad perimetral de un servidor. ¿Qué mecanismo filtra el tráfico a nivel de instancia?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Los Security Groups operan como firewalls virtuales a nivel de interfaz de red, controlando el tráfico entrante y saliente mediante reglas explícitas de puerto y protocolo.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Asocia un Security Group (NET_SECURITY_GROUP) a tu instancia EC2 autorizando el tráfico web HTTP (puerto 80) o HTTPS (puerto 443).",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca una instancia EC2 dentro de una subred en la VPC y asóciale un Security Group configurado con reglas de acceso en el puerto 80.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "NET_VPC",
+      "NET_SUBNET",
+      "AWS_EC2",
+      "NET_SECURITY_GROUP"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 1,
+      "AWS_EC2": 1,
+      "NET_SECURITY_GROUP": 1
+    },
+    "maxInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 2,
+      "AWS_EC2": 1,
+      "NET_SECURITY_GROUP": 2
+    },
+    "placementRules": [
+      {
+        "serviceCode": "NET_SUBNET",
+        "requiredContainerCode": "NET_VPC",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 20,
+        "description": "La subred debe estar contenida dentro de la VPC."
+      },
+      {
+        "serviceCode": "AWS_EC2",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 20,
+        "description": "La instancia EC2 debe estar alojada dentro de una subred."
+      }
+    ],
+    "securityGroupRules": [
+      {
+        "targetServiceCode": "AWS_EC2",
+        "allowedSourceServiceCode": null,
+        "protocol": "TCP",
+        "port": 80,
+        "penaltyIfViolated": 25,
+        "description": "El Security Group asociado a la instancia EC2 debe permitir tráfico HTTP entrante en el puerto 80."
+      }
+    ],
+    "requiredConnections": [],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

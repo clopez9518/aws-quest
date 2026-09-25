@@ -1,0 +1,81 @@
+{
+  "title": "DNS con Route 53",
+  "description": "¿Cómo traducen tus usuarios nombres de dominio amigables (ej. miempresa.com) hacia la dirección IP de tu balanceador de carga? Diseña una solución con Amazon Route 53 que enrute el tráfico DNS global hacia un Application Load Balancer.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 1,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_ROUTE53",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Los usuarios finales no memorizan direcciones IP complejas o nombres de host técnicos. ¿Qué servicio administra zonas alojadas de DNS y resolución de nombres en la nube?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Un servicio DNS global autoritativo resuelve nombres de dominio mediante registros de tipo Alias (A/AAAA) apuntando a recursos de AWS sin costo de consulta adicional.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Utiliza Amazon Route 53 configurado para resolver consultas de DNS apuntando a un Application Load Balancer (AWS_ALB).",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Arrastra Amazon Route 53 y un Application Load Balancer al canvas, y conéctalos mediante un enlace de tipo DNS_ROUTING.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_ROUTE53",
+      "AWS_ALB"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_ROUTE53": 1,
+      "AWS_ALB": 1
+    },
+    "maxInstances": {
+      "AWS_ROUTE53": 1,
+      "AWS_ALB": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ROUTE53",
+        "toServiceCode": "AWS_ALB",
+        "connectionType": "DNS_ROUTING",
+        "isBidirectional": true,
+        "penaltyIfMissing": 30,
+        "description": "Amazon Route 53 debe resolver y enrutar el tráfico DNS hacia el Application Load Balancer."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

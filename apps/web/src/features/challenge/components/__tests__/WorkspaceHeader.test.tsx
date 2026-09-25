@@ -1,0 +1,87 @@
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+import { WorkspaceHeader } from '../WorkspaceHeader';
+
+describe('WorkspaceHeader Component', () => {
+  const defaultProps = {
+    title: 'Arquitectura Web Resiliente',
+    difficulty: 'intermediate' as const,
+    mode: 'builder' as const,
+    baseXP: 150,
+    totalHints: 3,
+    unlockedHintsCount: 1,
+    nodeCount: 2,
+    onOpenHints: vi.fn(),
+    onSubmit: vi.fn()
+  };
+
+  it('debe renderizar el título del desafío y los badges de dificultad y XP', () => {
+    render(
+      <MemoryRouter>
+        <WorkspaceHeader {...defaultProps} />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Arquitectura Web Resiliente')).toBeInTheDocument();
+    expect(screen.getByText('Intermedio')).toBeInTheDocument();
+    expect(screen.getByText('+150 XP')).toBeInTheDocument();
+    expect(screen.getByText('Builder')).toBeInTheDocument();
+  });
+
+  it('debe mostrar el contador de pistas y responder al clic', () => {
+    render(
+      <MemoryRouter>
+        <WorkspaceHeader {...defaultProps} />
+      </MemoryRouter>
+    );
+
+    const hintsButton = screen.getByRole('button', { name: /abrir pistas/i });
+    expect(hintsButton).toBeInTheDocument();
+    expect(screen.getByText('1/3')).toBeInTheDocument();
+
+    fireEvent.click(hintsButton);
+    expect(defaultProps.onOpenHints).toHaveBeenCalledTimes(1);
+  });
+
+  it('debe habilitar el botón "Enviar solución" cuando hay nodos en el canvas', () => {
+    render(
+      <MemoryRouter>
+        <WorkspaceHeader {...defaultProps} nodeCount={3} />
+      </MemoryRouter>
+    );
+
+    const submitButton = screen.getByRole('button', { name: /enviar solución/i });
+    expect(submitButton).not.toBeDisabled();
+    expect(screen.getByText(/Enviar solución \(3\)/)).toBeInTheDocument();
+
+    fireEvent.click(submitButton);
+    expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  it('debe deshabilitar el botón "Enviar solución" cuando el canvas no contiene nodos', () => {
+    render(
+      <MemoryRouter>
+        <WorkspaceHeader {...defaultProps} nodeCount={0} />
+      </MemoryRouter>
+    );
+
+    const submitButton = screen.getByRole('button', { name: /enviar solución/i });
+    expect(submitButton).toBeDisabled();
+  });
+
+  it('debe renderizar el botón de Briefing y responder al clic', () => {
+    const onOpenBriefing = vi.fn();
+    render(
+      <MemoryRouter>
+        <WorkspaceHeader {...defaultProps} onOpenBriefing={onOpenBriefing} />
+      </MemoryRouter>
+    );
+
+    const briefingButton = screen.getByRole('button', { name: /abrir briefing/i });
+    expect(briefingButton).toBeInTheDocument();
+
+    fireEvent.click(briefingButton);
+    expect(onOpenBriefing).toHaveBeenCalledTimes(1);
+  });
+});

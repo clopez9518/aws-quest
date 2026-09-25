@@ -1,0 +1,5 @@
+{
+  "title": "Arquitecturas Serverless",
+  "description": "¿Siempre necesito administrar servidores? Aprende a construir aplicaciones escalables sin aprovisionar infraestructura, ejecutando código bajo demanda con AWS Lambda, exponiendo APIs REST con API Gateway y persistiendo datos en Amazon DynamoDB.",
+  "orderIndex": 6
+}

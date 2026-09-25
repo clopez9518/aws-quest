@@ -1,0 +1,163 @@
+{
+  "title": "Auditoría Well-Architected integral",
+  "description": "Audita y corrige una infraestructura empresarial con múltiples vulnerabilidades: falta de protección perimetral WAF, SPOF de cómputo, base de datos expuesta sin Multi-AZ y ausencia de monitoreo con CloudWatch.",
+  "difficulty": "Hard",
+  "mode": "AUDIT",
+  "baseXP": 200,
+  "requiredXP": 2850,
+  "orderIndex": 5,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_WAF",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 3,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_CLOUDWATCH",
+      "maxInstances": 1,
+      "isDistractor": false
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "alb-1",
+        "serviceCode": "AWS_ALB",
+        "label": "ALB Inseguro",
+        "config": {}
+      },
+      {
+        "id": "ec2-1",
+        "serviceCode": "AWS_EC2",
+        "label": "EC2 Instancia Única",
+        "config": {}
+      },
+      {
+        "id": "rds-1",
+        "serviceCode": "AWS_RDS",
+        "label": "RDS Single-AZ Sin Monitoreo",
+        "config": { "isMultiAz": false }
+      }
+    ],
+    "connections": [
+      {
+        "id": "e1",
+        "fromComponentId": "alb-1",
+        "toComponentId": "ec2-1",
+        "connectionType": "HTTP_TRAFFIC"
+      },
+      {
+        "id": "e2",
+        "fromComponentId": "ec2-1",
+        "toComponentId": "rds-1",
+        "connectionType": "DATABASE_QUERY"
+      }
+    ]
+  },
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Qué pilares del Well-Architected Framework (Seguridad, Fiabilidad, Excelencia Operativa) están siendo violados en esta topología actual?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Protege el balanceador con un firewall WAF, agrega redundancia al backend EC2, asegura RDS con Multi-AZ y envía telemetría a CloudWatch.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Asocia AWS WAF al ALB, duplica las instancias EC2 conectadas al ALB, y conecta EC2 y RDS a CloudWatch para monitoreo.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Agrega WAF conectado al ALB (SECURITY_ATTACHMENT), asegura al menos 2 EC2 conectadas al ALB y a RDS, y conecta EC2 y RDS a CloudWatch (MONITORING_METRICS).",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_WAF",
+      "AWS_ALB",
+      "AWS_EC2",
+      "AWS_RDS",
+      "AWS_CLOUDWATCH"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_WAF": 1,
+      "AWS_ALB": 1,
+      "AWS_EC2": 2,
+      "AWS_RDS": 1,
+      "AWS_CLOUDWATCH": 1
+    },
+    "maxInstances": {
+      "AWS_WAF": 1,
+      "AWS_ALB": 1,
+      "AWS_EC2": 3,
+      "AWS_RDS": 1,
+      "AWS_CLOUDWATCH": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_WAF",
+        "toServiceCode": "AWS_ALB",
+        "connectionType": "SECURITY_ATTACHMENT",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "AWS WAF debe proteger el Application Load Balancer."
+      },
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El ALB debe balancear el tráfico hacia las instancias EC2 redundantes."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE_QUERY",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Las instancias EC2 deben conectarse a la base de datos RDS."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_CLOUDWATCH",
+        "connectionType": "MONITORING_METRICS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Las instancias EC2 deben enviar métricas a Amazon CloudWatch."
+      },
+      {
+        "fromServiceCode": "AWS_RDS",
+        "toServiceCode": "AWS_CLOUDWATCH",
+        "connectionType": "MONITORING_METRICS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "La base de datos RDS debe emitir métricas a Amazon CloudWatch."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

@@ -1,0 +1,322 @@
+[
+  {
+    "code": "AWS_EC2",
+    "name": "Amazon EC2",
+    "category": "Compute",
+    "kind": "ManagedService",
+    "placementScope": "SubnetRequired",
+    "shortDescription": "Instancias de cómputo virtual escalables y seguras en la nube.",
+    "iconUrl": "/icons/aws/ec2.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_LAMBDA",
+    "name": "AWS Lambda",
+    "category": "Compute",
+    "kind": "ManagedService",
+    "placementScope": "VpcOptional",
+    "shortDescription": "Cómputo serverless basado en eventos sin aprovisionar servidores.",
+    "iconUrl": "/icons/aws/lambda.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_RDS",
+    "name": "Amazon RDS",
+    "category": "Database",
+    "kind": "ManagedService",
+    "placementScope": "SubnetRequired",
+    "shortDescription": "Servicio administrado de base de datos relacional con soporte Multi-AZ.",
+    "iconUrl": "/icons/aws/rds.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_DYNAMODB",
+    "name": "Amazon DynamoDB",
+    "category": "Database",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Base de datos NoSQL de clave-valor totalmente administrada y de alto rendimiento.",
+    "iconUrl": "/icons/aws/dynamodb.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_ELASTICACHE",
+    "name": "Amazon ElastiCache",
+    "category": "Database",
+    "kind": "ManagedService",
+    "placementScope": "SubnetRequired",
+    "shortDescription": "Almacenamiento en caché en memoria totalmente administrado (Redis / Memcached).",
+    "iconUrl": "/icons/aws/elasticache.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_S3",
+    "name": "Amazon S3",
+    "category": "Storage",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Almacenamiento de objetos altamente escalable, duradero y seguro.",
+    "iconUrl": "/icons/aws/s3.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_ALB",
+    "name": "Application Load Balancer",
+    "category": "Networking",
+    "kind": "ManagedService",
+    "placementScope": "SubnetRequired",
+    "shortDescription": "Distribución elástica de tráfico HTTP/HTTPS a nivel de capa de aplicación (L7).",
+    "iconUrl": "/icons/aws/alb.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_APIGATEWAY",
+    "name": "Amazon API Gateway",
+    "category": "Networking",
+    "kind": "ManagedService",
+    "placementScope": "VpcOptional",
+    "shortDescription": "Servicio administrado para crear, publicar y proteger APIs REST y WebSocket.",
+    "iconUrl": "/icons/aws/apigateway.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_ROUTE53",
+    "name": "Amazon Route 53",
+    "category": "Networking",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Servicio DNS web escalable y de alta disponibilidad.",
+    "iconUrl": "/icons/aws/route53.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_CLOUDFRONT",
+    "name": "Amazon CloudFront",
+    "category": "CdnEdge",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Red de entrega de contenido (CDN) global de baja latencia.",
+    "iconUrl": "/icons/aws/cloudfront.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_SQS",
+    "name": "Amazon SQS",
+    "category": "MessagingIntegration",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Colas de mensajes completamente administradas para desacoplar microservicios.",
+    "iconUrl": "/icons/aws/sqs.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_SNS",
+    "name": "Amazon SNS",
+    "category": "MessagingIntegration",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Servicio de mensajería pub/sub de alta disponibilidad.",
+    "iconUrl": "/icons/aws/sns.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_EVENTBRIDGE",
+    "name": "Amazon EventBridge",
+    "category": "MessagingIntegration",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Bus de eventos serverless para arquitecturas dirigidas por eventos.",
+    "iconUrl": "/icons/aws/eventbridge.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_IAM",
+    "name": "AWS IAM",
+    "category": "Security",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Administración segura de identidades y accesos a recursos de AWS.",
+    "iconUrl": "/icons/aws/iam.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_WAF",
+    "name": "AWS WAF",
+    "category": "Security",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Firewall de aplicaciones web para proteger contra exploits comunes.",
+    "iconUrl": "/icons/aws/waf.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_KMS",
+    "name": "AWS KMS",
+    "category": "Security",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Administración de claves criptográficas y cifrado de datos.",
+    "iconUrl": "/icons/aws/kms.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_CLOUDWATCH",
+    "name": "Amazon CloudWatch",
+    "category": "Monitoring",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Monitoreo y observabilidad de recursos y aplicaciones de AWS.",
+    "iconUrl": "/icons/aws/cloudwatch.svg",
+    "isActive": true
+  },
+  {
+    "code": "NET_VPC",
+    "name": "Virtual Private Cloud (VPC)",
+    "category": "NetworkVpc",
+    "kind": "NetworkInfrastructure",
+    "placementScope": "VpcRoot",
+    "shortDescription": "Red virtual lógicamente aislada para aprovisionar recursos en AWS.",
+    "iconUrl": "/icons/aws/vpc.svg",
+    "isActive": true
+  },
+  {
+    "code": "NET_SUBNET",
+    "name": "Subnet",
+    "category": "NetworkVpc",
+    "kind": "NetworkInfrastructure",
+    "placementScope": "VpcAttached",
+    "shortDescription": "Rango de direcciones IP dentro de una VPC para segmentar cargas de trabajo.",
+    "iconUrl": "/icons/aws/subnet.svg",
+    "isActive": true
+  },
+  {
+    "code": "NET_IGW",
+    "name": "Internet Gateway",
+    "category": "NetworkVpc",
+    "kind": "NetworkInfrastructure",
+    "placementScope": "VpcAttached",
+    "shortDescription": "Puerta de enlace escalable que permite comunicación entre VPC e Internet.",
+    "iconUrl": "/icons/aws/igw.svg",
+    "isActive": true
+  },
+  {
+    "code": "NET_NAT_GATEWAY",
+    "name": "NAT Gateway",
+    "category": "NetworkVpc",
+    "kind": "NetworkInfrastructure",
+    "placementScope": "SubnetRequired",
+    "shortDescription": "Permite salida a Internet para instancias privadas sin exponerlas a tráfico entrante.",
+    "iconUrl": "/icons/aws/natgw.svg",
+    "isActive": true
+  },
+  {
+    "code": "NET_ROUTE_TABLE",
+    "name": "Route Table",
+    "category": "NetworkVpc",
+    "kind": "NetworkInfrastructure",
+    "placementScope": "VpcAttached",
+    "shortDescription": "Conjunto de reglas que determinan hacia dónde se dirige el tráfico de red de subredes.",
+    "iconUrl": "/icons/aws/routetable.svg",
+    "isActive": true
+  },
+  {
+    "code": "NET_SECURITY_GROUP",
+    "name": "Security Group",
+    "category": "Security",
+    "kind": "SecurityPolicy",
+    "placementScope": "VpcAttached",
+    "shortDescription": "Firewall virtual que controla el tráfico entrante y saliente a nivel de instancia.",
+    "iconUrl": "/icons/aws/securitygroup.svg",
+    "isActive": true
+  },
+  {
+    "code": "NET_NACL",
+    "name": "Network ACL",
+    "category": "Security",
+    "kind": "SecurityPolicy",
+    "placementScope": "VpcAttached",
+    "shortDescription": "Capa opcional de seguridad que actúa como firewall a nivel de subred.",
+    "iconUrl": "/icons/aws/nacl.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_EBS",
+    "name": "Amazon Elastic Block Store (EBS)",
+    "category": "Storage",
+    "kind": "ManagedService",
+    "placementScope": "SubnetRequired",
+    "shortDescription": "Volúmenes de almacenamiento en bloque persistente y de alto rendimiento para Amazon EC2.",
+    "iconUrl": "/icons/aws/ebs.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_EFS",
+    "name": "Amazon Elastic File System (EFS)",
+    "category": "Storage",
+    "kind": "ManagedService",
+    "placementScope": "VpcAttached",
+    "shortDescription": "Sistema de archivos elástico y compartido para múltiples instancias en red dentro de la VPC.",
+    "iconUrl": "/icons/aws/efs.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_SECRETS_MANAGER",
+    "name": "AWS Secrets Manager",
+    "category": "Security",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Administración, rotación y cifrado seguro de credenciales y secretos de bases de datos.",
+    "iconUrl": "/icons/aws/secretsmanager.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_ECS",
+    "name": "Amazon Elastic Container Service (ECS)",
+    "category": "Compute",
+    "kind": "ManagedService",
+    "placementScope": "SubnetRequired",
+    "shortDescription": "Servicio de orquestación de contenedores Docker altamente escalable y seguro.",
+    "iconUrl": "/icons/aws/ecs.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_ECR",
+    "name": "Amazon Elastic Container Registry (ECR)",
+    "category": "Compute",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Registro administrado de imágenes de contenedores Docker seguro y de alta disponibilidad.",
+    "iconUrl": "/icons/aws/ecr.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_FARGATE",
+    "name": "AWS Fargate",
+    "category": "Compute",
+    "kind": "ManagedService",
+    "placementScope": "SubnetRequired",
+    "shortDescription": "Motor de cómputo serverless para ejecutar contenedores sin aprovisionar servidores EC2.",
+    "iconUrl": "/icons/aws/fargate.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_CLOUDTRAIL",
+    "name": "AWS CloudTrail",
+    "category": "Monitoring",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Auditoría, registro continuo y gobernanza de llamadas a la API y eventos en la cuenta de AWS.",
+    "iconUrl": "/icons/aws/cloudtrail.svg",
+    "isActive": true
+  },
+  {
+    "code": "AWS_CLOUDFORMATION",
+    "name": "AWS CloudFormation",
+    "category": "Management",
+    "kind": "ManagedService",
+    "placementScope": "RegionalGlobal",
+    "shortDescription": "Modelado y aprovisionamiento automatizado de infraestructura como código (IaC).",
+    "iconUrl": "/icons/aws/cloudformation.svg",
+    "isActive": true
+  }
+]

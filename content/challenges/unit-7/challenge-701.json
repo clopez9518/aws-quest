@@ -1,0 +1,89 @@
+{
+  "title": "Colas con SQS",
+  "description": "¿Qué ocurre si llegan 10,000 pedidos por minuto pero tus servidores de procesamiento solo pueden procesar 1,000 por minuto? Diseña una arquitectura con Amazon SQS que amortigüe el tráfico en una cola y permita procesar pedidos de forma asíncrona sin perder ninguna transacción.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 1,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_SQS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Si el servidor que recibe los pedidos intenta procesarlos de inmediato de forma síncrona, se quedará sin memoria y rechazará solicitudes de clientes.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Una cola de mensajes actúa como un búfer temporal altamente duradero que desacopla la velocidad de ingesta de la velocidad de procesamiento.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Utiliza Amazon SQS (Simple Queue Service) para recibir mensajes del servidor frontend y entregarlos a los servidores de procesamiento de fondo (workers).",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca 2 instancias EC2 (Productor y Consumidor) y 1 cola Amazon SQS en el canvas. Conecta el productor a la cola y la cola al consumidor.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_EC2",
+      "AWS_SQS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_EC2": 2,
+      "AWS_SQS": 1
+    },
+    "maxInstances": {
+      "AWS_EC2": 2,
+      "AWS_SQS": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_SQS",
+        "connectionType": "MESSAGE_QUEUE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "La instancia productora debe enviar mensajes a la cola Amazon SQS."
+      },
+      {
+        "fromServiceCode": "AWS_SQS",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "MESSAGE_QUEUE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "La cola Amazon SQS debe entregar mensajes a la instancia procesadora (worker)."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

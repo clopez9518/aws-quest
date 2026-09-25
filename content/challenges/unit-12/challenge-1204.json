@@ -1,0 +1,132 @@
+{
+  "title": "Diseña una arquitectura Serverless global",
+  "description": "Modela un sistema global basado en microservicios serverless y eventos desacoplados, con distribución estática por CloudFront, API Gateway, orquestación por EventBridge y persistencia en DynamoDB.",
+  "difficulty": "Hard",
+  "mode": "BUILDER",
+  "baseXP": 200,
+  "requiredXP": 2650,
+  "orderIndex": 4,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_CLOUDFRONT",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_APIGATEWAY",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EVENTBRIDGE",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_DYNAMODB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Cómo construyes una aplicación moderna donde el frontend esté en el Edge y el backend sea completamente event-driven sin servidores que mantener?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Combina una SPA en S3 con CDN CloudFront y una API serverless respaldada por Lambda, EventBridge y DynamoDB.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Conecta CloudFront a S3, API Gateway a Lambda, Lambda emitiendo eventos a EventBridge y Lambda persistiendo en DynamoDB.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Une CloudFront con S3 (CDN_ORIGIN), API Gateway con Lambda (LAMBDA_PROXY), Lambda con EventBridge (EVENT_NOTIFICATION) y Lambda con DynamoDB (DATABASE_QUERY).",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_CLOUDFRONT",
+      "AWS_S3",
+      "AWS_APIGATEWAY",
+      "AWS_LAMBDA",
+      "AWS_EVENTBRIDGE",
+      "AWS_DYNAMODB"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_CLOUDFRONT": 1,
+      "AWS_S3": 1,
+      "AWS_APIGATEWAY": 1,
+      "AWS_LAMBDA": 1,
+      "AWS_EVENTBRIDGE": 1,
+      "AWS_DYNAMODB": 1
+    },
+    "maxInstances": {
+      "AWS_CLOUDFRONT": 1,
+      "AWS_S3": 1,
+      "AWS_APIGATEWAY": 1,
+      "AWS_LAMBDA": 1,
+      "AWS_EVENTBRIDGE": 1,
+      "AWS_DYNAMODB": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_CLOUDFRONT",
+        "toServiceCode": "AWS_S3",
+        "connectionType": "CDN_ORIGIN",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "CloudFront debe servir los activos del frontend alojados en el bucket S3."
+      },
+      {
+        "fromServiceCode": "AWS_APIGATEWAY",
+        "toServiceCode": "AWS_LAMBDA",
+        "connectionType": "LAMBDA_PROXY",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "API Gateway debe invocar la función AWS Lambda mediante proxy."
+      },
+      {
+        "fromServiceCode": "AWS_LAMBDA",
+        "toServiceCode": "AWS_EVENTBRIDGE",
+        "connectionType": "EVENT_NOTIFICATION",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "AWS Lambda debe publicar eventos en el bus Amazon EventBridge."
+      },
+      {
+        "fromServiceCode": "AWS_LAMBDA",
+        "toServiceCode": "AWS_DYNAMODB",
+        "connectionType": "DATABASE_QUERY",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "AWS Lambda debe persistir y consultar datos en Amazon DynamoDB."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

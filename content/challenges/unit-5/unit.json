@@ -1,0 +1,5 @@
+{
+  "title": "Disponibilidad y Escalabilidad",
+  "description": "¿Qué pasa cuando algo falla o llega tráfico masivo? Aprende a eliminar puntos únicos de fallo (SPOF), balancear carga en capa de aplicación con Application Load Balancers (ALB), configurar auto-escalado horizontal, garantizar alta disponibilidad con bases de datos Multi-AZ y responder a incidentes críticos de producción como SRE.",
+  "orderIndex": 5
+}

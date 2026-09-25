@@ -1,0 +1,83 @@
+{
+  "title": "Persistencia Serverless con DynamoDB",
+  "description": "¿Cómo almacenas datos transaccionales con latencia de un solo dígito de milisegundo sin administrar clústeres de base de datos? Diseña una solución que conecte una función AWS Lambda con una tabla totalmente administrada en Amazon DynamoDB.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_DYNAMODB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Las bases de datos relacionales tradicionales requieren gestionar grupos de conexiones (connection pools) que pueden saturarse con miles de funciones serverless simultáneas. ¿Qué tipo de base de datos escala de forma nativa con llamadas API?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Una base de datos de clave-valor y documentos NoSQL totalmente administrada se integra de forma transparente con cómputo sin servidor mediante el SDK de AWS.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Amazon DynamoDB ofrece almacenamiento NoSQL sin servidor con escalabilidad automática y baja latencia constante a cualquier escala.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Arrastra una función AWS Lambda y una tabla Amazon DynamoDB al canvas, y conéctalas con un enlace de tipo DATABASE para habilitar lecturas y escrituras.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_LAMBDA",
+      "AWS_DYNAMODB"
+    ],
+    "forbiddenServices": [
+      "AWS_RDS"
+    ],
+    "minInstances": {
+      "AWS_LAMBDA": 1,
+      "AWS_DYNAMODB": 1
+    },
+    "maxInstances": {
+      "AWS_LAMBDA": 1,
+      "AWS_DYNAMODB": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_LAMBDA",
+        "toServiceCode": "AWS_DYNAMODB",
+        "connectionType": "DATABASE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 30,
+        "description": "La función AWS Lambda debe tener conexión hacia Amazon DynamoDB para persistir y consultar datos."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

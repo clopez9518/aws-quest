@@ -1,0 +1,650 @@
+{
+  "info": {
+    "_postman_id": "c7241852-6428-48b2-8422-9214cd918342",
+    "name": "AWS Architecture Quest - Hints & Evaluation Module",
+    "description": "Colección de pruebas para el Módulo de Pistas y Evaluación (Fase 3 - Hito 3.4).\n\nCubre todos los endpoints de pistas, motor de evaluación en memoria, cálculo de XP anti-farmeo y auditoría de intentos según specs/hints-evaluation-module-spec.md y docs/08-api-spec.md:\n- POST /api/v1/auth/guest (Setup de sesión)\n- GET /api/v1/units (Obtención de ID de desafío dinámico)\n- POST /api/v1/challenges/{id}/hints/unlock (Desbloqueo secuencial de pistas y acumulación de penalización)\n- POST /api/v1/challenges/{id}/evaluate (Evaluación de arquitectura, cálculo de XP y actualización de nivel)\n- GET /api/v1/challenges/{id}/attempts (Historial de envíos del usuario)\n- Escenarios de error (401 Unauthorized, 404 Challenge Not Found, 400 Bad Request / All hints unlocked)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7234",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "challengeId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Setup de Autenticación y Desafío",
+      "item": [
+        {
+          "name": "POST Obtener Sesión para Pruebas (/auth/guest)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Guarda token JWT de sesión\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.accessToken).to.be.a(\"string\");",
+                  "    ",
+                  "    pm.collectionVariables.set(\"authToken\", json.data.accessToken);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/guest",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "guest"
+              ]
+            },
+            "description": "Obtiene un token JWT de sesión de invitado para autenticar las peticiones de pistas y evaluación."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Obtener Primer Desafío del Catálogo (/units)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Extrae y almacena un challengeId válido\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.be.an(\"array\").that.is.not.empty;",
+                  "    ",
+                  "    var firstUnit = json.data[0];",
+                  "    pm.expect(firstUnit.challenges).to.be.an(\"array\").that.is.not.empty;",
+                  "    ",
+                  "    var firstChallenge = firstUnit.challenges[0];",
+                  "    pm.collectionVariables.set(\"challengeId\", firstChallenge.id);",
+                  "    console.log(\"ChallengeId seleccionado para pruebas:\", firstChallenge.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/units",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "units"
+              ]
+            },
+            "description": "Consulta el catálogo para extraer dinámicamente un challengeId existente para las pruebas posteriores."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01 - Desbloqueo Secuencial de Pistas (/hints/unlock)",
+      "item": [
+        {
+          "name": "POST Desbloquear Siguiente Pista - Pista 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida estructura de respuesta de pista desbloqueada\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.have.property(\"unlockedHint\");",
+                  "    pm.expect(json.data.unlockedHint).to.have.property(\"orderIndex\", 1);",
+                  "    pm.expect(json.data.unlockedHint.text).to.be.a(\"string\").that.is.not.empty;",
+                  "    pm.expect(json.data.unlockedHint.penaltyApplied).to.be.a(\"number\");",
+                  "    pm.expect(json.data.totalHintsUnlocked).to.eql(1);",
+                  "    pm.expect(json.data.totalPenaltyAccumulated).to.be.at.least(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/{{challengeId}}/hints/unlock",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "{{challengeId}}",
+                "hints",
+                "unlock"
+              ]
+            },
+            "description": "Desbloquea la primera pista del desafío seleccionado y aplica la penalización acumulativa."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Desbloquear Siguiente Pista - Pista 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK o 400 si no hay más pistas\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    var json = pm.response.json();",
+                  "    pm.test(\"Valida avance al orden 2 de pistas\", function () {",
+                  "        pm.expect(json.data.totalHintsUnlocked).to.eql(2);",
+                  "        pm.expect(json.data.unlockedHint.orderIndex).to.eql(2);",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/{{challengeId}}/hints/unlock",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "{{challengeId}}",
+                "hints",
+                "unlock"
+              ]
+            },
+            "description": "Desbloquea la segunda pista secuencialmente si está disponible."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Evaluación de Arquitectura (/evaluate)",
+      "item": [
+        {
+          "name": "POST Evaluar Arquitectura Satisfactoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida estructura y métricas de evaluación\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.have.property(\"score\");",
+                  "    pm.expect(json.data).to.have.property(\"passed\");",
+                  "    pm.expect(json.data).to.have.property(\"isNewHighScore\");",
+                  "    pm.expect(json.data).to.have.property(\"earnedXP\");",
+                  "    pm.expect(json.data).to.have.property(\"currentUserXP\");",
+                  "    pm.expect(json.data).to.have.property(\"currentUserLevel\");",
+                  "    pm.expect(json.data).to.have.property(\"feedback\");",
+                  "    pm.expect(json.data).to.have.property(\"attemptId\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"graph\": {\n    \"components\": [\n      {\n        \"id\": \"s3-main\",\n        \"serviceCode\": \"AWS_S3\",\n        \"label\": \"Bucket Estáticos\",\n        \"config\": {\n          \"isPublic\": false,\n          \"encryptionEnabled\": true\n        }\n      },\n      {\n        \"id\": \"cf-dist\",\n        \"serviceCode\": \"AWS_CLOUDFRONT\",\n        \"label\": \"CDN CloudFront\",\n        \"config\": {}\n      }\n    ],\n    \"connections\": [\n      {\n        \"fromComponentId\": \"cf-dist\",\n        \"toComponentId\": \"s3-main\",\n        \"connectionType\": \"DATA\"\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/{{challengeId}}/evaluate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "{{challengeId}}",
+                "evaluate"
+              ]
+            },
+            "description": "Envía una solución arquitectónica para evaluación en el motor de reglas."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Re-evaluar Misma Solución (Anti-Refarming XP = 0)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Verifica que no se otorga XP redundante (Anti-Refarming)\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.earnedXP).to.eql(0);",
+                  "    pm.expect(json.data.isNewHighScore).to.be.false;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"graph\": {\n    \"components\": [\n      {\n        \"id\": \"s3-main\",\n        \"serviceCode\": \"AWS_S3\",\n        \"label\": \"Bucket Estáticos\",\n        \"config\": {\n          \"isPublic\": false,\n          \"encryptionEnabled\": true\n        }\n      },\n      {\n        \"id\": \"cf-dist\",\n        \"serviceCode\": \"AWS_CLOUDFRONT\",\n        \"label\": \"CDN CloudFront\",\n        \"config\": {}\n      }\n    ],\n    \"connections\": [\n      {\n        \"fromComponentId\": \"cf-dist\",\n        \"toComponentId\": \"s3-main\",\n        \"connectionType\": \"DATA\"\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/{{challengeId}}/evaluate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "{{challengeId}}",
+                "evaluate"
+              ]
+            },
+            "description": "Verifica que el re-envío de la misma solución con igual o menor puntaje resulte en earnedXP: 0."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Historial de Envíos e Intentos (/attempts)",
+      "item": [
+        {
+          "name": "GET Obtener Historial de Intentos del Desafío (/attempts)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida lista de intentos históricos del usuario\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.be.an(\"array\").that.is.not.empty;",
+                  "    ",
+                  "    var firstAttempt = json.data[0];",
+                  "    pm.expect(firstAttempt).to.have.property(\"id\");",
+                  "    pm.expect(firstAttempt).to.have.property(\"score\");",
+                  "    pm.expect(firstAttempt).to.have.property(\"passed\");",
+                  "    pm.expect(firstAttempt).to.have.property(\"hintsUsed\");",
+                  "    pm.expect(firstAttempt).to.have.property(\"createdAt\");",
+                  "    pm.expect(firstAttempt).to.have.property(\"graphSubmitted\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/{{challengeId}}/attempts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "{{challengeId}}",
+                "attempts"
+              ]
+            },
+            "description": "Obtiene la lista cronológica de intentos y auditoría para el desafío seleccionado."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - Escenarios de Error y Casos Borde",
+      "item": [
+        {
+          "name": "POST Evaluar sin Token (401 Unauthorized)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"graph\": {\n    \"components\": []\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/{{challengeId}}/evaluate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "{{challengeId}}",
+                "evaluate"
+              ]
+            },
+            "description": "Intenta evaluar una arquitectura sin proveer encabezado de autorización Bearer."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Desbloquear Pista de Desafío Inexistente (404 Not Found)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 404 Not Found\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Retorna código de error CHALLENGE_NOT_FOUND\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"CHALLENGE_NOT_FOUND\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/00000000-0000-0000-0000-000000000000/hints/unlock",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "00000000-0000-0000-0000-000000000000",
+                "hints",
+                "unlock"
+              ]
+            },
+            "description": "Intenta desbloquear una pista con un identificador de desafío que no existe en base de datos."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Evaluar Arquitectura Vacía (400 Bad Request / INVALID_GRAPH_PAYLOAD)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Retorna código de error INVALID_GRAPH_PAYLOAD\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"INVALID_GRAPH_PAYLOAD\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"graph\": {\n    \"components\": [],\n    \"connections\": []\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/challenges/{{challengeId}}/evaluate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "challenges",
+                "{{challengeId}}",
+                "evaluate"
+              ]
+            },
+            "description": "Intenta evaluar una arquitectura con grafo vacío, disparando la validación del motor de evaluación."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

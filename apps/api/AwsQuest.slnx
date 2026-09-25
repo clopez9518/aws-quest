@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AwsQuest.Api/AwsQuest.Api.csproj" />
+    <Project Path="src/AwsQuest.Application/AwsQuest.Application.csproj" />
+    <Project Path="src/AwsQuest.Domain/AwsQuest.Domain.csproj" />
+    <Project Path="src/AwsQuest.Infrastructure/AwsQuest.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AwsQuest.IntegrationTests/AwsQuest.IntegrationTests.csproj" />
+    <Project Path="tests/AwsQuest.UnitTests/AwsQuest.UnitTests.csproj" />
+  </Folder>
+</Solution>

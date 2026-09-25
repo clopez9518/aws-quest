@@ -1,0 +1,105 @@
+{
+  "title": "Base de Datos Multi-AZ de Alta Disponibilidad",
+  "description": "¿Qué ocurre con tus datos si se corta la energía en una zona de disponibilidad entera de AWS? Diseña una capa de persistencia resiliente configurando Amazon RDS con despliegue Multi-AZ y réplica síncrona en standby.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 4,
+  "allowedServices": [
+    {
+      "serviceCode": "NET_VPC",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SUBNET",
+      "maxInstances": 4,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_DYNAMODB",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Una base de datos de una sola instancia en una única zona de disponibilidad (Single-AZ) es vulnerable a interrupciones a nivel de centro de datos.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "El despliegue Multi-AZ aprovisiona y mantiene automáticamente una réplica en espera (standby) sincronizada en una zona de disponibilidad diferente.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Configura la propiedad Multi-AZ en el nodo de base de datos Amazon RDS y asegúrate de que resida en subredes privadas.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca una VPC con subredes privadas, ubica el nodo Amazon RDS y habilita la casilla 'Multi-AZ' en el panel de configuración del componente.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "NET_VPC",
+      "NET_SUBNET",
+      "AWS_RDS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 2,
+      "AWS_RDS": 1
+    },
+    "maxInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 4,
+      "AWS_RDS": 1
+    },
+    "placementRules": [
+      {
+        "serviceCode": "NET_SUBNET",
+        "requiredContainerCode": "NET_VPC",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 20,
+        "description": "Las subredes deben estar dentro de la VPC."
+      },
+      {
+        "serviceCode": "AWS_RDS",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Private",
+        "penaltyIfViolated": 30,
+        "description": "La base de datos RDS debe ubicarse en una subred privada."
+      }
+    ],
+    "antiPatterns": [
+      {
+        "code": "MISSING_MULTI_AZ",
+        "type": "MissingMultiAz",
+        "penalty": 30,
+        "category": "Reliability",
+        "title": "Base de Datos sin Redundancia Multi-AZ",
+        "feedback": "La base de datos RDS no tiene activada la opción Multi-AZ. Habilita Multi-AZ en la configuración del componente para proteger los datos frente a fallos zonales."
+      }
+    ],
+    "requiredConnections": [],
+    "forbiddenConnections": [],
+    "passingScoreThreshold": 70
+  }
+}

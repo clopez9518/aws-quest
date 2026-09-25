@@ -1,0 +1,64 @@
+{
+  "title": "Aplicación Web Básica",
+  "description": "¿Cómo permito que los usuarios accedan a mi servidor web? Configura una instancia virtual Amazon EC2 lista para responder peticiones HTTP entrantes en el puerto 80 estándar.",
+  "difficulty": "Easy",
+  "mode": "BUILDER",
+  "baseXP": 100,
+  "requiredXP": 100,
+  "orderIndex": 1,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Para que un cliente web pueda solicitar una página, el servidor debe estar escuchando y accesible a través de la red.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Una aplicación web mínima requiere cómputo dedicado donde se ejecute el servidor web (como Nginx o Apache).",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Utiliza una instancia Amazon EC2 para ejecutar tu servidor web y asegurar la recepción de peticiones.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca una instancia Amazon EC2 en el canvas para satisfacer el requerimiento de cómputo del servidor web.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_EC2"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_EC2": 1
+    },
+    "maxInstances": {
+      "AWS_EC2": 1
+    },
+    "requiredConnections": [],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "title": "Incidente Serverless: Monolito Ineficiente",
+  "description": "REPORTE DE INCIDENTE: La nueva aplicación móvil está experimentando tiempos de respuesta excesivos (timeouts de más de 10 segundos) y errores recurrentes de agotamiento de conexiones. La función Lambda actual está intentando servir tanto contenido estático como lógica pesada con llamadas síncronas bloqueantes. Diagnostica y rediseña la arquitectura hacia un patrón serverless desacoplado y optimizado.",
+  "difficulty": "Intermediate",
+  "mode": "REPAIR",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 5,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_APIGATEWAY",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_DYNAMODB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Servir archivos estáticos directamente desde una función de cómputo efímero satura la memoria y eleva los costos de ejecución.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Los archivos estáticos deben desacoplarse en un bucket S3, mientras que las peticiones a la API deben entrar por API Gateway hacia Lambda.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Reemplaza el almacenamiento estático interno por Amazon S3 y utiliza Amazon DynamoDB como almacén de persistencia NoSQL escalable.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Reestructura el canvas: S3 conectado a API Gateway, API Gateway invocando Lambda, y Lambda persistiendo en DynamoDB.",
+      "penaltyPoints": 20
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "lambda-monolith",
+        "serviceCode": "AWS_LAMBDA",
+        "containerId": null,
+        "config": {}
+      }
+    ],
+    "connections": []
+  },
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_S3",
+      "AWS_APIGATEWAY",
+      "AWS_LAMBDA",
+      "AWS_DYNAMODB"
+    ],
+    "forbiddenServices": [
+      "AWS_EC2"
+    ],
+    "minInstances": {
+      "AWS_S3": 1,
+      "AWS_APIGATEWAY": 1,
+      "AWS_LAMBDA": 1,
+      "AWS_DYNAMODB": 1
+    },
+    "maxInstances": {
+      "AWS_S3": 1,
+      "AWS_APIGATEWAY": 1,
+      "AWS_LAMBDA": 1,
+      "AWS_DYNAMODB": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_S3",
+        "toServiceCode": "AWS_APIGATEWAY",
+        "connectionType": "HTTP_API",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El frontend en S3 debe consumir la API REST a través de Amazon API Gateway."
+      },
+      {
+        "fromServiceCode": "AWS_APIGATEWAY",
+        "toServiceCode": "AWS_LAMBDA",
+        "connectionType": "INVOCATION",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "Amazon API Gateway debe invocar la función AWS Lambda."
+      },
+      {
+        "fromServiceCode": "AWS_LAMBDA",
+        "toServiceCode": "AWS_DYNAMODB",
+        "connectionType": "DATABASE",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "La función AWS Lambda debe guardar y consultar registros en DynamoDB."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

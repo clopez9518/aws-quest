@@ -1,0 +1,667 @@
+{
+  "info": {
+    "_postman_id": "a931448b-8451-477a-a63e-63f8bbbe85c8",
+    "name": "AWS Architecture Quest - Auth & Guest Module",
+    "description": "Colección de pruebas para el Módulo de Autenticación y Modo Invitado (Fase 3 - Hito 3.2).\n\nCubre todos los endpoints de autenticación según la especificación técnica specs/auth-guest-module-spec.md y docs/08-api-spec.md:\n- POST /api/v1/auth/guest (Sesión anónima)\n- POST /api/v1/auth/register (Registro directo y migración in-place de invitado RN-13/CU-08)\n- POST /api/v1/auth/login (Login exitoso y casos de error)\n- GET /api/v1/auth/me (Perfil de usuario registrado, invitado y acceso no autorizado)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "guestToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userEmail",
+      "value": "carlos.lopez@awsquest.dev",
+      "type": "string"
+    },
+    {
+      "key": "userPassword",
+      "value": "PasswordSeguro123!",
+      "type": "string"
+    },
+    {
+      "key": "userName",
+      "value": "Carlos López",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Modo Invitado (Guest Session)",
+      "item": [
+        {
+          "name": "POST Crear Sesión de Invitado (/auth/guest)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Envelope exitoso ApiResponse\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.be.an(\"object\");",
+                  "    pm.expect(json.data.accessToken).to.be.a(\"string\");",
+                  "    pm.expect(json.data.user).to.be.an(\"object\");",
+                  "    pm.expect(json.data.user.isGuest).to.be.true;",
+                  "    pm.expect(json.data.user.email).to.be.null;",
+                  "    pm.expect(json.data.user.name).to.match(/^Invitado_/);",
+                  "    ",
+                  "    // Guardar token en variable de colección",
+                  "    pm.collectionVariables.set(\"guestToken\", json.data.accessToken);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/guest",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "guest"
+              ]
+            },
+            "description": "Genera una sesión anónima persistente en base de datos (IsGuest = true) y emite un JWT con vigencia de 30 días."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Perfil con Sesión Invitado (/auth/me)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida perfil de usuario invitado\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.isGuest).to.be.true;",
+                  "    pm.expect(json.data.email).to.be.null;",
+                  "    pm.expect(json.data.totalXP).to.be.a(\"number\");",
+                  "    pm.expect(json.data.completedChallengesCount).to.be.a(\"number\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{guestToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Obtiene el perfil del usuario invitado autenticado a través del header Authorization: Bearer <Guest_JWT>."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Registro y Migración de Cuenta (Register)",
+      "item": [
+        {
+          "name": "POST Registro con Migración de Progreso (RN-13 / CU-08)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Generar email único para evitar colisiones en ejecuciones sucesivas",
+                  "const timestamp = Date.now();",
+                  "pm.collectionVariables.set(\"userEmail\", `carlos_${timestamp}@awsquest.dev`);"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida respuesta y migración de cuenta\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.accessToken).to.be.a(\"string\");",
+                  "    pm.expect(json.data.user.email).to.eql(pm.collectionVariables.get(\"userEmail\"));",
+                  "    pm.expect(json.data.user.isGuest).to.be.false;",
+                  "    pm.expect(json.data.migratedProgressCount).to.be.a(\"number\");",
+                  "    ",
+                  "    // Actualizar token permanente",
+                  "    pm.collectionVariables.set(\"authToken\", json.data.accessToken);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{guestToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{userPassword}}\",\n  \"name\": \"{{userName}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Registra una cuenta formal enviando el Bearer token de invitado. Ejecuta la promoción in-place migrando todo el historial y récords de progreso acumulados."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Registro Directo (Sin Invitado Previo)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const timestamp = Date.now();",
+                  "pm.collectionVariables.set(\"directUserEmail\", `direct_${timestamp}@awsquest.dev`);"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida registro directo sin migración\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.user.isGuest).to.be.false;",
+                  "    pm.expect(json.data.migratedProgressCount).to.eql(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{directUserEmail}}\",\n  \"password\": \"PasswordSeguro123!\",\n  \"name\": \"Usuario Directo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Registra una cuenta permanente directamente sin header de sesión previa de invitado."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Registro con Email Duplicado (Error 409 Conflict)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 409 Conflict\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "",
+                  "pm.test(\"Envelope de error EMAIL_ALREADY_EXISTS\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"EMAIL_ALREADY_EXISTS\");",
+                  "    pm.expect(json.error.message).to.contain(\"ya se encuentra registrado\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"PasswordSeguro123!\",\n  \"name\": \"Carlos Duplicado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Verifica que el intento de registrar un email ya existente retorne 409 Conflict con el envelope canónico ApiErrorResponse."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Registro con Contraseña Débil (Error 400 Bad Request)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Envelope de error VALIDATION_ERROR\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"VALIDATION_ERROR\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test_weak@awsquest.dev\",\n  \"password\": \"123\",\n  \"name\": \"Test Weak\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Verifica que FluentValidation rechace una contraseña que no cumple los criterios de longitud y complejidad."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Inicio de Sesión (Login)",
+      "item": [
+        {
+          "name": "POST Iniciar Sesión Exitoso (/auth/login)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida login y renueva authToken\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.accessToken).to.be.a(\"string\");",
+                  "    pm.expect(json.data.user.email).to.eql(pm.collectionVariables.get(\"userEmail\"));",
+                  "    pm.expect(json.data.user.isGuest).to.be.false;",
+                  "    ",
+                  "    pm.collectionVariables.set(\"authToken\", json.data.accessToken);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{userPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Inicia sesión con las credenciales registradas y obtiene un nuevo JWT de 24 horas."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Login con Contraseña Incorrecta (Error 401 Unauthorized)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test(\"Envelope de error INVALID_CREDENTIALS\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"INVALID_CREDENTIALS\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"ContrasenaErronea999!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Verifica que el hash BCrypt rechace contraseñas incorrectas devolviendo 401 Unauthorized."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Login con Email Inexistente (Error 401 Unauthorized)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test(\"Envelope de error INVALID_CREDENTIALS\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"INVALID_CREDENTIALS\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cuenta_inexistente_999@awsquest.dev\",\n  \"password\": \"PasswordSeguro123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Verifica que emails no registrados devuelvan 401 Unauthorized sin revelar la existencia previa del correo."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - Perfil de Usuario (/auth/me)",
+      "item": [
+        {
+          "name": "GET Perfil Usuario Registrado (/auth/me con Auth Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valida datos completos del perfil permanente\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.email).to.eql(pm.collectionVariables.get(\"userEmail\"));",
+                  "    pm.expect(json.data.isGuest).to.be.false;",
+                  "    pm.expect(json.data.totalXP).to.be.a(\"number\");",
+                  "    pm.expect(json.data.level).to.be.a(\"number\");",
+                  "    pm.expect(json.data.completedChallengesCount).to.be.a(\"number\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Consulta el perfil del usuario autenticado permanente utilizando el JWT emitido en Login o Register."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Perfil sin Token (Error 401 Unauthorized)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test(\"Envelope de error UNAUTHORIZED\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.error.code).to.eql(\"UNAUTHORIZED\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Verifica que el middleware JwtBearer capture eventos OnChallenge y responda con ApiErrorResponse y código UNAUTHORIZED."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

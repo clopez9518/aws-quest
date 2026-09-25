@@ -1,0 +1,91 @@
+{
+  "title": "Gestión de Secretos y Credenciales",
+  "description": "¿Cómo evitas almacenar contraseñas de base de datos en texto plano dentro del código o servidores? Diseña una arquitectura donde la instancia Amazon EC2 recupere dinámicamente las credenciales de la base de datos Amazon RDS mediante AWS Secrets Manager con rotación automática.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 4,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_SECRETS_MANAGER",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Escribir credenciales en archivos de configuración locales dentro del servidor expone la base de datos a filtraciones accidentales de código. ¿Qué servicio centraliza y cifra secretos?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Un almacén seguro de secretos permite a las aplicaciones recuperar credenciales mediante llamadas a la API en tiempo de ejecución, permitiendo rotación sin caídas de servicio.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "AWS Secrets Manager ayuda a proteger los secretos necesarios para acceder a tus aplicaciones, servicios y recursos de TI.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca EC2, RDS y AWS Secrets Manager en el canvas. Conecta EC2 a Secrets Manager para la obtención segura de credenciales y a RDS para la persistencia de datos.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_EC2",
+      "AWS_RDS",
+      "AWS_SECRETS_MANAGER"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_EC2": 1,
+      "AWS_RDS": 1,
+      "AWS_SECRETS_MANAGER": 1
+    },
+    "maxInstances": {
+      "AWS_EC2": 1,
+      "AWS_RDS": 1,
+      "AWS_SECRETS_MANAGER": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_SECRETS_MANAGER",
+        "connectionType": "SECRETS_ACCESS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "La instancia EC2 debe conectarse a AWS Secrets Manager para obtener las credenciales de base de datos."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE",
+        "penaltyIfMissing": 25,
+        "description": "La instancia EC2 debe mantener la conexión hacia la base de datos RDS."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

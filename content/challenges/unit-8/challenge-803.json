@@ -1,0 +1,92 @@
+{
+  "title": "Protección Web con WAF",
+  "description": "¿Cómo proteges tu aplicación web contra ataques de inyección SQL, Cross-Site Scripting (XSS) y bots maliciosos que saturan los servidores? Diseña una infraestructura donde AWS WAF filtre el tráfico en Capa 7 antes de que llegue a tu Application Load Balancer.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_WAF",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Los Security Groups operan en capa 4 (IPs y puertos), por lo que no pueden inspeccionar el contenido HTTP malicioso (como código SQL en formularios).",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Un Web Application Firewall (WAF) inspecciona las peticiones HTTP/HTTPS entrantes y bloquea patrones de ataque comunes y exceso de tasa de peticiones.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Asocia AWS WAF directamente a tu Application Load Balancer o a tu distribución de CloudFront.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca AWS WAF, ALB y una instancia EC2 en el canvas. Conecta AWS WAF al ALB con un enlace de seguridad, y el ALB a la instancia EC2 con HTTP_TRAFFIC.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_WAF",
+      "AWS_ALB",
+      "AWS_EC2"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_WAF": 1,
+      "AWS_ALB": 1,
+      "AWS_EC2": 1
+    },
+    "maxInstances": {
+      "AWS_WAF": 1,
+      "AWS_ALB": 1,
+      "AWS_EC2": 2
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_WAF",
+        "toServiceCode": "AWS_ALB",
+        "connectionType": "SECURITY_ATTACHMENT",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "AWS WAF debe estar asociado al Application Load Balancer para inspeccionar el tráfico entrante."
+      },
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "El Application Load Balancer debe distribuir tráfico hacia la instancia EC2."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

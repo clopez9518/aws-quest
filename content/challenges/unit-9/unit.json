@@ -1,0 +1,5 @@
+{
+  "title": "Contenedores y Computación Moderna",
+  "description": "¿Qué alternativas existen a EC2 para desplegar microservicios empaquetados? Aprende a almacenar imágenes Docker en Amazon ECR, orquestar tareas con Amazon ECS y ejecutar contenedores sin servidores con AWS Fargate.",
+  "orderIndex": 9
+}

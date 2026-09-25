@@ -1,0 +1,155 @@
+{
+  "title": "Diseña una plataforma E-Commerce",
+  "description": "Diseña la infraestructura completa de alta disponibilidad para una tienda virtual con frontend en CDN/S3, balanceo de carga L7, flota de cómputo redundante y persistencia relacional Multi-AZ.",
+  "difficulty": "Hard",
+  "mode": "BUILDER",
+  "baseXP": 200,
+  "requiredXP": 2050,
+  "orderIndex": 1,
+  "briefing": {
+    "keyConcept": "Arquitectura Empresarial de 3 Capas de Alta Disponibilidad",
+    "businessScenario": "Una tienda virtual global experimenta caídas durante campañas de venta masiva (CyberDay) y lentitud en la carga de catálogos para clientes internacionales.",
+    "learningObjective": "Integrar distribución de borde (CloudFront), almacenamiento de activos (S3), balanceo de carga L7 (ALB), cómputo redundante (EC2) y persistencia relacional con conmutación por error automática (RDS Multi-AZ).",
+    "keyTakeaways": [
+      "CloudFront reduce la latencia global cacheando estáticos en Edge Locations.",
+      "ALB distribuye el tráfico HTTP/HTTPS entre múltiples zonas de disponibilidad.",
+      "RDS Multi-AZ provee replicación síncrona en standby ante fallos en el centro de datos primario."
+    ],
+    "estimatedReadTime": "45 seg"
+  },
+  "reflectionPrompt": {
+    "question": "En esta arquitectura empresarial de 3 capas, ¿cuál es el beneficio crítico de combinar Amazon CloudFront en el borde junto a un Application Load Balancer (ALB) y RDS Multi-AZ?",
+    "pillar": "PerformanceEfficiency",
+    "bonusXP": 25,
+    "options": [
+      {
+        "id": "opt-a",
+        "text": "CloudFront absorbe y cachea peticiones estáticas en el borde más cercano a los clientes globales, aliviando la carga del backend dinámico en EC2/ALB, mientras que RDS Multi-AZ asegura conmutación por error automática sin pérdida de datos.",
+        "isCorrect": true,
+        "explanation": "¡Correcto! Esta combinación optimiza el rendimiento global en el borde mediante caching (CDN) y maximiza la fiabilidad con balanceo L7 y replicación de base de datos Multi-AZ."
+      },
+      {
+        "id": "opt-b",
+        "text": "Permite que la base de datos RDS se replique automáticamente de forma gratuita en todos los navegadores web de los clientes.",
+        "isCorrect": false,
+        "explanation": "Incorrecto. RDS permanece en subredes privadas seguras dentro de la nube de AWS; jamás se expone ni replica a navegadores cliente."
+      },
+      {
+        "id": "opt-c",
+        "text": "Convierte todas las consultas SQL pesadas en llamadas estáticas HTML sin requerir base de datos.",
+        "isCorrect": false,
+        "explanation": "Incorrecto. CloudFront cachea respuestas HTTP/objetos estáticos; las transacciones dinámicas siguen procesándose en backend y base de datos relacional."
+      }
+    ]
+  },
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_CLOUDFRONT",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 3,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Cómo combinas distribución perimetral para activos estáticos y alta disponibilidad con tolerancia a fallos en el backend y la base de datos?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Aplica una arquitectura de 3 capas con CDN multiorigen, balanceador L7 hacia instancias redundantes y base de datos relacional Multi-AZ.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Configura CloudFront apuntando a S3 para assets y al ALB para APIs; el ALB balancea entre al menos 2 EC2, las cuales consultan RDS Multi-AZ.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Conecta CloudFront a S3 y ALB con CDN_ORIGIN, ALB a 2 EC2 con HTTP_TRAFFIC, y las EC2 a RDS con DATABASE_QUERY.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_CLOUDFRONT",
+      "AWS_S3",
+      "AWS_ALB",
+      "AWS_EC2",
+      "AWS_RDS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_CLOUDFRONT": 1,
+      "AWS_S3": 1,
+      "AWS_ALB": 1,
+      "AWS_EC2": 2,
+      "AWS_RDS": 1
+    },
+    "maxInstances": {
+      "AWS_CLOUDFRONT": 1,
+      "AWS_S3": 1,
+      "AWS_ALB": 1,
+      "AWS_EC2": 3,
+      "AWS_RDS": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_CLOUDFRONT",
+        "toServiceCode": "AWS_S3",
+        "connectionType": "CDN_ORIGIN",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "CloudFront debe servir los recursos estáticos desde Amazon S3."
+      },
+      {
+        "fromServiceCode": "AWS_CLOUDFRONT",
+        "toServiceCode": "AWS_ALB",
+        "connectionType": "CDN_ORIGIN",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "CloudFront debe enviar tráfico dinámico al Application Load Balancer."
+      },
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El ALB debe balancear el tráfico hacia las instancias EC2."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE_QUERY",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Las instancias EC2 deben conectarse con la base de datos RDS."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

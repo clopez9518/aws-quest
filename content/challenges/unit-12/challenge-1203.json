@@ -1,0 +1,137 @@
+{
+  "title": "Modernización de aplicación monolítica",
+  "description": "Migra y moderniza una aplicación monolítica legacy en una sola máquina virtual hacia una arquitectura desacoplada basada en contenedores Fargate, almacenamiento de objetos S3 y base de datos relacional.",
+  "difficulty": "Hard",
+  "mode": "REPAIR",
+  "baseXP": 200,
+  "requiredXP": 2450,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ECS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_FARGATE",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "ec2-monolith",
+        "serviceCode": "AWS_EC2",
+        "label": "Servidor Monolítico Todo-en-Uno",
+        "config": {}
+      }
+    ],
+    "connections": []
+  },
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Por qué un monolito en un único servidor con base de datos local y archivos en disco no escala ni ofrece alta disponibilidad?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Aplica el patrón de desacoplamiento de capas: cómputo en contenedores elásticos sin servidor, base de datos administrada y almacenamiento de archivos externo.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Sustituye la máquina virtual por un clúster Amazon ECS con AWS Fargate detrás de un ALB, conectando ECS a Amazon RDS y Amazon S3.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Remueve EC2, agrega ALB, ECS, Fargate, RDS y S3. Conecta ALB a ECS (HTTP_TRAFFIC), ECS a Fargate (GENERIC), ECS a RDS (DATABASE_QUERY) y ECS a S3 (OBJECT_ACCESS).",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_ALB",
+      "AWS_ECS",
+      "AWS_FARGATE",
+      "AWS_RDS",
+      "AWS_S3"
+    ],
+    "forbiddenServices": [
+      "AWS_EC2"
+    ],
+    "minInstances": {
+      "AWS_ALB": 1,
+      "AWS_ECS": 1,
+      "AWS_FARGATE": 1,
+      "AWS_RDS": 1,
+      "AWS_S3": 1
+    },
+    "maxInstances": {
+      "AWS_ALB": 1,
+      "AWS_ECS": 1,
+      "AWS_FARGATE": 1,
+      "AWS_RDS": 1,
+      "AWS_S3": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_ECS",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El balanceador ALB debe distribuir tráfico hacia las tareas de Amazon ECS."
+      },
+      {
+        "fromServiceCode": "AWS_ECS",
+        "toServiceCode": "AWS_FARGATE",
+        "connectionType": "GENERIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El clúster ECS debe ejecutarse con AWS Fargate."
+      },
+      {
+        "fromServiceCode": "AWS_ECS",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE_QUERY",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Las tareas ECS deben conectarse a la base de datos relacional Amazon RDS."
+      },
+      {
+        "fromServiceCode": "AWS_ECS",
+        "toServiceCode": "AWS_S3",
+        "connectionType": "OBJECT_ACCESS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Las tareas ECS deben almacenar y recuperar objetos estáticos desde Amazon S3."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "title": "Incidente crítico de producción: Caída total",
+  "description": "Un fallo en cascada ha derribado la plataforma principal debido a sobrecarga en un único servidor y deadlocks en la base de datos. Diagnostica y rediseña la topología implementando balanceo, redundancia y monitoreo con CloudWatch.",
+  "difficulty": "Hard",
+  "mode": "DIAGNOSE",
+  "baseXP": 200,
+  "requiredXP": 3050,
+  "orderIndex": 6,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 3,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_CLOUDWATCH",
+      "maxInstances": 1,
+      "isDistractor": false
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "ec2-crashed",
+        "serviceCode": "AWS_EC2",
+        "label": "EC2 Saturada y Caída",
+        "config": {}
+      },
+      {
+        "id": "rds-overloaded",
+        "serviceCode": "AWS_RDS",
+        "label": "RDS Bloqueada",
+        "config": { "isMultiAz": false }
+      }
+    ],
+    "connections": [
+      {
+        "id": "e1",
+        "fromComponentId": "ec2-crashed",
+        "toComponentId": "rds-overloaded",
+        "connectionType": "DATABASE_QUERY"
+      }
+    ]
+  },
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Qué provocó que la caída de un único servidor dejara inoperativo todo el sistema sin posibilidad de failover automático?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Soluciona la crisis introduciendo un balanceador L7 con distribución entre instancias redundantes y activando telemetría continua con CloudWatch.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Agrega un ALB, asegura al menos 2 EC2 conectadas al ALB y a RDS, y conecta CloudWatch a EC2 y RDS.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Conecta ALB a ambas EC2 con HTTP_TRAFFIC, conecta ambas EC2 a RDS con DATABASE_QUERY, y conecta EC2 y RDS a CloudWatch con MONITORING_METRICS.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_ALB",
+      "AWS_EC2",
+      "AWS_RDS",
+      "AWS_CLOUDWATCH"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_ALB": 1,
+      "AWS_EC2": 2,
+      "AWS_RDS": 1,
+      "AWS_CLOUDWATCH": 1
+    },
+    "maxInstances": {
+      "AWS_ALB": 1,
+      "AWS_EC2": 3,
+      "AWS_RDS": 1,
+      "AWS_CLOUDWATCH": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El balanceador ALB debe distribuir tráfico entre las instancias EC2."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_RDS",
+        "connectionType": "DATABASE_QUERY",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Las instancias EC2 deben conectarse a la base de datos RDS."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_CLOUDWATCH",
+        "connectionType": "MONITORING_METRICS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Las instancias EC2 deben enviar métricas a Amazon CloudWatch."
+      },
+      {
+        "fromServiceCode": "AWS_RDS",
+        "toServiceCode": "AWS_CLOUDWATCH",
+        "connectionType": "MONITORING_METRICS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "La base de datos RDS debe emitir telemetría a Amazon CloudWatch."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "title": "Base de Datos con RDS",
+  "description": "¿Dónde almacenas datos estructurados transaccionales de forma administrada? Diseña una infraestructura con Amazon RDS alojada de forma aislada y segura en una subred privada dentro de tu VPC.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 1,
+  "allowedServices": [
+    {
+      "serviceCode": "NET_VPC",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SUBNET",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_DYNAMODB",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Administrar manualmente un motor relacional en un servidor EC2 requiere gestionar parches del OS, backups y réplicas. ¿Qué servicio administra el motor por ti?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Amazon RDS gestiona automáticamente el aprovisionamiento de hardware, backups y mantenimiento de bases de datos relacionales como PostgreSQL o MySQL.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Las bases de datos nunca deben exponerse directamente a Internet; siempre deben residir en subredes privadas.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Coloca una VPC con una subred privada (tier = Private) y ubica la base de datos Amazon RDS en su interior.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "NET_VPC",
+      "NET_SUBNET",
+      "AWS_RDS"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 1,
+      "AWS_RDS": 1
+    },
+    "maxInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 2,
+      "AWS_RDS": 1
+    },
+    "placementRules": [
+      {
+        "serviceCode": "NET_SUBNET",
+        "requiredContainerCode": "NET_VPC",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 20,
+        "description": "La subred debe estar dentro de la VPC."
+      },
+      {
+        "serviceCode": "AWS_RDS",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": "Private",
+        "penaltyIfViolated": 30,
+        "description": "La base de datos relacional RDS debe residir estrictamente en una subred privada."
+      }
+    ],
+    "antiPatterns": [
+      {
+        "code": "PUBLIC_DATABASE_EXPOSURE",
+        "type": "PublicDatabaseExposure",
+        "penalty": 30,
+        "category": "Security",
+        "title": "Base de Datos Expuesta",
+        "feedback": "La base de datos RDS no debe colocarse en una subred pública ni exponerse directamente a Internet."
+      }
+    ],
+    "requiredConnections": [],
+    "forbiddenConnections": [],
+    "passingScoreThreshold": 70
+  }
+}

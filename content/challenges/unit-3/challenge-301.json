@@ -1,0 +1,117 @@
+{
+  "title": "Crear una VPC y sus Subnets",
+  "description": "¿Cómo aislar lógicamente tus recursos cloud? Construye una Virtual Private Cloud (VPC) y subdivídela en al menos dos subredes para sentar las bases de una red organizada y segmentada.",
+  "difficulty": "Easy",
+  "mode": "BUILDER",
+  "baseXP": 120,
+  "requiredXP": 100,
+  "orderIndex": 1,
+  "briefing": {
+    "keyConcept": "Segmentación de Red Lógica (Virtual Private Cloud)",
+    "businessScenario": "Una empresa financiera requiere aislar completamente sus servidores y datos de otros clientes de la nube y segmentar su arquitectura en capas lógicas.",
+    "learningObjective": "Aprender a definir un espacio de direcciones IP privado (VPC) y subdividirlo en subredes (Subnets).",
+    "keyTakeaways": [
+      "Una VPC es tu red virtual privada dedicada dentro de la infraestructura global de AWS.",
+      "Las subredes dividen el rango CIDR de la VPC en segmentos para diferentes capas (Web, App, DB).",
+      "La segmentación es el primer pilar de la seguridad en profundidad (Defense in Depth)."
+    ],
+    "estimatedReadTime": "30 seg"
+  },
+  "reflectionPrompt": {
+    "question": "¿Cuál es la principal ventaja de seguridad arquitectónica al subdividir una VPC en múltiples subredes?",
+    "pillar": "Security",
+    "bonusXP": 25,
+    "options": [
+      {
+        "id": "opt-a",
+        "text": "Permite aplicar el principio de defensa en profundidad, separando recursos públicos (expuestos a Internet) de recursos privados (como bases de datos) mediante tablas de ruteo y NACLs independientes.",
+        "isCorrect": true,
+        "explanation": "¡Correcto! La segmentación de subredes permite aislar capas lógicas (DMZ, backend y persistencia) con políticas de enrutamiento y seguridad estrictas."
+      },
+      {
+        "id": "opt-b",
+        "text": "Multiplica automáticamente la velocidad de la CPU de las instancias EC2 dentro de cada subred.",
+        "isCorrect": false,
+        "explanation": "Incorrecto. Las subredes son constructos lógicos de red IPv4/IPv6; no modifican la capacidad de cómputo del hardware subyacente."
+      },
+      {
+        "id": "opt-c",
+        "text": "Elimina la necesidad de definir contraseñas o roles IAM para acceder a los servidores.",
+        "isCorrect": false,
+        "explanation": "Incorrecto. La red es solo una capa de seguridad perimetral; la autenticación y autorización IAM siguen siendo indispensables."
+      }
+    ]
+  },
+  "allowedServices": [
+    {
+      "serviceCode": "NET_VPC",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SUBNET",
+      "maxInstances": 4,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Todos los recursos que necesitan comunicarse en una red privada requieren un espacio de direcciones IP delimitado y seguro.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Una red virtual aislada actúa como tu propio centro de datos en AWS, y las subredes permiten segmentar el espacio de red por niveles de seguridad o zonas de disponibilidad.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Utiliza Amazon VPC (NET_VPC) como contenedor raíz de red y agrega subredes (NET_SUBNET) en su interior.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Arrastra una VPC al canvas y luego coloca al menos dos subredes dentro del contenedor de la VPC.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "NET_VPC",
+      "NET_SUBNET"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 2
+    },
+    "maxInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 4
+    },
+    "placementRules": [
+      {
+        "serviceCode": "NET_SUBNET",
+        "requiredContainerCode": "NET_VPC",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 30,
+        "description": "Las subredes deben estar obligatoriamente contenidas dentro de una VPC."
+      }
+    ],
+    "requiredConnections": [],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

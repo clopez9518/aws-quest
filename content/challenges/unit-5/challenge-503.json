@@ -1,0 +1,108 @@
+{
+  "title": "Escalabilidad automática con Auto Scaling",
+  "description": "¿Cómo respondes a eventos masivos como el Black Friday sin pagar por capacidad ociosa durante la noche? Diseña una arquitectura con balanceador de carga ALB y capacidad de cómputo elástica distribuida en múltiples subredes.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "NET_VPC",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "NET_SUBNET",
+      "maxInstances": 4,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 4,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Tener un número fijo de instancias provoca que el sistema se sature en picos de demanda o desperdicie dinero cuando la demanda es baja.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Un Auto Scaling Group agrega o elimina instancias automáticamente según métricas de CPU o tráfico de red, manteniendo la flota balanceada en múltiples subredes.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Combina un Application Load Balancer (AWS_ALB) con instancias EC2 distribuidas a través de múltiples subredes dentro de la VPC.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Crea una VPC con al menos dos subredes, ubica instancias EC2 en cada subred y conecta el balanceador ALB a cada una de ellas con enlaces HTTP_TRAFFIC.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "NET_VPC",
+      "NET_SUBNET",
+      "AWS_ALB",
+      "AWS_EC2"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 2,
+      "AWS_ALB": 1,
+      "AWS_EC2": 2
+    },
+    "maxInstances": {
+      "NET_VPC": 1,
+      "NET_SUBNET": 4,
+      "AWS_ALB": 1,
+      "AWS_EC2": 4
+    },
+    "placementRules": [
+      {
+        "serviceCode": "NET_SUBNET",
+        "requiredContainerCode": "NET_VPC",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 20,
+        "description": "Las subredes deben residir dentro de la VPC."
+      },
+      {
+        "serviceCode": "AWS_EC2",
+        "requiredContainerCode": "NET_SUBNET",
+        "requiredSubnetTier": null,
+        "penaltyIfViolated": 20,
+        "description": "Las instancias elásticas de cómputo deben estar dentro de las subredes de la VPC."
+      }
+    ],
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 25,
+        "description": "El balanceador ALB debe distribuir tráfico hacia las instancias EC2."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

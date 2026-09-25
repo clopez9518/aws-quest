@@ -1,0 +1,100 @@
+{
+  "title": "Eliminar un Single Point of Failure",
+  "description": "Una revisión de fiabilidad de la plataforma ha encendido las alarmas: todo el tráfico de los usuarios depende de un único servidor web monolítico. Si la máquina virtual falla o entra en mantenimiento, el servicio sufrirá una caída total. Rediseña la arquitectura agregando redundancia horizontal y balanceo de carga para eliminar el punto único de fallo.",
+  "difficulty": "Intermediate",
+  "mode": "REPAIR",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 1,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 3,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Tener una sola máquina ejecutando tu aplicación significa que cualquier falla de hardware o reinicio provocará una interrupción de servicio para todos los usuarios.",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "El principio de diseño de alta disponibilidad exige al menos dos instancias ejecutándose en paralelo detrás de un distribuidor de tráfico.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Utiliza un Application Load Balancer (AWS_ALB) para recibir las solicitudes entrantes y repartirlas entre dos o más instancias EC2.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Agrega una segunda instancia EC2 y un balanceador de carga AWS_ALB al canvas, y conecta el balanceador a ambas instancias EC2 con enlaces HTTP_TRAFFIC.",
+      "penaltyPoints": 20
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "ec2-monolith-1",
+        "serviceCode": "AWS_EC2",
+        "containerId": null,
+        "config": {}
+      }
+    ],
+    "connections": []
+  },
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_ALB",
+      "AWS_EC2"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_ALB": 1,
+      "AWS_EC2": 2
+    },
+    "maxInstances": {
+      "AWS_ALB": 1,
+      "AWS_EC2": 4
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 30,
+        "description": "El balanceador de carga AWS_ALB debe distribuir tráfico hacia las instancias Amazon EC2."
+      }
+    ],
+    "antiPatterns": [
+      {
+        "code": "SINGLE_POINT_OF_FAILURE",
+        "type": "SinglePointOfFailure",
+        "penalty": 40,
+        "category": "Reliability",
+        "title": "Punto Único de Fallo (SPOF)",
+        "feedback": "La aplicación solo tiene un servidor de cómputo sin redundancia. Agrega una segunda instancia EC2 y un balanceador ALB."
+      }
+    ],
+    "passingScoreThreshold": 70
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "title": "Detectar una falla mediante métricas",
+  "description": "Una flota de servidores web detrás de un balanceador de carga ha comenzado a responder con errores HTTP 502 Bad Gateway de forma intermitente. Agrega Amazon CloudWatch para diagnosticar la salud de las instancias y conectar la telemetría operativa.",
+  "difficulty": "Intermediate",
+  "mode": "DIAGNOSE",
+  "baseXP": 150,
+  "requiredXP": 1350,
+  "orderIndex": 2,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": 2,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_CLOUDWATCH",
+      "maxInstances": 1,
+      "isDistractor": false
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "alb-1",
+        "serviceCode": "AWS_ALB",
+        "label": "Application Load Balancer",
+        "config": {}
+      },
+      {
+        "id": "ec2-1",
+        "serviceCode": "AWS_EC2",
+        "label": "Servidor Web A",
+        "config": {}
+      },
+      {
+        "id": "ec2-2",
+        "serviceCode": "AWS_EC2",
+        "label": "Servidor Web B (Degradado)",
+        "config": {}
+      }
+    ],
+    "connections": [
+      {
+        "id": "e1",
+        "fromComponentId": "alb-1",
+        "toComponentId": "ec2-1",
+        "connectionType": "HTTP_TRAFFIC"
+      },
+      {
+        "id": "e2",
+        "fromComponentId": "alb-1",
+        "toComponentId": "ec2-2",
+        "connectionType": "HTTP_TRAFFIC"
+      }
+    ]
+  },
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Cómo puedes identificar qué servidor específico está respondiendo con códigos de error 5XX sin tener acceso manual por SSH a cada instancia?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Conecta el balanceador de carga y las instancias a un servicio central de observabilidad para evaluar las métricas de TargetResponseTime y HTTPCode_Target_5XX_Count.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Incorpora Amazon CloudWatch y conecta tanto el ALB como las instancias EC2 para habilitar la supervisión de métricas.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Agrega Amazon CloudWatch en el canvas y conéctalo al ALB y a las instancias EC2 mediante conexiones MONITORING_METRICS.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_ALB",
+      "AWS_EC2",
+      "AWS_CLOUDWATCH"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_ALB": 1,
+      "AWS_EC2": 2,
+      "AWS_CLOUDWATCH": 1
+    },
+    "maxInstances": {
+      "AWS_ALB": 1,
+      "AWS_EC2": 2,
+      "AWS_CLOUDWATCH": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_EC2",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El ALB debe continuar distribuyendo tráfico hacia las instancias EC2."
+      },
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_CLOUDWATCH",
+        "connectionType": "MONITORING_METRICS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El ALB debe emitir métricas y logs de acceso a Amazon CloudWatch."
+      },
+      {
+        "fromServiceCode": "AWS_EC2",
+        "toServiceCode": "AWS_CLOUDWATCH",
+        "connectionType": "MONITORING_METRICS",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "Las instancias EC2 deben enviar métricas de rendimiento a Amazon CloudWatch."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "title": "Contenido Global con CloudFront + S3",
+  "description": "¿Cómo entregas contenido a usuarios en Tokio y Londres con milisegundos de latencia desde un bucket S3 en Virginia? Diseña una solución que utilice Amazon CloudFront como CDN frente a un origen Amazon S3.",
+  "difficulty": "Intermediate",
+  "mode": "BUILDER",
+  "baseXP": 150,
+  "requiredXP": 120,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_CLOUDFRONT",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_RDS",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "Cuando los usuarios están lejos de la región de AWS donde residen tus archivos, la latencia de red incrementa notablemente el tiempo de carga. ¿Cómo acercar el contenido al usuario final?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Una red de entrega de contenido (CDN) distribuye copias en caché de tus archivos estáticos en cientos de ubicaciones de borde (Edge Locations) alrededor del mundo.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Amazon CloudFront es la CDN global de AWS que se integra de manera nativa con orígenes como Amazon S3 para acelerar la entrega de contenido.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Arrastra una distribución Amazon CloudFront y un bucket Amazon S3 al canvas, y conéctalos entre sí mediante un enlace ORIGIN para que CloudFront utilice el bucket como origen.",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_CLOUDFRONT",
+      "AWS_S3"
+    ],
+    "forbiddenServices": [],
+    "minInstances": {
+      "AWS_CLOUDFRONT": 1,
+      "AWS_S3": 1
+    },
+    "maxInstances": {
+      "AWS_CLOUDFRONT": 1,
+      "AWS_S3": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_CLOUDFRONT",
+        "toServiceCode": "AWS_S3",
+        "connectionType": "ORIGIN",
+        "isBidirectional": true,
+        "penaltyIfMissing": 30,
+        "description": "La distribución Amazon CloudFront debe tener configurado el bucket Amazon S3 como su origen de contenido."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

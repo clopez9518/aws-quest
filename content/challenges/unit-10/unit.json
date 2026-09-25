@@ -1,0 +1,5 @@
+{
+  "title": "Observabilidad y Operación",
+  "description": "¿Cómo sé en tiempo real que mi sistema funciona correctamente y cómo diagnostico caídas? Aprende a recolectar métricas y logs con Amazon CloudWatch, auditar la actividad de la cuenta con AWS CloudTrail y gestionar incidentes de rendimiento en producción.",
+  "orderIndex": 10
+}

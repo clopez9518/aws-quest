@@ -1,0 +1,118 @@
+{
+  "title": "Migración de EC2 a Contenedores Fargate",
+  "description": "Una aplicación legada corre directamente sobre una instancia EC2 dedicada, limitando la agilidad y aumentando el costo operativo. Reemplaza la instancia EC2 por un servicio de contenedores Amazon ECS ejecutado con AWS Fargate detrás del Application Load Balancer.",
+  "difficulty": "Hard",
+  "mode": "REPAIR",
+  "baseXP": 200,
+  "requiredXP": 1300,
+  "orderIndex": 3,
+  "allowedServices": [
+    {
+      "serviceCode": "AWS_ALB",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_ECS",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_FARGATE",
+      "maxInstances": 1,
+      "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_EC2",
+      "maxInstances": null,
+      "isDistractor": true
+    }
+  ],
+  "initialGraph": {
+    "components": [
+      {
+        "id": "alb-1",
+        "serviceCode": "AWS_ALB",
+        "label": "Application Load Balancer",
+        "config": {}
+      },
+      {
+        "id": "ec2-legacy",
+        "serviceCode": "AWS_EC2",
+        "label": "Instancia EC2 Legacy",
+        "config": {}
+      }
+    ],
+    "connections": [
+      {
+        "id": "e1",
+        "fromComponentId": "alb-1",
+        "toComponentId": "ec2-legacy",
+        "connectionType": "HTTP_TRAFFIC"
+      }
+    ]
+  },
+  "hints": [
+    {
+      "orderIndex": 1,
+      "text": "¿Cómo modernizas una aplicación monolítica hospedada en máquinas virtuales para aprovechar la elasticidad y reducir la gestión de parches del sistema operativo?",
+      "penaltyPoints": 5
+    },
+    {
+      "orderIndex": 2,
+      "text": "Elimina la instancia EC2 rígida y sustitúyela por un clúster ECS serverless con Fargate.",
+      "penaltyPoints": 10
+    },
+    {
+      "orderIndex": 3,
+      "text": "Conecta el balanceador ALB existente al nuevo servicio ECS, y enlaza ECS con el cómputo Fargate.",
+      "penaltyPoints": 15
+    },
+    {
+      "orderIndex": 4,
+      "text": "Remueve el nodo EC2, agrega ECS y Fargate, y conecta ALB a ECS (HTTP_TRAFFIC) y ECS a Fargate (GENERIC).",
+      "penaltyPoints": 20
+    }
+  ],
+  "evaluationRules": {
+    "requiredServices": [
+      "AWS_ALB",
+      "AWS_ECS",
+      "AWS_FARGATE"
+    ],
+    "forbiddenServices": [
+      "AWS_EC2"
+    ],
+    "minInstances": {
+      "AWS_ALB": 1,
+      "AWS_ECS": 1,
+      "AWS_FARGATE": 1
+    },
+    "maxInstances": {
+      "AWS_ALB": 1,
+      "AWS_ECS": 1,
+      "AWS_FARGATE": 1
+    },
+    "requiredConnections": [
+      {
+        "fromServiceCode": "AWS_ALB",
+        "toServiceCode": "AWS_ECS",
+        "connectionType": "HTTP_TRAFFIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El balanceador ALB debe enrutar el tráfico HTTP hacia Amazon ECS."
+      },
+      {
+        "fromServiceCode": "AWS_ECS",
+        "toServiceCode": "AWS_FARGATE",
+        "connectionType": "GENERIC",
+        "isBidirectional": true,
+        "penaltyIfMissing": 20,
+        "description": "El servicio ECS debe ejecutarse mediante AWS Fargate."
+      }
+    ],
+    "forbiddenConnections": [],
+    "antiPatterns": [],
+    "passingScoreThreshold": 70
+  }
+}

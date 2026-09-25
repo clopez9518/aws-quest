@@ -1,0 +1,5 @@
+{
+  "title": "Edge, DNS y Seguridad Web",
+  "description": "¿Cómo hago mi aplicación global, ultrarrápida y resistente a ciberataques? Aprende a gestionar dominios con Amazon Route 53, acelerar la entrega de contenido dinámico y estático con Amazon CloudFront y proteger recursos en capa de aplicación con AWS WAF.",
+  "orderIndex": 8
+}
