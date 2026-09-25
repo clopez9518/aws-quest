@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 1150,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Contenedores Serverless con AWS Fargate",
+    "businessScenario": "La gestión de parches, configuración de clústeres y aprovisionamiento de instancias EC2 subyacentes consume tiempo valioso del equipo DevOps.",
+    "learningObjective": "Ejecutar contenedores en Amazon ECS utilizando el motor de cómputo serverless AWS Fargate sin administrar servidores.",
+    "keyTakeaways": [
+      "AWS Fargate elimina la necesidad de aprovisionar, configurar o escalar máquinas virtuales EC2 para ejecutar contenedores.",
+      "Pagas exclusivamente por los recursos de vCPU y memoria consumidos por cada tarea individual.",
+      "Aísla cada tarea en su propio entorno de ejecución dedicado para máxima seguridad."
+    ],
+    "estimatedReadTime": "35 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_ALB",

@@ -6,6 +6,17 @@
   "baseXP": 200,
   "requiredXP": 3050,
   "orderIndex": 6,
+  "briefing": {
+    "keyConcept": "Recuperación ante Desastres (Disaster Recovery) en Incidentes Críticos",
+    "businessScenario": "Un fallo en cascada derribó el balanceador, saturó la base de datos y dejó a millones de usuarios sin servicio durante el horario de mayor facturación del año.",
+    "learningObjective": "Ejecutar un protocolo de contingencia y diagnóstico de emergencia restaurando la conectividad, aislando nodos fallidos y estabilizando el sistema.",
+    "keyTakeaways": [
+      "Los planes de Disaster Recovery deben definir métricas claras de RPO (Recovery Point Objective) y RTO (Recovery Time Objective).",
+      "Durante una caída total, el aislamiento de componentes y la reactivación por capas evita sobrecargas al restaurar los servicios.",
+      "La automatización y pruebas periódicas de fallos (Chaos Engineering) fortalecen la resiliencia del sistema ante imprevistos."
+    ],
+    "estimatedReadTime": "50 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_ALB",
@@ -40,7 +51,9 @@
         "id": "rds-overloaded",
         "serviceCode": "AWS_RDS",
         "label": "RDS Bloqueada",
-        "config": { "isMultiAz": false }
+        "config": {
+          "isMultiAz": false
+        }
       }
     ],
     "connections": [

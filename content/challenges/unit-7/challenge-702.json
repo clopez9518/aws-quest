@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Patrón Publicador/Suscriptor (Pub/Sub) con Amazon SNS",
+    "businessScenario": "Al confirmarse un pedido, el sistema necesita disparar notificaciones simultáneas a inventario, contabilidad, envíos por SMS y correo electrónico.",
+    "learningObjective": "Configurar un tópico Amazon SNS con múltiples suscriptores para implementar el patrón de abanico (Fan-Out).",
+    "keyTakeaways": [
+      "Amazon SNS permite publicar mensajes a múltiples suscriptores simultáneamente (patrón Fan-Out).",
+      "Los suscriptores pueden ser colas SQS, funciones Lambda, endpoints HTTP o notificaciones móviles (SMS/Push).",
+      "Aísla al publicador de los destinatarios, permitiendo añadir nuevos servicios consumidores sin modificar el origen."
+    ],
+    "estimatedReadTime": "35 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_SNS",

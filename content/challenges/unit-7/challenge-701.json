@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 1,
+  "briefing": {
+    "keyConcept": "Desacoplamiento Asíncrono con Colas de Mensajes (Amazon SQS)",
+    "businessScenario": "La generación de facturas y PDFs pesados bloquea la navegación de los clientes durante más de 30 segundos mientras el servidor web procesa la solicitud.",
+    "learningObjective": "Implementar Amazon SQS para encolar solicitudes pesadas y procesarlas de forma asíncrona mediante trabajadores (workers).",
+    "keyTakeaways": [
+      "Amazon SQS desacopla componentes de software permitiendo que productores y consumidores escalen a ritmos independientes.",
+      "Garantiza la retención y durabilidad de los mensajes ante caídas temporales de los servidores consumidores.",
+      "Elimina llamadas síncronas bloqueantes mejorando radicalmente la experiencia del usuario final."
+    ],
+    "estimatedReadTime": "35 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_EC2",

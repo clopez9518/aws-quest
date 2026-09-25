@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 5,
+  "briefing": {
+    "keyConcept": "Refactorización y Descomposición de Lambdaliths",
+    "businessScenario": "Una función Lambda única contiene todo el código de la aplicación, provocando timeouts frecuentes, dificultad para desplegar y cobros elevados por exceso de RAM.",
+    "learningObjective": "Descomponer una función monolítica en funciones Lambda independientes y especializadas por recurso o verbo HTTP.",
+    "keyTakeaways": [
+      "Las funciones Lambda deben tener responsabilidades únicas y acotadas (principio de responsabilidad única).",
+      "Asignar funciones independientes por endpoint permite configurar memoria y timeouts específicos para cada operación.",
+      "Mejora los tiempos de arranque en frío (Cold Starts) y facilita el mantenimiento y despliegue continuo."
+    ],
+    "estimatedReadTime": "40 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_S3",

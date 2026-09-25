@@ -6,6 +6,17 @@
   "baseXP": 200,
   "requiredXP": 1650,
   "orderIndex": 4,
+  "briefing": {
+    "keyConcept": "Respuesta y Mitigación de Incidentes de Saturación Crítica",
+    "businessScenario": "Una campaña viral genera una avalancha de usuarios concurrentes; las alarmas alertan servidores al 100% de CPU y errores 504 Gateway Timeout.",
+    "learningObjective": "Ejecutar un procedimiento de remediación en tiempo real integrando balanceadores, escalado de emergencia y monitoreo continuo.",
+    "keyTakeaways": [
+      "Durante una crisis de saturación, aislar instancias degradadas y forzar el escalado de nodos sanos previene caídas totales.",
+      "El monitoreo continuo de métricas en vivo valida la efectividad de las medidas de mitigación aplicadas.",
+      "Post-incidente, se deben ajustar las políticas de Auto Scaling y umbrales de alarma."
+    ],
+    "estimatedReadTime": "45 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_ALB",
@@ -40,7 +51,9 @@
         "id": "rds-single",
         "serviceCode": "AWS_RDS",
         "label": "RDS Single-AZ Saturado",
-        "config": { "isMultiAz": false }
+        "config": {
+          "isMultiAz": false
+        }
       }
     ],
     "connections": [

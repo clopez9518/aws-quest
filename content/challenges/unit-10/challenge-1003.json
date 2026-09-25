@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 1500,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Auditoría de Actividad y Gobernanza con AWS CloudTrail",
+    "businessScenario": "Se detectó la apertura indebida de un puerto en el firewall de producción y se requiere auditar qué usuario o credencial realizó la acción.",
+    "learningObjective": "Configurar AWS CloudTrail para registrar continuamente todas las llamadas a las APIs de AWS con fines de seguridad y cumplimiento.",
+    "keyTakeaways": [
+      "AWS CloudTrail registra el historial completo de llamadas a las APIs de la cuenta (quién, qué, cuándo y desde qué IP).",
+      "Permite realizar investigaciones forenses de seguridad y cumplir con normativas regulatorias (SOC2, PCI-DSS, ISO).",
+      "Se integra con CloudWatch Logs para alertar en tiempo real ante cambios críticos en la infraestructura."
+    ],
+    "estimatedReadTime": "35 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_CLOUDTRAIL",

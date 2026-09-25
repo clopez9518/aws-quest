@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Aislamiento de Subredes y Salida Segura con NAT Gateway",
+    "businessScenario": "Servidores backend en subredes privadas necesitan descargar actualizaciones del sistema operativo sin quedar expuestos a conexiones entrantes desde Internet.",
+    "learningObjective": "Diseñar una topología de red en dos capas (pública y privada) utilizando un NAT Gateway para tráfico saliente seguro.",
+    "keyTakeaways": [
+      "Las subredes privadas no tienen ruta directa al Internet Gateway, protegiendo los recursos críticos.",
+      "El NAT Gateway reside en una subred pública y permite a las subredes privadas iniciar conexiones de salida a Internet.",
+      "El NAT Gateway bloquea cualquier intento de conexión entrante no solicitada desde el exterior."
+    ],
+    "estimatedReadTime": "40 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "NET_VPC",

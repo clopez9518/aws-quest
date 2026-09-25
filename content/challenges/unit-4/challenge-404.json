@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 4,
+  "briefing": {
+    "keyConcept": "Gestión Centralizada y Segura de Secretos (AWS Secrets Manager)",
+    "businessScenario": "Un análisis estático de código detecta que las contraseñas de base de datos están 'hardcodeadas' en texto plano en el repositorio de la aplicación.",
+    "learningObjective": "Implementar AWS Secrets Manager para almacenar, cifrar y rotar credenciales de base de datos de forma dinámica.",
+    "keyTakeaways": [
+      "AWS Secrets Manager protege secretos y credenciales cifrándolos en reposo con AWS KMS.",
+      "Permite la rotación automática de credenciales sin interrumpir las aplicaciones en producción.",
+      "Las aplicaciones recuperan credenciales programáticamente en tiempo de ejecución mediante llamadas a la API de AWS."
+    ],
+    "estimatedReadTime": "35 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_EC2",

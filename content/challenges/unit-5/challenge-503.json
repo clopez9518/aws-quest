@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Escalabilidad Elástica con Auto Scaling Groups (ASG)",
+    "businessScenario": "Durante eventos promocionales el tráfico aumenta 10x saturando los servidores, pero en la noche la infraestructura ociosa genera desperdicio económico.",
+    "learningObjective": "Implementar Auto Scaling Groups para añadir o remover instancias EC2 automáticamente según la demanda real de CPU y tráfico.",
+    "keyTakeaways": [
+      "Auto Scaling ajusta la capacidad de cómputo dinámicamente manteniendo la disponibilidad y optimizando costos.",
+      "Trabaja en conjunto con ALB para registrar automáticamente nuevas instancias en el balanceador.",
+      "Asegura que siempre se mantenga el número deseado, mínimo y máximo de servidores configurados."
+    ],
+    "estimatedReadTime": "40 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "NET_VPC",

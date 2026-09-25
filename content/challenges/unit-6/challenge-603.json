@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Persistencia NoSQL Serverless con Amazon DynamoDB",
+    "businessScenario": "Una aplicación de streaming necesita almacenar perfiles de usuario y sesiones con tiempos de lectura y escritura inferiores a 10 milisegundos a escala masiva.",
+    "learningObjective": "Diseñar e integrar tablas Amazon DynamoDB con funciones AWS Lambda para almacenamiento NoSQL ultrarrápido y serverless.",
+    "keyTakeaways": [
+      "Amazon DynamoDB es una base de datos NoSQL clave-valor y documental con latencia de milisegundos de un solo dígito.",
+      "Ofrece capacidad bajo demanda (On-Demand) con escalado automático instantáneo y durabilidad Multi-AZ.",
+      "Elimina la necesidad de administrar instancias de base de datos, parches o conexiones de pool tradicionales."
+    ],
+    "estimatedReadTime": "35 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_LAMBDA",

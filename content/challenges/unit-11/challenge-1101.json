@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 1500,
   "orderIndex": 1,
+  "briefing": {
+    "keyConcept": "Infraestructura Declarativa como Código (AWS CloudFormation)",
+    "businessScenario": "La creación manual de recursos mediante la consola web genera discrepancias constantes y errores humanos entre los entornos de Desarrollo y Producción.",
+    "learningObjective": "Modelar, versionar y aprovisionar infraestructura de forma reproducible utilizando plantillas declarativas de CloudFormation.",
+    "keyTakeaways": [
+      "AWS CloudFormation permite definir toda la infraestructura de AWS mediante plantillas de texto en formato JSON o YAML.",
+      "Aprovisiona recursos en el orden correcto y gestiona automáticamente dependencias y creación de recursos.",
+      "Permite tratar la infraestructura como software, versionándola en Git y aplicando revisiones por pares (Code Reviews)."
+    ],
+    "estimatedReadTime": "40 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_CLOUDFORMATION",

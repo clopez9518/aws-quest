@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Balanceo de Carga en Capa de Aplicación (Application Load Balancer)",
+    "businessScenario": "El tráfico creciente sobrecarga a un servidor web mientras otros servidores permanecen inactivos, provocando tiempos de respuesta lentos para los usuarios.",
+    "learningObjective": "Configurar un Application Load Balancer (ALB) para distribuir peticiones HTTP/HTTPS inteligentemente entre múltiples instancias.",
+    "keyTakeaways": [
+      "ALB opera en la Capa 7 (HTTP/HTTPS) del modelo OSI y distribuye tráfico a múltiples Target Groups.",
+      "Monitorea la salud de las instancias mediante comprobaciones periódicas (Health Checks) y aisla nodos caídos.",
+      "Permite enrutamiento avanzado basado en rutas URL (/api, /images) y nombres de host."
+    ],
+    "estimatedReadTime": "40 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_ALB",

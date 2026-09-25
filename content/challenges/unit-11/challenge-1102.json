@@ -6,6 +6,17 @@
   "baseXP": 200,
   "requiredXP": 1650,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Automatización de Despliegues con Stacks Parametrizados",
+    "businessScenario": "El equipo DevOps necesita desplegar stacks idénticos de red, cómputo y bases de datos en múltiples cuentas y regiones con un solo clic.",
+    "learningObjective": "Diseñar plantillas avanzadas de CloudFormation con parámetros dinámicos, condiciones y exportación de salidas (Outputs).",
+    "keyTakeaways": [
+      "Los parámetros permiten reutilizar una misma plantilla para diferentes entornos (Dev, Test, Prod) cambiando valores clave.",
+      "Las secciones 'Outputs' y 'Export/ImportValue' facilitan la interoperabilidad entre stacks modulares independientes.",
+      "Garantiza despliegues consistentes, rápidos y libres de errores humanos en cualquier región de AWS."
+    ],
+    "estimatedReadTime": "40 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_CLOUDFORMATION",

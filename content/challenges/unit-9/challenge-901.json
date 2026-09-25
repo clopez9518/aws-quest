@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 1000,
   "orderIndex": 1,
+  "briefing": {
+    "keyConcept": "Orquestación de Contenedores con Amazon ECS y Amazon ECR",
+    "businessScenario": "Un equipo de ingeniería adopta contenedores Docker y necesita almacenar sus imágenes de forma segura y orquestar tareas en la nube.",
+    "learningObjective": "Aprender el flujo de trabajo de contenedores en AWS utilizando Amazon ECR como registro privado y Amazon ECS como orquestador.",
+    "keyTakeaways": [
+      "Amazon ECR es un registro de contenedores Docker totalmente administrado, seguro y con cifrado en reposo.",
+      "Amazon ECS define aplicaciones mediante 'Task Definitions' que especifican imágenes, memoria, CPU y puertos.",
+      "Los 'Services' de ECS garantizan que el número deseado de contenedores se mantenga siempre en ejecución."
+    ],
+    "estimatedReadTime": "40 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_ECR",

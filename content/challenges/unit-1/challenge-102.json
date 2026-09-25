@@ -6,6 +6,17 @@
   "baseXP": 100,
   "requiredXP": 100,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Almacenamiento en Bloque Persistente (Amazon EBS)",
+    "businessScenario": "Una base de datos transaccional alojada en EC2 necesita almacenar sus registros en un disco virtual que conserve la información aun cuando el servidor se detenga o actualice.",
+    "learningObjective": "Comprender el rol de Amazon EBS como volumen de almacenamiento persistente desacoplado del ciclo de vida de la instancia de cómputo.",
+    "keyTakeaways": [
+      "Amazon EBS proporciona volúmenes de almacenamiento en bloque de alto rendimiento para Amazon EC2.",
+      "Los volúmenes EBS persisten independientemente del estado de la instancia (Stop/Terminate).",
+      "Un volumen EBS estándar reside en una única Availability Zone (AZ) específica."
+    ],
+    "estimatedReadTime": "30 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_EC2",

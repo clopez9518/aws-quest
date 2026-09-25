@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Puerta de Enlace a Internet (Internet Gateway - IGW)",
+    "businessScenario": "Se han creado servidores web en una nueva VPC aislada, pero los clientes no pueden acceder a ellos porque la VPC carece de comunicación con la red pública.",
+    "learningObjective": "Comprender la función del Internet Gateway y las tablas de ruteo para habilitar conectividad bidireccional hacia Internet.",
+    "keyTakeaways": [
+      "El Internet Gateway (IGW) es un componente de VPC redundante y horizontalmente escalable que conecta la VPC a Internet.",
+      "Una subred es 'pública' si su Route Table tiene una ruta explícita 0.0.0.0/0 apuntando al IGW.",
+      "Las instancias en subredes públicas requieren una dirección IPv4 pública para recibir tráfico externo."
+    ],
+    "estimatedReadTime": "35 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "NET_VPC",

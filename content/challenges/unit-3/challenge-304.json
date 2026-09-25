@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 4,
+  "briefing": {
+    "keyConcept": "Control de Tráfico con Security Groups (Firewalls Stateful)",
+    "businessScenario": "Una auditoría de seguridad alerta que los servidores aceptan peticiones en puertos administrativos abiertos a todo el mundo (0.0.0.0/0).",
+    "learningObjective": "Configurar reglas de entrada (Inbound) y salida (Outbound) en Security Groups aplicando el principio de menor privilegio.",
+    "keyTakeaways": [
+      "Los Security Groups actúan como firewalls virtuales a nivel de interfaz de red (ENI) de la instancia.",
+      "Son 'stateful' (con estado): si se permite el tráfico entrante, la respuesta de salida se permite automáticamente.",
+      "Por defecto bloquean todo el tráfico entrante a menos que se cree una regla explícita de permiso."
+    ],
+    "estimatedReadTime": "35 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "NET_VPC",

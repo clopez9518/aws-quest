@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 4,
+  "briefing": {
+    "keyConcept": "Arquitectura Serverless Completa de 3 Capas",
+    "businessScenario": "Una startup quiere lanzar un producto web escalable minimizando costos fijos iniciales y eliminando por completo la administración de servidores.",
+    "learningObjective": "Diseñar un stack serverless completo combinando CloudFront/S3 (Frontend), API Gateway + Lambda (Cómputo) y DynamoDB (Datos).",
+    "keyTakeaways": [
+      "Una arquitectura serverless de 3 capas ofrece alta disponibilidad, tolerancia a fallas y escalabilidad automática en todas sus fases.",
+      "Costo cero en estado inactivo: no se pagan recursos computacionales ociosos.",
+      "Permite a los equipos de ingeniería enfocarse en el código de producto y la lógica comercial."
+    ],
+    "estimatedReadTime": "45 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_S3",

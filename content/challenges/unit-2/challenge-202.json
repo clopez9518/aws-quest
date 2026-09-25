@@ -6,6 +6,17 @@
   "baseXP": 120,
   "requiredXP": 100,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Desacoplamiento de Frontend Estático y Backend Dinámico",
+    "businessScenario": "Un portal de noticias sufre cuellos de botella porque su servidor backend consume CPU sirviendo HTML, CSS e imágenes en lugar de procesar peticiones de negocio.",
+    "learningObjective": "Aprender a desacoplar el frontend estático alojándolo en Amazon S3 y reservar el servidor EC2 para APIs dinámicas.",
+    "keyTakeaways": [
+      "Amazon S3 permite alojar sitios web estáticos (SPA, HTML, JS) con 99.999999999% de durabilidad sin servidores.",
+      "Desacoplar capas reduce costos de cómputo y mejora la velocidad de carga de la aplicación.",
+      "El frontend en S3 realiza peticiones asíncronas hacia el backend en EC2."
+    ],
+    "estimatedReadTime": "40 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_S3",

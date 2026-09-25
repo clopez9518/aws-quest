@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 1200,
   "orderIndex": 1,
+  "briefing": {
+    "keyConcept": "Telemetría, Métricas y Logs con Amazon CloudWatch",
+    "businessScenario": "El equipo de operaciones no cuenta con visibilidad del rendimiento de los servidores, saturación de memoria ni errores de aplicación en producción.",
+    "learningObjective": "Instrumentar recolección de métricas, dashboards y almacenamiento centralizado de logs con Amazon CloudWatch.",
+    "keyTakeaways": [
+      "Amazon CloudWatch recopila métricas operativas y de rendimiento en tiempo real de todos los recursos de AWS.",
+      "CloudWatch Logs centraliza el almacenamiento y búsqueda de archivos de log de servidores y aplicaciones.",
+      "Permite crear alarmas automáticas basadas en umbrales estáticos o detección de anomalías."
+    ],
+    "estimatedReadTime": "35 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_EC2",

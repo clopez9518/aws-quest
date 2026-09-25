@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 5,
+  "briefing": {
+    "keyConcept": "Respuesta SRE ante Saturación Crítica de Servidores",
+    "businessScenario": "El servidor principal de la empresa se encuentra al 100% de CPU arrojando errores HTTP 503; se requiere estabilizar el servicio de emergencia.",
+    "learningObjective": "Diagnosticar cuellos de botella de capacidad e implementar balanceo y escalado horizontal para recuperar la operatividad.",
+    "keyTakeaways": [
+      "Escalar verticalmente (instancias más grandes) tiene un límite físico y no resuelve el punto único de falla.",
+      "El escalado horizontal detrás de un balanceador de carga permite absorber picos de tráfico indefinidamente.",
+      "Monitorear métricas de saturación y latencia es vital para disparar acciones de recuperación oportunas."
+    ],
+    "estimatedReadTime": "40 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "NET_VPC",

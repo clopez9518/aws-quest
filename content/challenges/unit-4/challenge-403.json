@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Diagnóstico y Remediación de Base de Datos Expuesta",
+    "businessScenario": "Alerta crítica de seguridad: la base de datos de producción fue ubicada en una subred pública y su puerto 3306 está abierto a todo Internet (0.0.0.0/0).",
+    "learningObjective": "Diagnosticar y reparar vulnerabilidades de red reubicando la base de datos y sellando las reglas de firewall.",
+    "keyTakeaways": [
+      "Exponer bases de datos a 0.0.0.0/0 es una de las principales causas de filtración de datos en la nube.",
+      "La remediación requiere mover la base de datos a subredes privadas y revocar reglas de entrada permisivas.",
+      "El principio de menor privilegio debe regir tanto el ruteo de subredes como los Security Groups."
+    ],
+    "estimatedReadTime": "45 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "NET_VPC",

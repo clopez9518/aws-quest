@@ -6,6 +6,17 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 4,
+  "briefing": {
+    "keyConcept": "Bases de Datos de Alta Disponibilidad Multi-AZ con Failover Automático",
+    "businessScenario": "Una plataforma transaccional no puede tolerar caídas de base de datos durante el mantenimiento programado ni por fallas imprevistas de infraestructura.",
+    "learningObjective": "Aprovisionar Amazon RDS en modo Multi-AZ con replicación síncrona y conmutación automática por error.",
+    "keyTakeaways": [
+      "RDS Multi-AZ replica de forma síncrona los datos hacia una instancia standby en una AZ distinta.",
+      "En caso de falla en la instancia primaria, RDS ejecuta un failover automático en minutos sin cambiar el endpoint DNS.",
+      "Brinda alta disponibilidad (HA) y tolerancia a fallas a nivel de almacenamiento y cómputo."
+    ],
+    "estimatedReadTime": "40 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "NET_VPC",

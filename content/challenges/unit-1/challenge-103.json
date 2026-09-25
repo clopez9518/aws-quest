@@ -6,6 +6,17 @@
   "baseXP": 120,
   "requiredXP": 100,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Sistema de Archivos Compartido y Elástico (Amazon EFS)",
+    "businessScenario": "Un clúster de servidores web de comercio electrónico necesita compartir un directorio común de imágenes y assets estáticos con lectura y escritura concurrente.",
+    "learningObjective": "Aprender a implementar un sistema de archivos en red elástico (NFS) accesible simultáneamente por múltiples instancias.",
+    "keyTakeaways": [
+      "Amazon EFS es un sistema de archivos NFS v4 totalmente administrado y sin aprovisionamiento de tamaño.",
+      "Permite acceso concurrente de lectura y escritura a miles de instancias simultáneamente.",
+      "Es Multi-AZ por defecto, ofreciendo alta durabilidad y disponibilidad de datos compartidos."
+    ],
+    "estimatedReadTime": "35 seg"
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_EC2",
