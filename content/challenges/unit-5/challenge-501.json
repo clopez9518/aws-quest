@@ -15,7 +15,21 @@
       "Las Availability Zones de AWS son centros de datos físicamente separados con energía y red redundantes.",
       "Distribuir servidores en al menos 2 AZs garantiza continuidad del negocio ante desastres localizados."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Punto Único de Falla (Single Point of Failure - SPOF)",
+        "description": "Cualquier componente o zona individual cuya interrupción provoca la caída total de la aplicación.",
+        "category": "concept",
+        "slug": "single-point-of-failure"
+      },
+      {
+        "title": "Despliegue Multi-AZ",
+        "description": "Estrategia de resiliencia que distribuye servidores en múltiples centros de datos físicos independientes dentro de una misma región.",
+        "category": "concept",
+        "slug": "multi-az-replication"
+      }
+    ]
   },
   "allowedServices": [
     {

@@ -15,7 +15,22 @@
       "Ofrece capacidad bajo demanda (On-Demand) con escalado automático instantáneo y durabilidad Multi-AZ.",
       "Elimina la necesidad de administrar instancias de base de datos, parches o conexiones de pool tradicionales."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Base de Datos NoSQL Totalmente Administrada",
+        "description": "Almacenamiento de documentos y clave-valor con latencia de milisegundos de un solo dígito y escalabilidad horizontal ilimitada.",
+        "category": "concept",
+        "slug": "amazon-dynamodb"
+      },
+      {
+        "title": "Amazon DynamoDB",
+        "description": "Base de datos NoSQL serverless con capacidad On-Demand, replicación Multi-AZ y cero administración de servidores o conexiones.",
+        "serviceCode": "AWS_DYNAMODB",
+        "category": "service",
+        "slug": "amazon-dynamodb"
+      }
+    ]
   },
   "allowedServices": [
     {

@@ -15,7 +15,22 @@
       "Los volúmenes EBS persisten independientemente del estado de la instancia (Stop/Terminate).",
       "Un volumen EBS estándar reside en una única Availability Zone (AZ) específica."
     ],
-    "estimatedReadTime": "30 seg"
+    "estimatedReadTime": "30 seg",
+    "keyComponents": [
+      {
+        "title": "Almacenamiento en Bloque Persistente",
+        "description": "Almacenamiento a nivel de bloques de baja latencia montado como un disco duro tradicional que persiste aunque el servidor se reinicie o apague.",
+        "category": "concept",
+        "slug": "amazon-ebs"
+      },
+      {
+        "title": "Amazon EBS",
+        "description": "Volúmenes de disco virtual persistente de alto rendimiento vinculados a una instancia EC2 dentro de la misma Availability Zone.",
+        "serviceCode": "AWS_EBS",
+        "category": "service",
+        "slug": "amazon-ebs"
+      }
+    ]
   },
   "allowedServices": [
     {

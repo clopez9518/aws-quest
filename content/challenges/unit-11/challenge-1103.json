@@ -15,7 +15,21 @@
       "CloudFormation Drift Detection compara el estado actual de los recursos contra la definición declarativa original.",
       "Sincronizar el estado previene comportamientos inesperados y fallos críticos en futuros despliegues."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Desviación de Infraestructura (Drift)",
+        "description": "Diferencia producida cuando los recursos de la nube se modifican manualmente fuera del control de la plantilla de CloudFormation.",
+        "category": "concept",
+        "slug": "aws-cloudformation"
+      },
+      {
+        "title": "CloudFormation Drift Detection",
+        "description": "Herramienta que identifica discrepancias entre el estado real de la infraestructura y la definición declarativa original.",
+        "category": "concept",
+        "slug": "aws-cloudformation"
+      }
+    ]
   },
   "allowedServices": [
     {

@@ -15,7 +15,22 @@
       "Amazon ECS define aplicaciones mediante 'Task Definitions' que especifican imágenes, memoria, CPU y puertos.",
       "Los 'Services' de ECS garantizan que el número deseado de contenedores se mantenga siempre en ejecución."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Orquestación de Contenedores Docker",
+        "description": "Empaquetar aplicaciones con todas sus dependencias en imágenes inmutables y gestionar su despliegue y ciclo de vida en clústeres.",
+        "category": "concept",
+        "slug": "amazon-ecs"
+      },
+      {
+        "title": "Amazon ECR & Amazon ECS",
+        "description": "Registro privado de imágenes de contenedor (ECR) y orquestador altamente escalable de servicios y tareas (ECS).",
+        "serviceCode": "AWS_ECS",
+        "category": "service",
+        "slug": "amazon-ecs"
+      }
+    ]
   },
   "allowedServices": [
     {

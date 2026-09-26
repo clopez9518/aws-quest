@@ -15,7 +15,22 @@
       "Los suscriptores pueden ser colas SQS, funciones Lambda, endpoints HTTP o notificaciones móviles (SMS/Push).",
       "Aísla al publicador de los destinatarios, permitiendo añadir nuevos servicios consumidores sin modificar el origen."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Patrón Publicador/Suscriptor (Pub/Sub) y Fan-Out",
+        "description": "Publicar un evento una sola vez y distribuirlo en paralelo a múltiples sistemas suscriptores independientes.",
+        "category": "concept",
+        "slug": "patron-fan-out"
+      },
+      {
+        "title": "Amazon SNS",
+        "description": "Servicio de mensajería masiva para enviar notificaciones a colas SQS, funciones Lambda, endpoints HTTP y emails simultáneamente.",
+        "serviceCode": "AWS_SNS",
+        "category": "service",
+        "slug": "amazon-sns"
+      }
+    ]
   },
   "allowedServices": [
     {

@@ -15,7 +15,21 @@
       "Identificar y mitigar 'High Risk Issues' (HRIs) previene incidentes graves de seguridad, saturación o sobrecostos.",
       "Una arquitectura óptima equilibra las compensaciones (trade-offs) entre costo, rendimiento y redundancia."
     ],
-    "estimatedReadTime": "50 seg"
+    "estimatedReadTime": "50 seg",
+    "keyComponents": [
+      {
+        "title": "Los 6 Pilares del AWS Well-Architected Framework",
+        "description": "Marco metodológico para evaluar arquitecturas: Excelencia Operativa, Seguridad, Fiabilidad, Rendimiento, Costos y Sostenibilidad.",
+        "category": "concept",
+        "slug": "excelencia-operativa"
+      },
+      {
+        "title": "Mitigación de High Risk Issues (HRIs)",
+        "description": "Identificación y corrección estructurada de vulnerabilidades críticas, puntos únicos de falla y sobrecostos en la nube.",
+        "category": "concept",
+        "slug": "fiabilidad"
+      }
+    ]
   },
   "allowedServices": [
     {

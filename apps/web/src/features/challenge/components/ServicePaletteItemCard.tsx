@@ -1,10 +1,26 @@
 import { useState } from 'react';
-import { GripVertical, AlertCircle, Layers } from 'lucide-react';
+import { GripVertical, AlertCircle, Layers, HelpCircle } from 'lucide-react';
 import { ServicePaletteItem } from '../../canvas/types/canvas.types';
+import { useDictionaryStore } from '../../dictionary/stores/useDictionaryStore';
 
 interface ServicePaletteItemCardProps {
   service: ServicePaletteItem;
   currentCount: number;
+}
+
+function getDictionarySlug(title: string, serviceCode?: string): string {
+  if (serviceCode) {
+    const code = serviceCode.toLowerCase().replace(/_/g, '-');
+    if (code.startsWith('aws-')) return `amazon-${code.substring(4)}`;
+    if (code.startsWith('net-')) return `amazon-${code.substring(4)}`;
+    return code;
+  }
+  return title
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 }
 
 export function ServicePaletteItemCard({
@@ -12,6 +28,7 @@ export function ServicePaletteItemCard({
   currentCount
 }: ServicePaletteItemCardProps) {
   const [imgError, setImgError] = useState(false);
+  const openDrawer = useDictionaryStore((state) => state.openDrawer);
 
   const maxInstances = service.maxInstances ?? null;
   const isLimitReached = maxInstances !== null && currentCount >= maxInstances;
@@ -78,6 +95,19 @@ export function ServicePaletteItemCard({
               {service.name}
             </h4>
             {getPlacementBadge()}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                openDrawer(getDictionarySlug(service.name, service.code));
+              }}
+              className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              aria-label={`Ver ficha de ${service.name} en el glosario`}
+              title={`Ver ficha de ${service.name} en el glosario`}
+            >
+              <HelpCircle className="w-3 h-3" />
+            </button>
           </div>
           <span className="text-[10px] text-slate-500 dark:text-slate-400 capitalize block truncate">
             {service.category}

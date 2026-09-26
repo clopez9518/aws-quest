@@ -41,6 +41,8 @@ describe('RootLayout', () => {
     expect(screen.getByText('Architecture Arena')).toBeInTheDocument();
     expect(screen.getByText('Nivel 1')).toBeInTheDocument();
     expect(screen.getByText('Modo Invitado')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Desafíos/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Diccionario/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Guardar progreso/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Cambiar a modo/i })).toBeInTheDocument();
   });

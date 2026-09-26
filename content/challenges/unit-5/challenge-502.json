@@ -15,7 +15,22 @@
       "Monitorea la salud de las instancias mediante comprobaciones periódicas (Health Checks) y aisla nodos caídos.",
       "Permite enrutamiento avanzado basado en rutas URL (/api, /images) y nombres de host."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Balanceo de Carga Capa 7 (HTTP/HTTPS)",
+        "description": "Distribución inteligente de peticiones web entre múltiples servidores saludables con comprobaciones de estado periódicas (Health Checks).",
+        "category": "concept",
+        "slug": "application-load-balancer"
+      },
+      {
+        "title": "Application Load Balancer (ALB)",
+        "description": "Balanceador de carga elástico y administrado que soporta enrutamiento por rutas URL (/api, /images) y certificados TLS/SSL.",
+        "serviceCode": "AWS_ALB",
+        "category": "service",
+        "slug": "application-load-balancer"
+      }
+    ]
   },
   "allowedServices": [
     {

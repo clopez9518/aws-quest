@@ -15,6 +15,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<ChallengeService> ChallengeServices => Set<ChallengeService>();
     public DbSet<UserProgress> UserProgresses => Set<UserProgress>();
     public DbSet<ChallengeAttempt> ChallengeAttempts => Set<ChallengeAttempt>();
+    public DbSet<DictionaryTerm> DictionaryTerms => Set<DictionaryTerm>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -64,7 +64,17 @@ public class ChallengeBriefingDto
     public string BusinessScenario { get; init; } = string.Empty;
     public string LearningObjective { get; init; } = string.Empty;
     public List<string> KeyTakeaways { get; init; } = [];
+    public List<BriefingKeyComponentDto> KeyComponents { get; init; } = [];
     public string EstimatedReadTime { get; init; } = "30 seg";
+}
+
+public class BriefingKeyComponentDto
+{
+    public string Title { get; init; } = string.Empty;
+    public string Description { get; init; } = string.Empty;
+    public string? ServiceCode { get; init; }
+    public string? Category { get; init; }
+    public string? Slug { get; init; }
 }
 
 public class ChallengeAllowedServiceDto

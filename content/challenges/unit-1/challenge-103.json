@@ -15,7 +15,22 @@
       "Permite acceso concurrente de lectura y escritura a miles de instancias simultáneamente.",
       "Es Multi-AZ por defecto, ofreciendo alta durabilidad y disponibilidad de datos compartidos."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Sistema de Archivos en Red Compartido (NFS)",
+        "description": "Almacenamiento elástico basado en archivos al que pueden acceder concurrentemente cientos de servidores a través de una red local.",
+        "category": "concept",
+        "slug": "amazon-efs"
+      },
+      {
+        "title": "Amazon EFS",
+        "description": "Sistema de archivos elástico totalmente administrado, compatible con NFSv4 y con replicación automática Multi-AZ.",
+        "serviceCode": "AWS_EFS",
+        "category": "service",
+        "slug": "amazon-efs"
+      }
+    ]
   },
   "allowedServices": [
     {

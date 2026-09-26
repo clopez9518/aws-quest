@@ -15,7 +15,21 @@
       "Almacena en caché respuestas estáticas en el borde y reenvía tráfico dinámico directamente al ALB.",
       "Protege al balanceador de carga de picos directos de tráfico en la red pública."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Aceleración de APIs y Contenido Dinámico",
+        "description": "Optimizar conexiones TCP/TLS utilizando la red troncal de fibra óptica de AWS para transportar tráfico dinámico hacia el balanceador.",
+        "category": "concept",
+        "slug": "amazon-cloudfront"
+      },
+      {
+        "title": "CloudFront + Application Load Balancer",
+        "description": "Combinación que entrega caché perimetral para archivos estáticos y aceleración de red para peticiones dinámicas de API.",
+        "category": "concept",
+        "slug": "amazon-cloudfront"
+      }
+    ]
   },
   "allowedServices": [
     {

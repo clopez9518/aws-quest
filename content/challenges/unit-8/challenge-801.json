@@ -15,7 +15,22 @@
       "Los registros 'Alias' permiten mapear nombres de dominio raíz hacia recursos de AWS (ALB, CloudFront, S3) sin costo por consulta.",
       "Soporta políticas de enrutamiento avanzadas: latencia, geolocalización, ponderación y failover de salud."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Resolución de Nombres DNS Global con 100% SLA",
+        "description": "Traducir nombres de dominio legibles para humanos (ej. app.empresa.com) a direcciones IP y recursos de infraestructura en la nube.",
+        "category": "concept",
+        "slug": "amazon-route-53"
+      },
+      {
+        "title": "Amazon Route 53",
+        "description": "Servicio de DNS administrado y escalable que permite enrutar tráfico mediante registros Alias hacia recursos de AWS sin costo de consulta.",
+        "serviceCode": "AWS_ROUTE53",
+        "category": "service",
+        "slug": "amazon-route-53"
+      }
+    ]
   },
   "allowedServices": [
     {

@@ -15,7 +15,21 @@
       "El escalado horizontal detrás de un balanceador de carga permite absorber picos de tráfico indefinidamente.",
       "Monitorear métricas de saturación y latencia es vital para disparar acciones de recuperación oportunas."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Respuesta ante Incidentes de Saturación",
+        "description": "Mitigación de degradación de servicio (errores 503/504) reemplazando instancias saturadas y habilitando distribución de carga.",
+        "category": "concept",
+        "slug": "auto-scaling-group"
+      },
+      {
+        "title": "ALB + EC2 Multi-AZ",
+        "description": "Patrón de infraestructura para estabilizar aplicaciones bajo alta demanda distribuyendo el tráfico entre múltiples servidores.",
+        "category": "concept",
+        "slug": "application-load-balancer"
+      }
+    ]
   },
   "allowedServices": [
     {

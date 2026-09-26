@@ -15,7 +15,21 @@
       "La remediación requiere mover la base de datos a subredes privadas y revocar reglas de entrada permisivas.",
       "El principio de menor privilegio debe regir tanto el ruteo de subredes como los Security Groups."
     ],
-    "estimatedReadTime": "45 seg"
+    "estimatedReadTime": "45 seg",
+    "keyComponents": [
+      {
+        "title": "Remediación de Brechas de Seguridad en BD",
+        "description": "Procedimiento de respuesta ante incidentes para revocar accesos públicos abiertos (0.0.0.0/0) y reubicar bases de datos expuestas.",
+        "category": "concept",
+        "slug": "least-privilege-principle"
+      },
+      {
+        "title": "Subredes Privadas para RDS",
+        "description": "Topología obligatoria para bases de datos productivas, garantizando que no posean IPs públicas ni rutas al Internet Gateway.",
+        "category": "concept",
+        "slug": "subnet-privada"
+      }
+    ]
   },
   "allowedServices": [
     {

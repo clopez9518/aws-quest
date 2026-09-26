@@ -15,7 +15,22 @@
       "Solo pagas por los milisegundos de cómputo consumidos durante la ejecución.",
       "Escala automáticamente desde cero hasta miles de solicitudes concurrentes."
     ],
-    "estimatedReadTime": "30 seg"
+    "estimatedReadTime": "30 seg",
+    "keyComponents": [
+      {
+        "title": "Function as a Service (FaaS)",
+        "description": "Modelo de ejecución donde el código se ejecuta en respuesta a eventos sin aprovisionar ni administrar servidores de fondo.",
+        "category": "concept",
+        "slug": "aws-lambda"
+      },
+      {
+        "title": "AWS Lambda",
+        "description": "Servicio de cómputo serverless que ejecuta tu código con escalado automático por petición y cobro exacto por milisegundo utilizado.",
+        "serviceCode": "AWS_LAMBDA",
+        "category": "service",
+        "slug": "aws-lambda"
+      }
+    ]
   },
   "reflectionPrompt": {
     "question": "En términos de optimización de costos y arquitectura basada en eventos (Cost Optimization), ¿cuándo es más conveniente utilizar AWS Lambda en lugar de instancias Amazon EC2 24/7?",

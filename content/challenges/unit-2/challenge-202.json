@@ -15,7 +15,29 @@
       "Desacoplar capas reduce costos de cómputo y mejora la velocidad de carga de la aplicación.",
       "El frontend en S3 realiza peticiones asíncronas hacia el backend en EC2."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Desacoplamiento Estático / Dinámico",
+        "description": "Estrategia arquitectónica que separa la entrega de archivos estáticos (HTML/JS/CSS) del procesamiento computacional de APIs.",
+        "category": "concept",
+        "slug": "stateless-vs-stateful"
+      },
+      {
+        "title": "Amazon S3 (Hosting Estático)",
+        "description": "Aloja el frontend SPA a muy bajo costo y sin servidores dedicados, descargando de trabajo a la capa de cómputo.",
+        "serviceCode": "AWS_S3",
+        "category": "service",
+        "slug": "amazon-s3"
+      },
+      {
+        "title": "Amazon EC2 (API Backend)",
+        "description": "Servidor enfocado exclusivamente en ejecutar la lógica de negocio y exponer endpoints REST.",
+        "serviceCode": "AWS_EC2",
+        "category": "service",
+        "slug": "amazon-ec2"
+      }
+    ]
   },
   "allowedServices": [
     {

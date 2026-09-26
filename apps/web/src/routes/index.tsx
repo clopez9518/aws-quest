@@ -6,6 +6,7 @@ import { LoginPage } from '../features/auth/pages/LoginPage';
 import { RegisterPage } from '../features/auth/pages/RegisterPage';
 import { CatalogPage } from '../features/catalog/pages/CatalogPage';
 import { ChallengePage } from '../features/challenge/pages/ChallengePage';
+import { DictionaryPage } from '../features/dictionary/pages/DictionaryPage';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: 'challenges/:id',
         element: <ChallengePage />
+      },
+      {
+        path: 'dictionary',
+        element: <DictionaryPage />
       },
       {
         path: 'login',

@@ -15,7 +15,21 @@
       "Durante una caída total, el aislamiento de componentes y la reactivación por capas evita sobrecargas al restaurar los servicios.",
       "La automatización y pruebas periódicas de fallos (Chaos Engineering) fortalecen la resiliencia del sistema ante imprevistos."
     ],
-    "estimatedReadTime": "50 seg"
+    "estimatedReadTime": "50 seg",
+    "keyComponents": [
+      {
+        "title": "Recuperación ante Desastres (Disaster Recovery)",
+        "description": "Protocolo de reactivación y estabilización de servicios críticos tras fallas masivas en cascada con objetivos estrictos de RPO y RTO.",
+        "category": "concept",
+        "slug": "disaster-recovery-rpo-rto"
+      },
+      {
+        "title": "Reactivación y Aislamiento por Capas",
+        "description": "Restauración ordenada de conectividad perimetral, balanceo, escalado de cómputo y persistencia para estabilizar el sistema.",
+        "category": "concept",
+        "slug": "disaster-recovery-rpo-rto"
+      }
+    ]
   },
   "allowedServices": [
     {

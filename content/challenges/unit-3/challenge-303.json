@@ -15,7 +15,22 @@
       "El NAT Gateway reside en una subred pública y permite a las subredes privadas iniciar conexiones de salida a Internet.",
       "El NAT Gateway bloquea cualquier intento de conexión entrante no solicitada desde el exterior."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Aislamiento Seguro de Subredes Privadas",
+        "description": "Mantener servidores de datos o procesamiento sin direcciones IP públicas para bloquear cualquier conexión entrante no solicitada.",
+        "category": "concept",
+        "slug": "subnet-privada"
+      },
+      {
+        "title": "NAT Gateway",
+        "description": "Servicio administrado ubicado en una subred pública que permite a las instancias en subredes privadas conectarse a Internet para actualizaciones.",
+        "serviceCode": "AWS_NAT_GATEWAY",
+        "category": "service",
+        "slug": "nat-gateway"
+      }
+    ]
   },
   "allowedServices": [
     {

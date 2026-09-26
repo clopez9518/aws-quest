@@ -15,7 +15,21 @@
       "CloudFront y WAF protegen los balanceadores absorbiendo el tráfico estático y frenando bots maliciosos.",
       "Las bases de datos deben configurarse con réplicas de lectura y escalado elástico (ej. DynamoDB On-Demand o Aurora Serverless)."
     ],
-    "estimatedReadTime": "45 seg"
+    "estimatedReadTime": "45 seg",
+    "keyComponents": [
+      {
+        "title": "Amortiguación de Tráfico Explosivo",
+        "description": "Desacoplar la recepción de peticiones del procesamiento de órdenes mediante colas intermedias y cómputo serverless bajo demanda.",
+        "category": "concept",
+        "slug": "throttling-rate-limiting"
+      },
+      {
+        "title": "CloudFront + WAF + SQS + DynamoDB On-Demand",
+        "description": "Stack de resiliencia extrema para eventos con millones de usuarios concurrentes sin degradación de base de datos.",
+        "category": "concept",
+        "slug": "patron-bulkhead"
+      }
+    ]
   },
   "allowedServices": [
     {

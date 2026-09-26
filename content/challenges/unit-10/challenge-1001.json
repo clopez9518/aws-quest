@@ -15,7 +15,22 @@
       "CloudWatch Logs centraliza el almacenamiento y búsqueda de archivos de log de servidores y aplicaciones.",
       "Permite crear alarmas automáticas basadas en umbrales estáticos o detección de anomalías."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Telemetría y Observabilidad Centralizada",
+        "description": "Recolección de métricas numéricas en tiempo real y centralización de logs de servidores y aplicaciones en un repositorio unificado.",
+        "category": "concept",
+        "slug": "amazon-cloudwatch"
+      },
+      {
+        "title": "Amazon CloudWatch",
+        "description": "Servicio de monitoreo y observabilidad para recursos de AWS que provee métricas, dashboards, alarmas y almacenamiento de logs.",
+        "serviceCode": "AWS_CLOUDWATCH",
+        "category": "service",
+        "slug": "amazon-cloudwatch"
+      }
+    ]
   },
   "allowedServices": [
     {

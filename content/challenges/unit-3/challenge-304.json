@@ -15,7 +15,21 @@
       "Son 'stateful' (con estado): si se permite el tráfico entrante, la respuesta de salida se permite automáticamente.",
       "Por defecto bloquean todo el tráfico entrante a menos que se cree una regla explícita de permiso."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Firewall Virtual Stateful",
+        "description": "Mecanismo de seguridad con estado que permite automáticamente el tráfico de retorno correspondiente a una conexión de entrada autorizada.",
+        "category": "concept",
+        "slug": "security-group"
+      },
+      {
+        "title": "Security Groups",
+        "description": "Firewall virtual a nivel de interfaz de red que controla el tráfico entrante y saliente aplicando el principio de menor privilegio.",
+        "category": "service",
+        "slug": "security-group"
+      }
+    ]
   },
   "allowedServices": [
     {

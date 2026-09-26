@@ -15,7 +15,21 @@
       "El monitoreo continuo de métricas en vivo valida la efectividad de las medidas de mitigación aplicadas.",
       "Post-incidente, se deben ajustar las políticas de Auto Scaling y umbrales de alarma."
     ],
-    "estimatedReadTime": "45 seg"
+    "estimatedReadTime": "45 seg",
+    "keyComponents": [
+      {
+        "title": "Respuesta a Incidentes Críticos de Saturación",
+        "description": "Procedimiento de estabilización de emergencia para aislar componentes saturados e implementar escalado bajo telemetría en vivo.",
+        "category": "concept",
+        "slug": "auto-scaling-group"
+      },
+      {
+        "title": "Monitoreo en Tiempo Real y Auto Scaling",
+        "description": "Utilizar métricas de saturación para ajustar dinámicamente la capacidad del sistema durante picos imprevistos de demanda.",
+        "category": "concept",
+        "slug": "amazon-cloudwatch"
+      }
+    ]
   },
   "allowedServices": [
     {

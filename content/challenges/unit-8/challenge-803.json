@@ -15,7 +15,22 @@
       "Ofrece reglas administradas por AWS (AWS Managed Rules) contra el Top 10 de vulnerabilidades de OWASP.",
       "Permite aplicar límites de tasa (Rate Limiting) para frenar ataques de fuerza bruta y DDoS en capa de aplicación."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Firewall de Aplicaciones Web (Capa 7)",
+        "description": "Inspección de tráfico HTTP/HTTPS para detectar y mitigar ataques comunes como SQL Injection (SQLi), Cross-Site Scripting (XSS) y bots.",
+        "category": "concept",
+        "slug": "aws-waf"
+      },
+      {
+        "title": "AWS WAF",
+        "description": "Servicio de firewall web que aplica listas de control de acceso (Web ACLs) y reglas administradas directamente en CloudFront o ALB.",
+        "serviceCode": "AWS_WAF",
+        "category": "service",
+        "slug": "aws-waf"
+      }
+    ]
   },
   "allowedServices": [
     {

@@ -15,7 +15,22 @@
       "Aprovisiona recursos en el orden correcto y gestiona automáticamente dependencias y creación de recursos.",
       "Permite tratar la infraestructura como software, versionándola en Git y aplicando revisiones por pares (Code Reviews)."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Infraestructura Declarativa como Código (IaC)",
+        "description": "Definir y versionar recursos cloud mediante plantillas de texto en formato JSON/YAML tratándolos con las mejores prácticas del software.",
+        "category": "concept",
+        "slug": "aws-cloudformation"
+      },
+      {
+        "title": "AWS CloudFormation",
+        "description": "Servicio que automatiza el aprovisionamiento ordenado y consistente de recursos en AWS a partir de plantillas declarativas.",
+        "serviceCode": "AWS_CLOUDFORMATION",
+        "category": "service",
+        "slug": "aws-cloudformation"
+      }
+    ]
   },
   "allowedServices": [
     {

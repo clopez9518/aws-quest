@@ -15,7 +15,21 @@
       "Asignar funciones independientes por endpoint permite configurar memoria y timeouts específicos para cada operación.",
       "Mejora los tiempos de arranque en frío (Cold Starts) y facilita el mantenimiento y despliegue continuo."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Descomposición de Lambdaliths",
+        "description": "Refactorización de funciones monolíticas pesadas en micro-funciones especializadas con responsabilidades únicas y acotadas.",
+        "category": "concept",
+        "slug": "microservicios-serverless"
+      },
+      {
+        "title": "Enrutamiento Granular en API Gateway",
+        "description": "Configurar rutas individuales (/users, /orders) apuntando a funciones Lambda independientes para optimizar memoria y cold starts.",
+        "category": "concept",
+        "slug": "amazon-api-gateway"
+      }
+    ]
   },
   "allowedServices": [
     {

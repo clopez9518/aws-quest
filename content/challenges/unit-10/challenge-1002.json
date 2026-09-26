@@ -15,7 +15,21 @@
       "Las alarmas compuestas de CloudWatch permiten evaluar múltiples condiciones antes de alertar al personal de guardia.",
       "La observabilidad proactiva reduce drásticamente el tiempo medio de resolución (MTTR)."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Diagnóstico Operacional Basado en Métricas",
+        "description": "Monitorear la salud de la arquitectura mediante umbrales automatizados para detectar anomalías antes de que afecten a los clientes.",
+        "category": "concept",
+        "slug": "amazon-cloudwatch"
+      },
+      {
+        "title": "CloudWatch Alarms",
+        "description": "Alarmas que vigilan métricas clave (CPU, latencia, errores 5xx) y disparan acciones automáticas de escalado o notificaciones.",
+        "category": "concept",
+        "slug": "amazon-cloudwatch"
+      }
+    ]
   },
   "allowedServices": [
     {

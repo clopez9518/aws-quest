@@ -15,7 +15,22 @@
       "Utiliza reglas declarativas basadas en patrones JSON para filtrar y enrutar eventos hacia targets específicos.",
       "Facilita la evolución de arquitecturas Event-Driven desacopladas y escalables."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Arquitecturas Orientadas a Eventos (EDA)",
+        "description": "Diseño donde los servicios reaccionan a cambios de estado emitiendo y consumiendo eventos mediante un bus centralizado.",
+        "category": "concept",
+        "slug": "event-driven-architecture"
+      },
+      {
+        "title": "Amazon EventBridge",
+        "description": "Bus de eventos serverless que enruta eventos basándose en reglas y patrones JSON declarativos hacia múltiples destinos.",
+        "serviceCode": "AWS_EVENTBRIDGE",
+        "category": "service",
+        "slug": "amazon-eventbridge"
+      }
+    ]
   },
   "allowedServices": [
     {

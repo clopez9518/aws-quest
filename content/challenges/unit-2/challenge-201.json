@@ -15,7 +15,22 @@
       "Requiere una IP pública o DNS accesible desde la red pública de Internet.",
       "Es el punto de partida antes de desacoplar capas y añadir alta disponibilidad."
     ],
-    "estimatedReadTime": "30 seg"
+    "estimatedReadTime": "30 seg",
+    "keyComponents": [
+      {
+        "title": "Servidor Web Monolítico",
+        "description": "Aloja tanto el frontend estático como el backend dinámico en una única máquina virtual accesible a través de la red pública.",
+        "category": "concept",
+        "slug": "amazon-ec2"
+      },
+      {
+        "title": "Amazon EC2 (Web Server)",
+        "description": "Instancia con software de servidor web (Nginx/Apache) configurada para responder solicitudes HTTP en el puerto 80/443.",
+        "serviceCode": "AWS_EC2",
+        "category": "service",
+        "slug": "amazon-ec2"
+      }
+    ]
   },
   "allowedServices": [
     {

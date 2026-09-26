@@ -15,7 +15,21 @@
       "Un balanceador de carga o API Gateway redirige rutas específicas (/orders, /users) hacia los nuevos microservicios.",
       "Reduce el riesgo operativo y permite entregas de valor continuas al negocio durante la transición."
     ],
-    "estimatedReadTime": "50 seg"
+    "estimatedReadTime": "50 seg",
+    "keyComponents": [
+      {
+        "title": "Patrón Strangler Fig",
+        "description": "Estrategia de modernización que reemplaza progresivamente funcionalidades de un monolito por microservicios independientes.",
+        "category": "concept",
+        "slug": "patron-strangler-fig"
+      },
+      {
+        "title": "ALB Path Routing + ECS Fargate",
+        "description": "Enrutamiento inteligente en el balanceador que redirige rutas específicas hacia nuevos microservicios contenerizados.",
+        "category": "concept",
+        "slug": "patron-strangler-fig"
+      }
+    ]
   },
   "allowedServices": [
     {

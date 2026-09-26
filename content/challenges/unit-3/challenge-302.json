@@ -15,7 +15,21 @@
       "Una subred es 'pública' si su Route Table tiene una ruta explícita 0.0.0.0/0 apuntando al IGW.",
       "Las instancias en subredes públicas requieren una dirección IPv4 pública para recibir tráfico externo."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Puerta de Enlace a Internet (Internet Gateway)",
+        "description": "Componente de red administrado, redundante y de alta disponibilidad que conecta una VPC a Internet.",
+        "category": "concept",
+        "slug": "internet-gateway"
+      },
+      {
+        "title": "Tablas de Ruteo (Route Tables)",
+        "description": "Reglas de ruteo que determinan hacia dónde se dirige el tráfico de red de cada subred (ej. destino 0.0.0.0/0 apuntando al IGW).",
+        "category": "concept",
+        "slug": "route-table"
+      }
+    ]
   },
   "allowedServices": [
     {

@@ -15,7 +15,22 @@
       "Amazon S3 ofrece 11 nueves (99.999999999%) de durabilidad para objetos multimedia.",
       "Almacenar objetos fuera de EC2 reduce costos de disco y previene pérdida de datos."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Almacenamiento de Objetos",
+        "description": "Almacenamiento altamente escalable que organiza datos como objetos compuestos por datos, metadatos y un identificador único accesible vía HTTP/S.",
+        "category": "concept",
+        "slug": "amazon-s3"
+      },
+      {
+        "title": "Amazon S3",
+        "description": "Servicio de almacenamiento de objetos diseñado para ofrecer 99.999999999% (11 nueves) de durabilidad y capacidad prácticamente ilimitada.",
+        "serviceCode": "AWS_S3",
+        "category": "service",
+        "slug": "amazon-s3"
+      }
+    ]
   },
   "reflectionPrompt": {
     "question": "¿Por qué es una mejor práctica arquitectónica almacenar imágenes de usuario en Amazon S3 en lugar del volumen EBS de la instancia EC2?",

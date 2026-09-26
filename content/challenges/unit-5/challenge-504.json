@@ -15,7 +15,22 @@
       "En caso de falla en la instancia primaria, RDS ejecuta un failover automático en minutos sin cambiar el endpoint DNS.",
       "Brinda alta disponibilidad (HA) y tolerancia a fallas a nivel de almacenamiento y cómputo."
     ],
-    "estimatedReadTime": "40 seg"
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Replicación Síncrona y Failover Automático",
+        "description": "Mecanismo de alta disponibilidad donde las transacciones se replican simultáneamente a una instancia standby en otra zona de disponibilidad.",
+        "category": "concept",
+        "slug": "multi-az-replication"
+      },
+      {
+        "title": "Amazon RDS Multi-AZ",
+        "description": "Configuración de base de datos que conmuta automáticamente por error en caso de fallo en el nodo primario sin cambiar la cadena de conexión.",
+        "serviceCode": "AWS_RDS",
+        "category": "service",
+        "slug": "amazon-rds"
+      }
+    ]
   },
   "allowedServices": [
     {

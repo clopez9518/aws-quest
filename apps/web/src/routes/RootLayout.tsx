@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAuthStore } from '../shared/stores/useAuthStore';
+import { useDictionaryStore } from '../features/dictionary/stores/useDictionaryStore';
+import { DictionaryModal } from '../features/dictionary/components/DictionaryModal';
+import { DictionaryDrawer } from '../features/dictionary/components/DictionaryDrawer';
 import { XpProgressBar } from '../shared/components/XpProgressBar';
 import { UserSessionMenu } from '../features/auth/components/UserSessionMenu';
 import { AuthModal } from '../features/auth/components/AuthModal';
@@ -9,6 +12,7 @@ import { Cloud } from 'lucide-react';
 
 export function RootLayout() {
   const user = useAuthStore((state) => state.user);
+  const openSpotlight = useDictionaryStore((state) => state.openSpotlight);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   return (
@@ -38,8 +42,37 @@ export function RootLayout() {
           </div>
         </Link>
 
-        {/* User Stats, Theme Toggle & Session Status */}
+        {/* Navigation Links */}
+        <nav className="hidden sm:flex items-center space-x-1 sm:space-x-2" aria-label="Navegación principal">
+          <Link
+            to="/catalog"
+            className="px-3 py-1.5 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            Desafíos
+          </Link>
+          <Link
+            to="/dictionary"
+            className="px-3 py-1.5 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            Diccionario
+          </Link>
+        </nav>
+
+        {/* User Stats, Dictionary Button, Theme Toggle & Session Status */}
         <div className="flex items-center space-x-2 sm:space-x-3">
+          <button
+            type="button"
+            onClick={() => openSpotlight()}
+            className="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 rounded-xl border border-slate-200/80 dark:border-slate-700/60 transition-colors shadow-xs"
+            aria-label="Abrir glosario y diccionario (Ctrl + K)"
+            title="Abrir glosario y diccionario (Ctrl + K)"
+          >
+            <span className="text-sm">📚</span>
+            <span className="hidden sm:inline">Glosario</span>
+            <kbd className="hidden md:inline-block ml-1 px-1.5 py-0.5 text-[10px] font-semibold bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded shadow-xs text-slate-500">
+              Ctrl K
+            </kbd>
+          </button>
           <XpProgressBar totalXp={user?.totalXP ?? 0} />
           <ThemeToggle />
           <UserSessionMenu onOpenAuthModal={() => setIsAuthModalOpen(true)} />
@@ -56,6 +89,12 @@ export function RootLayout() {
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
       />
+
+      {/* Modal Spotlight del Diccionario */}
+      <DictionaryModal />
+
+      {/* Panel Lateral Contextual del Diccionario */}
+      <DictionaryDrawer />
     </div>
   );
 }

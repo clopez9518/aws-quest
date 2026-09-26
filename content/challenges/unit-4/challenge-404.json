@@ -15,7 +15,21 @@
       "Permite la rotación automática de credenciales sin interrumpir las aplicaciones en producción.",
       "Las aplicaciones recuperan credenciales programáticamente en tiempo de ejecución mediante llamadas a la API de AWS."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Custodia y Rotación de Credenciales",
+        "description": "Eliminación de contraseñas fijas en el código fuente mediante un repositorio seguro con cifrado en reposo y rotación automática.",
+        "category": "concept",
+        "slug": "aws-secrets-manager"
+      },
+      {
+        "title": "AWS Secrets Manager",
+        "description": "Servicio para almacenar, rotar y recuperar credenciales de bases de datos y llaves de API de forma dinámica mediante llamadas a la API de AWS.",
+        "category": "service",
+        "slug": "aws-secrets-manager"
+      }
+    ]
   },
   "allowedServices": [
     {

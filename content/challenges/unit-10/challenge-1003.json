@@ -15,7 +15,22 @@
       "Permite realizar investigaciones forenses de seguridad y cumplir con normativas regulatorias (SOC2, PCI-DSS, ISO).",
       "Se integra con CloudWatch Logs para alertar en tiempo real ante cambios críticos en la infraestructura."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Auditoría de Actividad y Cumplimiento (Governance)",
+        "description": "Registro continuo e inmutable de todas las acciones y llamadas a las APIs de AWS realizadas en la cuenta.",
+        "category": "concept",
+        "slug": "aws-cloudtrail"
+      },
+      {
+        "title": "AWS CloudTrail",
+        "description": "Servicio de auditoría que registra quién ejecutó una acción, qué recurso fue modificado, cuándo ocurrió y desde qué dirección IP.",
+        "serviceCode": "AWS_CLOUDTRAIL",
+        "category": "service",
+        "slug": "aws-cloudtrail"
+      }
+    ]
   },
   "allowedServices": [
     {

@@ -15,7 +15,22 @@
       "Garantiza la retención y durabilidad de los mensajes ante caídas temporales de los servidores consumidores.",
       "Elimina llamadas síncronas bloqueantes mejorando radicalmente la experiencia del usuario final."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Desacoplamiento Asíncrono con Colas",
+        "description": "Amortiguar solicitudes pesadas almacenando mensajes en una cola para que los trabajadores (workers) los procesen a su propio ritmo.",
+        "category": "concept",
+        "slug": "amazon-sqs"
+      },
+      {
+        "title": "Amazon SQS",
+        "description": "Servicio de colas de mensajes durables y escalables que elimina bloqueos síncronos entre servicios web y procesos batch.",
+        "serviceCode": "AWS_SQS",
+        "category": "service",
+        "slug": "amazon-sqs"
+      }
+    ]
   },
   "allowedServices": [
     {

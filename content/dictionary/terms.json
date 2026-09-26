@@ -1,0 +1,2091 @@
+{
+  "$schema": "./dictionary.schema.json",
+  "terms": [
+    {
+      "slug": "amazon-ec2",
+      "title": "Amazon EC2",
+      "category": "service",
+      "serviceCode": "AWS_EC2",
+      "pillar": "CostOptimization",
+      "shortDefinition": "Servidores virtuales elásticos en la nube con capacidad de cómputo configurable y bajo demanda.",
+      "whatIs": "Amazon Elastic Compute Cloud (Amazon EC2) proporciona capacidad informática segura y de tamaño modificable en la nube. Permite aprovisionar instancias virtuales con diversos sistemas operativos, CPUs, memoria y configuraciones de red, integrándose nativamente con almacenamiento de bloques (EBS) y balanceadores de carga.",
+      "whenToUse": [
+        "Cargas de trabajo monolíticas tradicionales o migraciones 'lift-and-shift'.",
+        "Aplicaciones que requieren control directo sobre el sistema operativo, controladores o sockets de red.",
+        "Procesamiento por lotes o computación intensiva que escala mediante Auto Scaling Groups (ASG)."
+      ],
+      "tradeOffs": {
+        "pros": "Control total del sistema operativo, amplia variedad de familias de instancias (Compute, Memory, Storage), compatibilidad universal.",
+        "cons": "Mayor responsabilidad operativa (parcheo, mantenimiento del SO, monitoreo de salud) respecto a soluciones Serverless o contenedores administrados."
+      },
+      "relatedTermSlugs": [
+        "amazon-ebs",
+        "auto-scaling-group",
+        "application-load-balancer",
+        "escalabilidad-horizontal",
+        "subnet-privada"
+      ],
+      "associatedChallengeIds": [
+        "ch-ec2-single-instance",
+        "ch-ec2-high-availability"
+      ],
+      "displayOrder": 1
+    },
+    {
+      "slug": "amazon-s3",
+      "title": "Amazon S3",
+      "category": "service",
+      "serviceCode": "AWS_S3",
+      "pillar": "Reliability",
+      "shortDefinition": "Almacenamiento de objetos escalable con durabilidad del 99.999999999% (11 9s) y alta disponibilidad.",
+      "whatIs": "Amazon Simple Storage Service (Amazon S3) es un servicio de almacenamiento de objetos líder en la industria. Permite almacenar y proteger cualquier cantidad de datos para sitios web estáticos, lagos de datos (Data Lakes), copias de seguridad y archivos multimedia con políticas de ciclo de vida automáticas.",
+      "whenToUse": [
+        "Alojamiento de activos estáticos para aplicaciones web (HTML, CSS, JS, imágenes).",
+        "Repositorio central para Data Lakes, backups y archivos de registro.",
+        "Distribución global de contenido como origen de Amazon CloudFront."
+      ],
+      "tradeOffs": {
+        "pros": "Durabilidad masiva de 11 nueves, escalabilidad prácticamente ilimitada, bajo costo por GB, cifrado en reposo y en tránsito nativo.",
+        "cons": "No es un sistema de archivos POSIX ni almacenamiento de bloques; no apto para bases de datos transaccionales con escrituras aleatorias continuas."
+      },
+      "relatedTermSlugs": [
+        "amazon-cloudfront",
+        "caching-perimetral",
+        "seguridad-cloud"
+      ],
+      "associatedChallengeIds": [
+        "ch-s3-static-hosting",
+        "ch-s3-secure-bucket"
+      ],
+      "displayOrder": 2
+    },
+    {
+      "slug": "amazon-rds",
+      "title": "Amazon RDS",
+      "category": "service",
+      "serviceCode": "AWS_RDS",
+      "pillar": "Reliability",
+      "shortDefinition": "Servicio de bases de datos relacionales administradas compatible con PostgreSQL, MySQL, MariaDB y SQL Server.",
+      "whatIs": "Amazon Relational Database Service (Amazon RDS) facilita la configuración, operación y escalado de bases de datos relacionales en la nube. Automatiza tareas tediosas de administración como aprovisionamiento de hardware, configuración de base de datos, parches, copias de seguridad automáticas y conmutación por error con implementación Multi-AZ.",
+      "whenToUse": [
+        "Aplicaciones empresariales que requieren esquemas relacionales, transacciones ACID y consultas SQL complejas.",
+        "Sistemas OLTP con necesidad de alta disponibilidad y conmutación automática ante fallos mediante Multi-AZ.",
+        "Escenarios con alta carga de lectura que se benefician de réplicas de lectura (Read Replicas)."
+      ],
+      "tradeOffs": {
+        "pros": "Copias de seguridad automáticas, failover sincrónico Multi-AZ sin pérdida de datos, escalado vertical sencillo de cómputo y almacenamiento.",
+        "cons": "Mayor costo que operar un motor autogestionado en EC2; escalado horizontal de escrituras limitado comparado con motores NoSQL distribuidos."
+      },
+      "relatedTermSlugs": [
+        "multi-az-replication",
+        "alta-disponibilidad",
+        "subnet-privada",
+        "security-group",
+        "amazon-dynamodb",
+        "read-replicas"
+      ],
+      "associatedChallengeIds": [
+        "ch-rds-multi-az",
+        "ch-rds-read-replicas"
+      ],
+      "displayOrder": 3
+    },
+    {
+      "slug": "amazon-dynamodb",
+      "title": "Amazon DynamoDB",
+      "category": "service",
+      "serviceCode": "AWS_DYNAMODB",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Base de datos NoSQL de clave-valor y documentos totalmente administrada con rendimiento de milisegundos de un solo dígito.",
+      "whatIs": "Amazon DynamoDB es una base de datos NoSQL serverless diseñada para ejecutar aplicaciones de misión crítica a cualquier escala con latencias ultrabajas de milisegundos de un dígito. Ofrece capacidad bajo demanda (on-demand), replicación global activa-activa (Global Tables) y flujos de eventos (DynamoDB Streams).",
+      "whenToUse": [
+        "Aplicaciones con alto volumen de operaciones de lectura/escritura predecibles por clave primaria (e.g. perfiles de usuario, carritos de compras, catálogos).",
+        "Arquitecturas serverless y microservicios que demandan autoescalado instantáneo sin aprovisionamiento de conexiones.",
+        "Sistemas distribuidos globalmente con replicación multi-región."
+      ],
+      "tradeOffs": {
+        "pros": "Escalabilidad ilimitada sin servidores, latencia de un dígito de milisegundo a cualquier escala, mantenimiento cero de infraestructura.",
+        "cons": "Modelo de datos rígido (requiere diseñar el esquema en base a los patrones de acceso), soporte limitado para consultas complejas o joins relacionales."
+      },
+      "relatedTermSlugs": [
+        "aws-lambda",
+        "microservicios-serverless",
+        "database-sharding",
+        "patron-fan-out"
+      ],
+      "associatedChallengeIds": [
+        "ch-dynamodb-crud",
+        "ch-serverless-architecture"
+      ],
+      "displayOrder": 4
+    },
+    {
+      "slug": "amazon-vpc",
+      "title": "Amazon VPC",
+      "category": "service",
+      "serviceCode": "NET_VPC",
+      "pillar": "Security",
+      "shortDefinition": "Red virtual lógicamente aislada en AWS donde se aprovisionan y aseguran todos los recursos cloud.",
+      "whatIs": "Amazon Virtual Private Cloud (Amazon VPC) te permite aprovisionar una sección lógicamente aislada de la nube de AWS donde puedes lanzar recursos en una red virtual definida por ti. Tienes control total sobre el entorno de red virtual, incluida la selección de rangos de direcciones IP, creación de subredes y configuración de tablas de enrutamiento y puertas de enlace.",
+      "whenToUse": [
+        "Fundación obligatoria para cualquier arquitectura segura en la nube.",
+        "Aislamiento de bases de datos y servicios backend en redes privadas no expuestas a Internet.",
+        "Conexión segura hacia redes corporativas on-premises mediante VPN o Direct Connect."
+      ],
+      "tradeOffs": {
+        "pros": "Aislamiento de red estricto (capa 3 y 4), control granular de tráfico con Security Groups y NACLs, soporte de topologías multi-AZ.",
+        "cons": "Requiere diseño cuidadoso de direccionamiento CIDR para evitar superposiciones y agotamiento de IPs."
+      },
+      "relatedTermSlugs": [
+        "subnet-publica",
+        "subnet-privada",
+        "internet-gateway",
+        "nat-gateway",
+        "security-group",
+        "cidr-block"
+      ],
+      "associatedChallengeIds": [
+        "ch-vpc-custom-setup",
+        "ch-multi-tier-vpc"
+      ],
+      "displayOrder": 5
+    },
+    {
+      "slug": "amazon-cloudfront",
+      "title": "Amazon CloudFront",
+      "category": "service",
+      "serviceCode": "AWS_CLOUDFRONT",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Red de entrega de contenido (CDN) global rápida, segura y programable para entregar datos y APIs con baja latencia.",
+      "whatIs": "Amazon CloudFront es un servicio de red de entrega de contenido (CDN) que acelera la distribución de contenido estático y dinámico (como archivos .html, .css, .js, imágenes y transmisiones de video) a los usuarios finales mediante una red global de cientos de ubicaciones perimetrales (Edge Locations).",
+      "whenToUse": [
+        "Aceleración de distribución de sitios web estáticos alojados en Amazon S3.",
+        "Mitigación de ataques DDoS y protección en capa 7 mediante integración con AWS WAF.",
+        "Terminación SSL/TLS perimetral y compresión gzip/brotli automática de respuestas API."
+      ],
+      "tradeOffs": {
+        "pros": "Reduce drásticamente la latencia para usuarios globales, absorbe picos de tráfico protegiendo el origen, reduce costos de transferencia de datos de salida.",
+        "cons": "Requiere gestión de invalidaciones de caché para contenido que cambia con frecuencia; posibles discrepancias si las cabeceras Cache-Control están mal configuradas."
+      },
+      "relatedTermSlugs": [
+        "amazon-s3",
+        "caching-perimetral",
+        "aws-waf",
+        "amazon-route-53"
+      ],
+      "associatedChallengeIds": [
+        "ch-cloudfront-cdn",
+        "ch-s3-cloudfront-secure"
+      ],
+      "displayOrder": 6
+    },
+    {
+      "slug": "amazon-route-53",
+      "title": "Amazon Route 53",
+      "category": "service",
+      "serviceCode": "AWS_ROUTE53",
+      "pillar": "Reliability",
+      "shortDefinition": "Servicio de DNS web altamente disponible y escalable con enrutamiento inteligente y comprobaciones de estado.",
+      "whatIs": "Amazon Route 53 es un servicio web del Sistema de Nombres de Dominio (DNS) con un SLA de disponibilidad del 100%. Conecta de manera confiable las solicitudes de los usuarios con aplicaciones que se ejecutan en AWS (como balanceadores de carga, buckets de S3 o instancias EC2) o en infraestructura local, ofreciendo políticas de enrutamiento basadas en latencia, geolocalización, conmutación por error y ponderación.",
+      "whenToUse": [
+        "Resolución de nombres de dominio y registro de zonas DNS públicas y privadas.",
+        "Enrutamiento por conmutación por error (Failover Routing) para arquitecturas de recuperación ante desastres (Disaster Recovery).",
+        "Enrutamiento basado en latencia y geoproximidad para arquitecturas multi-región."
+      ],
+      "tradeOffs": {
+        "pros": "SLA del 100% de disponibilidad, integración nativa con alias de servicios AWS sin costo de consulta DNS, health checks integrados.",
+        "cons": "La propagación DNS externa depende de los TTLs configurados y de los servidores recursivos de los ISP de los clientes."
+      },
+      "relatedTermSlugs": [
+        "alta-disponibilidad",
+        "disaster-recovery-rpo-rto",
+        "amazon-cloudfront",
+        "application-load-balancer"
+      ],
+      "associatedChallengeIds": [
+        "ch-route53-dns-failover",
+        "ch-multi-region-dns"
+      ],
+      "displayOrder": 7
+    },
+    {
+      "slug": "application-load-balancer",
+      "title": "Application Load Balancer (ALB)",
+      "category": "service",
+      "serviceCode": "AWS_ALB",
+      "pillar": "Reliability",
+      "shortDefinition": "Balanceador de carga elástico de capa 7 (HTTP/HTTPS) con enrutamiento avanzado basado en contenido.",
+      "whatIs": "Application Load Balancer opera en la capa de aplicación (capa 7 del modelo OSI). Permite enrutar el tráfico HTTP/HTTPS a múltiples destinos (instancias EC2, contenedores ECS, funciones Lambda o direcciones IP) en función del contenido de la solicitud, como rutas de URL (/api, /images), cabeceras HTTP o nombres de host.",
+      "whenToUse": [
+        "Distribución de tráfico HTTP/HTTPS entre múltiples instancias o contenedores en diferentes zonas de disponibilidad.",
+        "Arquitecturas de microservicios con enrutamiento basado en rutas (/users → servicio A, /orders → servicio B).",
+        "Terminación de certificados SSL/TLS y redirección obligatoria de HTTP a HTTPS."
+      ],
+      "tradeOffs": {
+        "pros": "Enrutamiento flexible por cabeceras/rutas, soporte de WebSockets y HTTP/2, health checks avanzados a nivel de endpoint.",
+        "cons": "Mayor latencia que un NLB de capa 4; no apto para protocolos no HTTP como TCP puro, UDP o gaming en tiempo real."
+      },
+      "relatedTermSlugs": [
+        "network-load-balancer",
+        "target-group-health-checks",
+        "auto-scaling-group",
+        "alta-disponibilidad"
+      ],
+      "associatedChallengeIds": [
+        "ch-alb-multi-az",
+        "ch-alb-path-routing"
+      ],
+      "displayOrder": 8
+    },
+    {
+      "slug": "network-load-balancer",
+      "title": "Network Load Balancer (NLB)",
+      "category": "service",
+      "serviceCode": "AWS_NLB",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Balanceador de carga de capa 4 (TCP/UDP/TLS) de ultra alto rendimiento y latencia de microsegundos.",
+      "whatIs": "Network Load Balancer opera en la capa de transporte (capa 4) y es capaz de manejar millones de solicitudes por segundo manteniendo latencias de microsegundos ultra bajas. Proporciona una dirección IP elástica estática por zona de disponibilidad y preserva la IP de origen del cliente sin modificar los paquetes.",
+      "whenToUse": [
+        "Cargas de trabajo con protocolos TCP, UDP o TLS no basados en HTTP (e.g. streaming en tiempo real, juegos multijugador, IoT).",
+        "Aplicaciones que requieren direcciones IP fijas estáticas para listas blancas de firewalls corporativos.",
+        "Sistemas financieros y de trading que demandan latencia mínima constante y rendimiento extremo."
+      ],
+      "tradeOffs": {
+        "pros": "Rendimiento extremo con millones de RPS, latencia de microsegundos, asignación de IPs elásticas estáticas dedicadas.",
+        "cons": "No realiza inspección de capa 7 (no puede enrutar por URL, cookies o cabeceras HTTP) ni modifica cabeceras como X-Forwarded-For."
+      },
+      "relatedTermSlugs": [
+        "application-load-balancer",
+        "target-group-health-checks",
+        "alta-disponibilidad"
+      ],
+      "associatedChallengeIds": [
+        "ch-nlb-high-throughput"
+      ],
+      "displayOrder": 9
+    },
+    {
+      "slug": "auto-scaling-group",
+      "title": "Auto Scaling Group (ASG)",
+      "category": "service",
+      "serviceCode": "AWS_ASG",
+      "pillar": "Reliability",
+      "shortDefinition": "Colección de instancias EC2 que se ajusta automáticamente para mantener la disponibilidad y optimizar costos.",
+      "whatIs": "Un Auto Scaling Group contiene una colección de instancias EC2 tratadas como una unidad lógica. Permite definir capacidades mínimas, deseadas y máximas, reemplazando automáticamente instancias defectuosas y escalando hacia afuera (scale-out) o hacia adentro (scale-in) según métricas de demanda como CPU, red o colas SQS.",
+      "whenToUse": [
+        "Aplicaciones web con patrones de tráfico variables o picos imprevistos.",
+        "Garantizar la auto-reparación (self-healing) de instancias caídas reemplazándolas automáticamente.",
+        "Optimización de costos combinando instancias On-Demand con instancias Spot."
+      ],
+      "tradeOffs": {
+        "pros": "Alta disponibilidad automática, auto-reparación de servidores con fallo, optimización de costos basada en demanda real.",
+        "cons": "El tiempo de arranque de nuevas instancias (bootstrapping) puede demorar varios minutos si las imágenes AMI no están optimizadas."
+      },
+      "relatedTermSlugs": [
+        "amazon-ec2",
+        "application-load-balancer",
+        "escalabilidad-horizontal",
+        "single-point-of-failure"
+      ],
+      "associatedChallengeIds": [
+        "ch-asg-scaling-policies",
+        "ch-ha-auto-healing"
+      ],
+      "displayOrder": 10
+    },
+    {
+      "slug": "amazon-ebs",
+      "title": "Amazon Elastic Block Store (EBS)",
+      "category": "service",
+      "serviceCode": "AWS_EBS",
+      "pillar": "Reliability",
+      "shortDefinition": "Volúmenes de almacenamiento en bloque de alto rendimiento persistentes para instancias EC2.",
+      "whatIs": "Amazon Elastic Block Store (Amazon EBS) proporciona volúmenes de almacenamiento en bloque persistentes para su uso con instancias EC2. Se replican automáticamente dentro de su zona de disponibilidad para proteger las cargas de trabajo contra fallos de componentes individuales.",
+      "whenToUse": [
+        "Discos del sistema operativo raíz y particiones de datos primarias para instancias EC2.",
+        "Bases de datos autogestionadas que requieren IOPS provisionados constantes (ej. gp3, io2 Block Express).",
+        "Instantáneas (snapshots) incrementales respaldadas en Amazon S3 para recuperación ante desastres."
+      ],
+      "tradeOffs": {
+        "pros": "Rendimiento predecible con IOPS configurables independientemente del tamaño, snapshots point-in-time a S3, cifrado transparente.",
+        "cons": "Un volumen EBS estándar solo puede conectarse a una sola instancia EC2 a la vez dentro de la misma Zona de Disponibilidad."
+      },
+      "relatedTermSlugs": [
+        "amazon-ec2",
+        "amazon-efs",
+        "amazon-s3"
+      ],
+      "associatedChallengeIds": [
+        "ch-ebs-volume-snapshots"
+      ],
+      "displayOrder": 11
+    },
+    {
+      "slug": "amazon-efs",
+      "title": "Amazon Elastic File System (EFS)",
+      "category": "service",
+      "serviceCode": "AWS_EFS",
+      "pillar": "Reliability",
+      "shortDefinition": "Sistema de archivos NFS elástico, totalmente administrado y compartido para múltiples instancias y contenedores.",
+      "whatIs": "Amazon EFS ofrece un sistema de archivos elástico y sin servidor compatible con el protocolo NFSv4. Crece y decrece automáticamente a medida que agregas o eliminas archivos, permitiendo que miles de instancias EC2, contenedores ECS/EKS y funciones Lambda accedan simultáneamente a los mismos datos.",
+      "whenToUse": [
+        "Almacenamiento compartido para clusters de servidores web (ej. WordPress, Drupal) o aplicaciones heredadas.",
+        "Sistemas de procesamiento de datos o analítica que comparten un espacio de trabajo común.",
+        "Almacenamiento persistente multi-AZ para microservicios en contenedores."
+      ],
+      "tradeOffs": {
+        "pros": "Acceso multi-AZ simultáneo para miles de clientes, escalado elástico automático de capacidad, compatibilidad POSIX completa.",
+        "cons": "Mayor costo por GB que EBS o S3; mayor latencia que volúmenes EBS locales en accesos a archivos pequeños intensivos."
+      },
+      "relatedTermSlugs": [
+        "amazon-ebs",
+        "amazon-ec2",
+        "amazon-s3"
+      ],
+      "associatedChallengeIds": [
+        "ch-efs-shared-storage"
+      ],
+      "displayOrder": 12
+    },
+    {
+      "slug": "aws-lambda",
+      "title": "AWS Lambda",
+      "category": "service",
+      "serviceCode": "AWS_LAMBDA",
+      "pillar": "CostOptimization",
+      "shortDefinition": "Servicio de computación Serverless que ejecuta código en respuesta a eventos sin aprovisionar ni administrar servidores.",
+      "whatIs": "AWS Lambda permite ejecutar código sin aprovisionar ni administrar servidores. Pagas únicamente por el tiempo de cómputo que consumes (medido en milisegundos). Escala automáticamente desde unas pocas solicitudes al día hasta cientos de miles por segundo en respuesta a eventos de S3, DynamoDB, API Gateway, SQS o EventBridge.",
+      "whenToUse": [
+        "Backends de APIs web y microservicios serverless en combinación con API Gateway.",
+        "Procesamiento asíncrono de eventos (transformación de imágenes en S3, procesamiento de colas SQS).",
+        "Tareas de mantenimiento programadas o automatizaciones de infraestructura con EventBridge."
+      ],
+      "tradeOffs": {
+        "pros": "Mantenimiento cero de servidores, autoescalado instantáneo por invocación, cobro exacto por milisegundo de ejecución sin costo en reposo.",
+        "cons": "Tiempo límite máximo de ejecución de 15 minutos por invocación; riesgo de latencia inicial por arranques en frío (cold starts)."
+      },
+      "relatedTermSlugs": [
+        "amazon-api-gateway",
+        "amazon-sqs",
+        "amazon-eventbridge",
+        "microservicios-serverless",
+        "desacoplamiento-asincrono"
+      ],
+      "associatedChallengeIds": [
+        "ch-lambda-basics",
+        "ch-serverless-api"
+      ],
+      "displayOrder": 13
+    },
+    {
+      "slug": "amazon-api-gateway",
+      "title": "Amazon API Gateway",
+      "category": "service",
+      "serviceCode": "AWS_APIGW",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Servicio totalmente administrado para crear, publicar, mantener, monitorear y proteger APIs REST y WebSocket a cualquier escala.",
+      "whatIs": "Amazon API Gateway actúa como una puerta de entrada segura para que las aplicaciones accedan a datos, lógica empresarial o funcionalidades desde sus servicios backend (como cargas de trabajo en AWS Lambda, ECS o servidores EC2). Gestiona autenticación, control de tráfico (throttling), CORS, almacenamiento en caché y control de versiones.",
+      "whenToUse": [
+        "Exposición de endpoints RESTful o WebSocket para aplicaciones web, móviles o clientes B2B.",
+        "Control de cuotas y rate limiting para proteger backends contra sobrecargas o ataques.",
+        "Validación de tokens JWT mediante Cognito Authorizers o Lambda Custom Authorizers."
+      ],
+      "tradeOffs": {
+        "pros": "Manejo automático de tráfico masivo, integración nativa con Cognito y WAF, soporte de transformaciones de solicitud/respuesta y caching.",
+        "cons": "Timeout máximo de 29 segundos por solicitud HTTP; costo por millón de peticiones puede incrementarse en volúmenes extremadamente masivos."
+      },
+      "relatedTermSlugs": [
+        "aws-lambda",
+        "aws-waf",
+        "throttling-rate-limiting",
+        "microservicios-serverless"
+      ],
+      "associatedChallengeIds": [
+        "ch-apigw-rest-api",
+        "ch-serverless-api"
+      ],
+      "displayOrder": 14
+    },
+    {
+      "slug": "amazon-sqs",
+      "title": "Amazon Simple Queue Service (SQS)",
+      "category": "service",
+      "serviceCode": "AWS_SQS",
+      "pillar": "Reliability",
+      "shortDefinition": "Servicio de colas de mensajes administrado que permite desacoplar y escalar microservicios y sistemas distribuidos.",
+      "whatIs": "Amazon SQS es un servicio de colas de mensajes totalmente administrado que permite desacoplar y escalar microservicios, sistemas serverless y aplicaciones distribuidas. Elimina la complejidad de administrar middleware orientado a mensajes, garantizando la entrega de mensajes al menos una vez (Standard) o exactamente una vez en orden estricto (FIFO).",
+      "whenToUse": [
+        "Amortiguación de picos de tráfico repentinos (*buffer*) entre productores y consumidores.",
+        "Desacoplamiento asíncrono de tareas pesadas (ej. generación de PDFs, procesamiento de videos).",
+        "Implementación de arquitecturas tolerantes a fallos con colas de mensajes fallidos (Dead Letter Queues - DLQ)."
+      ],
+      "tradeOffs": {
+        "pros": "Escalabilidad prácticamente ilimitada sin aprovisionamiento, alta durabilidad con replicación multi-AZ, soporte nativo de Dead-Letter Queues.",
+        "cons": "En colas estándar no se garantiza ordenación estricta (puede haber duplicados ocasionales que exigen consumidores idempotentes)."
+      },
+      "relatedTermSlugs": [
+        "desacoplamiento-asincrono",
+        "patron-fan-out",
+        "idempotencia",
+        "amazon-sns",
+        "aws-lambda"
+      ],
+      "associatedChallengeIds": [
+        "ch-sqs-async-processing",
+        "ch-decoupled-messaging"
+      ],
+      "displayOrder": 15
+    },
+    {
+      "slug": "amazon-sns",
+      "title": "Amazon Simple Notification Service (SNS)",
+      "category": "service",
+      "serviceCode": "AWS_SNS",
+      "pillar": "Reliability",
+      "shortDefinition": "Servicio de mensajería de publicación/suscripción (Pub/Sub) para distribución masiva de eventos a múltiples suscriptores.",
+      "whatIs": "Amazon SNS es un servicio administrado de mensajería Pub/Sub de alta disponibilidad. Permite a los publicadores enviar mensajes a un tema (Topic), que se distribuyen instantáneamente a múltiples sistemas suscriptores en paralelo (como colas SQS, funciones Lambda, endpoints HTTPS, emails o SMS).",
+      "whenToUse": [
+        "Patrón Fan-Out para replicar un mismo evento hacia múltiples colas SQS de diferentes microservicios.",
+        "Notificaciones masivas en tiempo real a usuarios móviles vía Push Notifications o SMS.",
+        "Alertas y notificaciones operativas de alarmas de CloudWatch."
+      ],
+      "tradeOffs": {
+        "pros": "Distribución masiva instantánea (Pub/Sub), filtrado declarativo de mensajes por suscriptor, integración directa con decenas de servicios AWS.",
+        "cons": "No almacena mensajes persistentemente si no hay suscriptores activos en el momento del envío (a diferencia de una cola SQS persistente)."
+      },
+      "relatedTermSlugs": [
+        "patron-fan-out",
+        "amazon-sqs",
+        "desacoplamiento-asincrono",
+        "event-driven-architecture"
+      ],
+      "associatedChallengeIds": [
+        "ch-sns-pubsub",
+        "ch-fanout-architecture"
+      ],
+      "displayOrder": 16
+    },
+    {
+      "slug": "amazon-eventbridge",
+      "title": "Amazon EventBridge",
+      "category": "service",
+      "serviceCode": "AWS_EVENTBRIDGE",
+      "pillar": "OperationalExcellence",
+      "shortDefinition": "Bus de eventos serverless que simplifica la arquitectura orientada a eventos enrutando datos entre fuentes y destinos.",
+      "whatIs": "Amazon EventBridge es un servicio de bus de eventos serverless que facilita la conexión de aplicaciones utilizando datos de sus propias aplicaciones, aplicaciones SaaS integradas y servicios de AWS. Permite desacoplar productores y consumidores mediante reglas declarativas de filtrado y enrutamiento con latencia casi nula.",
+      "whenToUse": [
+        "Coreografía de arquitecturas orientadas a eventos (EDA) desacopladas y escalables.",
+        "Reaccionar automáticamente a cambios de estado en servicios de AWS (ej. cambios en S3, CloudTrail o ECS).",
+        "Integración directa con aplicaciones SaaS de terceros sin escribir código de polling continuo."
+      ],
+      "tradeOffs": {
+        "pros": "Filtrado avanzado de contenido de eventos (JSON Schema matching), más de 200 fuentes y destinos nativos, integración serverless sin servidores.",
+        "cons": "Límites de throughput predeterminados que requieren cuotas ajustadas en cargas extremas; no garantiza ordenación estricta global."
+      },
+      "relatedTermSlugs": [
+        "event-driven-architecture",
+        "desacoplamiento-asincrono",
+        "amazon-sns",
+        "amazon-sqs",
+        "aws-lambda"
+      ],
+      "associatedChallengeIds": [
+        "ch-eventbridge-rules",
+        "ch-event-driven-architecture"
+      ],
+      "displayOrder": 17
+    },
+    {
+      "slug": "amazon-ecs",
+      "title": "Amazon Elastic Container Service (ECS)",
+      "category": "service",
+      "serviceCode": "AWS_ECS",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Servicio de orquestación de contenedores Docker totalmente administrado, altamente escalable y seguro.",
+      "whatIs": "Amazon Elastic Container Service (Amazon ECS) es un servicio de orquestación de contenedores totalmente administrado que facilita la ejecución, detención y administración de contenedores en un clúster. Puede ejecutarse sobre instancias EC2 administradas o mediante computación sin servidor con AWS Fargate.",
+      "whenToUse": [
+        "Despliegue y ejecución de aplicaciones contenerizadas en microservicios sin la complejidad de Kubernetes.",
+        "Migración de aplicaciones heredadas empaquetadas en Docker a la nube.",
+        "Ejecución de trabajos por lotes o tareas programadas en contenedores efímeros."
+      ],
+      "tradeOffs": {
+        "pros": "Integración nativa profunda con IAM, VPC, ALB y CloudWatch; menor curva de aprendizaje operativa respecto a Kubernetes/EKS.",
+        "cons": "Ecosistema propietario de AWS (definiciones de tareas task-definitions específicas respecto a manifiestos estándar de Kubernetes)."
+      },
+      "relatedTermSlugs": [
+        "aws-fargate",
+        "amazon-ec2",
+        "application-load-balancer",
+        "microservicios-serverless"
+      ],
+      "associatedChallengeIds": [
+        "ch-ecs-fargate-cluster"
+      ],
+      "displayOrder": 18
+    },
+    {
+      "slug": "aws-fargate",
+      "title": "AWS Fargate",
+      "category": "service",
+      "serviceCode": "AWS_FARGATE",
+      "pillar": "OperationalExcellence",
+      "shortDefinition": "Motor de cómputo serverless para contenedores que elimina la necesidad de aprovisionar y gestionar servidores.",
+      "whatIs": "AWS Fargate es una tecnología que permite ejecutar contenedores con Amazon ECS o Amazon EKS sin tener que administrar servidores ni clústeres de instancias EC2. Con Fargate, ya no tienes que aprovisionar, configurar ni escalar grupos de máquinas virtuales para ejecutar contenedores.",
+      "whenToUse": [
+        "Ejecución de contenedores cuando se busca minimizar la sobrecarga operativa de parches y gestión del sistema operativo.",
+        "Cargas de trabajo variables donde el aprovisionamiento bajo demanda de CPU y memoria evita capacidad ociosa.",
+        "Aislamiento de seguridad a nivel de tarea (cada tarea corre en su propia máquina virtual dedicada)."
+      ],
+      "tradeOffs": {
+        "pros": "Cero mantenimiento de instancias EC2, escalado transparente, aislamiento por máquina virtual dedicado a nivel de tarea.",
+        "cons": "Costo ligeramente superior por vCPU/RAM en cargas con utilización continua al 100% comparado con instancias reservadas EC2."
+      },
+      "relatedTermSlugs": [
+        "amazon-ecs",
+        "amazon-ec2",
+        "excelencia-operativa"
+      ],
+      "associatedChallengeIds": [
+        "ch-ecs-fargate-cluster"
+      ],
+      "displayOrder": 19
+    },
+    {
+      "slug": "aws-waf",
+      "title": "AWS WAF (Web Application Firewall)",
+      "category": "service",
+      "serviceCode": "AWS_WAF",
+      "pillar": "Security",
+      "shortDefinition": "Firewall de aplicaciones web que protege contra exploits web comunes como inyección SQL y Cross-Site Scripting (XSS).",
+      "whatIs": "AWS WAF es un firewall de aplicaciones web que permite monitorizar las solicitudes HTTP y HTTPS que se reenvían a CloudFront, Application Load Balancers, API Gateway o AppSync. Permite bloquear o permitir solicitudes mediante reglas personalizadas o Managed Rule Groups de AWS para mitigar ataques como SQLi, XSS y bots maliciosos.",
+      "whenToUse": [
+        "Protección de endpoints públicos contra ataques de inyección SQL (SQLi), Cross-Site Scripting (XSS) y CSRF.",
+        "Mitigación de ataques de fuerza bruta y raspado de datos (web scraping) mediante reglas de control de tasa (rate-based rules).",
+        "Bloqueo geográfico de tráfico o listas negras de IPs reputadas como maliciosas."
+      ],
+      "tradeOffs": {
+        "pros": "Inspección profunda de capa 7, reglas administradas preconfiguradas y actualizadas por AWS, integración transparente con CloudFront y ALB.",
+        "cons": "Costos adicionales por ACL web y reglas activas; requiere ajustar las reglas para evitar falsos positivos en el tráfico legítimo."
+      },
+      "relatedTermSlugs": [
+        "amazon-cloudfront",
+        "application-load-balancer",
+        "seguridad-cloud",
+        "throttling-rate-limiting"
+      ],
+      "associatedChallengeIds": [
+        "ch-waf-security-rules"
+      ],
+      "displayOrder": 20
+    },
+    {
+      "slug": "aws-secrets-manager",
+      "title": "AWS Secrets Manager",
+      "category": "service",
+      "serviceCode": "AWS_SECRETS",
+      "pillar": "Security",
+      "shortDefinition": "Servicio para proteger, rotar, gestionar y recuperar credenciales de bases de datos, claves de API y secretos.",
+      "whatIs": "AWS Secrets Manager te ayuda a proteger los secretos necesarios para acceder a tus aplicaciones, servicios y recursos de TI. Permite rotar, administrar y recuperar fácilmente credenciales de bases de datos, claves de API y otros secretos a lo largo de su ciclo de vida, reemplazando credenciales codificadas en el código fuente por llamadas seguras a la API.",
+      "whenToUse": [
+        "Almacenamiento seguro y centralizado de contraseñas de bases de datos RDS y tokens de APIs externas.",
+        "Rotación automática periódica de credenciales de base de datos sin interrumpir la disponibilidad de la aplicación.",
+        "Auditoría y control de acceso estricto a credenciales basado en políticas IAM."
+      ],
+      "tradeOffs": {
+        "pros": "Rotación automática integrada con RDS con funciones Lambda nativas, cifrado con AWS KMS, evita secretos en código duro.",
+        "cons": "Costo mensual por secreto almacenado y por cada 10,000 llamadas API; para configuraciones estáticas simples Parameter Store puede ser más económico."
+      },
+      "relatedTermSlugs": [
+        "aws-kms",
+        "aws-iam",
+        "seguridad-cloud",
+        "amazon-rds"
+      ],
+      "associatedChallengeIds": [
+        "ch-secrets-rotation"
+      ],
+      "displayOrder": 21
+    },
+    {
+      "slug": "amazon-cloudwatch",
+      "title": "Amazon CloudWatch",
+      "category": "service",
+      "serviceCode": "AWS_CLOUDWATCH",
+      "pillar": "OperationalExcellence",
+      "shortDefinition": "Servicio de monitoreo y observabilidad para métricas, logs, alarmas y eventos de recursos en AWS.",
+      "whatIs": "Amazon CloudWatch recopila datos de monitoreo y operacionales en forma de registros (Logs), métricas y eventos, brindando una vista unificada de los recursos y aplicaciones que se ejecutan en AWS y en servidores locales. Permite configurar alarmas que ejecutan acciones automáticas ante umbrales anómalos.",
+      "whenToUse": [
+        "Monitoreo en tiempo real de uso de CPU, memoria, conexiones de red y latencia de servicios AWS.",
+        "Centralización y consulta analítica de logs de aplicaciones mediante CloudWatch Logs Insights.",
+        "Disparo de acciones de auto-recuperación de instancias o escalado en Auto Scaling Groups."
+      ],
+      "tradeOffs": {
+        "pros": "Integración nativa con todos los servicios de AWS, soporte de métricas personalizadas y tableros interactivos, alarmas accionables.",
+        "cons": "Los costos pueden elevarse si se ingieren volúmenes masivos de logs sin retención configurada o métricas de alta resolución (1s)."
+      },
+      "relatedTermSlugs": [
+        "aws-cloudtrail",
+        "excelencia-operativa",
+        "auto-scaling-group"
+      ],
+      "associatedChallengeIds": [
+        "ch-cloudwatch-metrics-alarms"
+      ],
+      "displayOrder": 22
+    },
+    {
+      "slug": "aws-cloudtrail",
+      "title": "AWS CloudTrail",
+      "category": "service",
+      "serviceCode": "AWS_CLOUDTRAIL",
+      "pillar": "Security",
+      "shortDefinition": "Servicio de auditoría que registra todas las llamadas a la API y acciones realizadas en tu cuenta de AWS.",
+      "whatIs": "AWS CloudTrail permite la gobernanza, el cumplimiento, la auditoría operativa y la auditoría de riesgos de su cuenta de AWS. Registra de forma continua y entrega los eventos de la cuenta relacionados con las acciones realizadas a través de la Consola de administración de AWS, SDKs de AWS y herramientas de línea de comandos.",
+      "whenToUse": [
+        "Auditoría de seguridad y análisis forense tras incidentes para determinar quién hizo qué y cuándo en la cuenta.",
+        "Cumplimiento regulatorio y normativo de seguridad (SOC2, ISO 27001, PCI-DSS).",
+        "Detección de accesos no autorizados o cambios indebidos en políticas de seguridad e infraestructura."
+      ],
+      "tradeOffs": {
+        "pros": "Registro inmutable de todas las acciones del plano de control, soporte de validación de integridad de archivos de log, integración con SIEMs.",
+        "cons": "El historial de eventos gratuito en consola se limita a 90 días (requiere crear un Trail a S3 para almacenamiento a largo plazo)."
+      },
+      "relatedTermSlugs": [
+        "amazon-cloudwatch",
+        "seguridad-cloud",
+        "aws-iam"
+      ],
+      "associatedChallengeIds": [
+        "ch-cloudtrail-audit"
+      ],
+      "displayOrder": 23
+    },
+    {
+      "slug": "aws-cloudformation",
+      "title": "AWS CloudFormation",
+      "category": "service",
+      "serviceCode": "AWS_CLOUDFORMATION",
+      "pillar": "OperationalExcellence",
+      "shortDefinition": "Servicio de Infraestructura como Código (IaC) para modelar y aprovisionar recursos de AWS mediante plantillas declarativas.",
+      "whatIs": "AWS CloudFormation permite modelar, aprovisionar y gestionar recursos de AWS y de terceros tratando la infraestructura como código. Mediante plantillas en JSON o YAML, puedes describir todos los recursos necesarios de tu arquitectura para desplegarlos de forma repetible, automatizada y predecible a través de múltiples cuentas y regiones.",
+      "whenToUse": [
+        "Automatización de despliegues de infraestructura repetibles en entornos de Desarrollo, Pruebas y Producción.",
+        "Control de versiones de la arquitectura cloud en repositorios Git (GitOps).",
+        "Garantizar la consistencia de seguridad y configuración organizacional mediante Stacks y StackSets."
+      ],
+      "tradeOffs": {
+        "pros": "Despliegues deterministas y reversión automática (rollback) ante fallos de aprovisionamiento, detección de desviaciones (drift detection).",
+        "cons": "Sintaxis de plantillas JSON/YAML verbose; en proyectos complejos herramientas como AWS CDK o Terraform ofrecen mayor flexibilidad programática."
+      },
+      "relatedTermSlugs": [
+        "excelencia-operativa",
+        "amazon-vpc",
+        "auto-scaling-group"
+      ],
+      "associatedChallengeIds": [
+        "ch-cloudformation-iac"
+      ],
+      "displayOrder": 24
+    },
+    {
+      "slug": "amazon-elasticache",
+      "title": "Amazon ElastiCache",
+      "category": "service",
+      "serviceCode": "AWS_ELASTICACHE",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Servicio de almacenamiento en caché en memoria totalmente administrado compatible con Redis y Memcached.",
+      "whatIs": "Amazon ElastiCache es un servicio de almacenamiento de datos en memoria en tiempo real totalmente administrado. Permite acelerar el rendimiento de las aplicaciones y bases de datos al almacenar en caché datos de acceso frecuente en memoria RAM, logrando latencias de lectura y escritura de microsegundos.",
+      "whenToUse": [
+        "Almacenamiento en caché de resultados de consultas pesadas de bases de datos relacionales (RDS).",
+        "Gestión de sesiones web distribuidas de usuarios en arquitecturas stateless.",
+        "Tablas de clasificación (leaderboards) en tiempo real y colas de pub/sub en memoria."
+      ],
+      "tradeOffs": {
+        "pros": "Latencia de microsegundos ultrarrápida, reduce la carga sobre bases de datos persistentes, soporte de clustering y replicación Multi-AZ.",
+        "cons": "Los datos en memoria son volátiles si no se configuran mecanismos de persistencia o réplicas; mayor costo por GB que almacenamiento en disco."
+      },
+      "relatedTermSlugs": [
+        "amazon-rds",
+        "stateless-vs-stateful",
+        "eficiencia-rendimiento"
+      ],
+      "associatedChallengeIds": [
+        "ch-elasticache-redis"
+      ],
+      "displayOrder": 25
+    },
+    {
+      "slug": "amazon-aurora",
+      "title": "Amazon Aurora",
+      "category": "service",
+      "serviceCode": "AWS_AURORA",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Motor de base de datos relacional compatible con MySQL y PostgreSQL diseñado para el rendimiento cloud.",
+      "whatIs": "Amazon Aurora es un motor de base de datos relacional diseñado para la nube con compatibilidad completa con MySQL y PostgreSQL. Ofrece hasta 5 veces el rendimiento de MySQL estándar y 3 veces el de PostgreSQL, con almacenamiento distribuido autorreparable que replica 6 copias de datos en 3 zonas de disponibilidad.",
+      "whenToUse": [
+        "Bases de datos empresariales de alto rendimiento con alta concurrencia de transacciones.",
+        "Arquitecturas que requieren escalado de lectura masivo con hasta 15 réplicas de baja latencia.",
+        "Cargas variables con Aurora Serverless v2 que escala capacidad en fracciones de segundo."
+      ],
+      "tradeOffs": {
+        "pros": "Rendimiento y resiliencia superiores, almacenamiento autoescalable hasta 128 TB, replicación continua en 6 copias entre 3 AZs.",
+        "cons": "Costo base superior a instancias RDS estándar básicas de un solo nodo."
+      },
+      "relatedTermSlugs": [
+        "amazon-rds",
+        "read-replicas",
+        "multi-az-replication",
+        "alta-disponibilidad"
+      ],
+      "associatedChallengeIds": [
+        "ch-aurora-serverless"
+      ],
+      "displayOrder": 26
+    },
+    {
+      "slug": "aws-step-functions",
+      "title": "AWS Step Functions",
+      "category": "service",
+      "serviceCode": "AWS_STEPFUNCTIONS",
+      "pillar": "Reliability",
+      "shortDefinition": "Orquestador visual de flujos de trabajo serverless que coordina múltiples servicios y funciones Lambda.",
+      "whatIs": "AWS Step Functions es un orquestador visual de flujos de trabajo sin servidor que permite secuenciar funciones de AWS Lambda y múltiples servicios de AWS en flujos de trabajo con control de estado (State Machines), manejo de reintentos, capturas de errores y bifurcaciones condicionales.",
+      "whenToUse": [
+        "Flujos de trabajo complejos de larga duración que superan el límite de 15 minutos de Lambda.",
+        "Procesamiento de transacciones distribuidas con el patrón Saga (compensación automática de pasos fallidos).",
+        "Procesos de aprobación humana o pipelines de procesamiento de datos por lotes."
+      ],
+      "tradeOffs": {
+        "pros": "Visualización gráfica clara del estado de ejecución, manejo integrado de reintentos con backoff exponencial, desacopla la lógica de coordinación.",
+        "cons": "Costo por transición de estado en flujos estándar si se ejecutan miles de millones de eventos (los flujos Express mitigan esto en cargas masivas rápidas)."
+      },
+      "relatedTermSlugs": [
+        "aws-lambda",
+        "event-driven-architecture",
+        "desacoplamiento-asincrono"
+      ],
+      "associatedChallengeIds": [
+        "ch-step-functions-workflow"
+      ],
+      "displayOrder": 27
+    },
+    {
+      "slug": "aws-kms",
+      "title": "AWS Key Management Service (KMS)",
+      "category": "service",
+      "serviceCode": "AWS_KMS",
+      "pillar": "Security",
+      "shortDefinition": "Servicio administrado para crear, controlar y auditar el uso de claves criptográficas para cifrar datos.",
+      "whatIs": "AWS Key Management Service (AWS KMS) facilita la creación y el control de las claves criptográficas utilizadas para cifrar los datos en una amplia variedad de servicios de AWS y en sus aplicaciones. Utiliza módulos de seguridad de hardware (HSM) validados con FIPS 140-2.",
+      "whenToUse": [
+        "Cifrado en reposo transparente para buckets de S3, volúmenes EBS y bases de datos RDS/DynamoDB.",
+        "Cifrado y descifrado de datos confidenciales de la aplicación mediante claves administradas por el cliente (CMK).",
+        "Auditoría rigurosa de uso de claves criptográficas integrada con AWS CloudTrail."
+      ],
+      "tradeOffs": {
+        "pros": "Integración nativa transparente en casi todos los servicios de AWS, control granular con políticas de claves e IAM, cumplimiento FIPS.",
+        "cons": "Límites de llamadas a la API por segundo (throttling) si se realizan operaciones de descifrado individual sin usar cifrado de sobre (envelope encryption)."
+      },
+      "relatedTermSlugs": [
+        "aws-secrets-manager",
+        "seguridad-cloud",
+        "aws-iam"
+      ],
+      "associatedChallengeIds": [
+        "ch-kms-encryption"
+      ],
+      "displayOrder": 28
+    },
+    {
+      "slug": "aws-iam",
+      "title": "AWS Identity and Access Management (IAM)",
+      "category": "service",
+      "serviceCode": "AWS_IAM",
+      "pillar": "Security",
+      "shortDefinition": "Servicio fundamental para administrar identidades, usuarios, roles y permisos de acceso a los recursos de AWS.",
+      "whatIs": "AWS Identity and Access Management (IAM) es el servicio de control de acceso central de AWS. Permite especificar quién o qué (usuarios, grupos, roles asumidos por servicios o identidades federadas) puede acceder a qué recursos de AWS y bajo qué condiciones específicas mediante políticas JSON declarativas.",
+      "whenToUse": [
+        "Asignación de roles de ejecución a instancias EC2, tareas ECS y funciones Lambda para evitar credenciales estáticas.",
+        "Control granular de permisos siguiendo el Principio de Menor Privilegio (PoLP).",
+        "Federación de identidades corporativas mediante SAML 2.0 u OpenID Connect (OIDC)."
+      ],
+      "tradeOffs": {
+        "pros": "Servicio global sin costo adicional, control exhaustivo de permisos a nivel de recurso y acción, base de la seguridad en AWS.",
+        "cons": "Políticas complejas pueden requerir análisis cuidadoso para evitar permisos excesivos o bloqueos accidentales."
+      },
+      "relatedTermSlugs": [
+        "least-privilege-principle",
+        "zero-trust-architecture",
+        "seguridad-cloud",
+        "aws-kms"
+      ],
+      "associatedChallengeIds": [
+        "ch-iam-least-privilege"
+      ],
+      "displayOrder": 29
+    },
+    {
+      "slug": "amazon-athena",
+      "title": "Amazon Athena",
+      "category": "service",
+      "serviceCode": "AWS_ATHENA",
+      "pillar": "CostOptimization",
+      "shortDefinition": "Servicio de consultas interactivas serverless que facilita el análisis de datos directamente en Amazon S3 mediante SQL estándar.",
+      "whatIs": "Amazon Athena es un servicio de análisis interactivo sin servidor que permite consultar y analizar datos almacenados directamente en Amazon S3 utilizando sintaxis SQL estándar (basado en Trino/Presto). No requiere cargar datos ni gestionar clústeres, y pagas únicamente por la cantidad de datos escaneados.",
+      "whenToUse": [
+        "Análisis puntual de registros de auditoría (CloudTrail, VPC Flow Logs, ALB Access Logs) almacenados en S3.",
+        "Consultas analíticas sobre lagos de datos (Data Lakes) en formatos columnares como Apache Parquet u ORC.",
+        "Generación de reportes de negocio sin necesidad de mantener un almacén de datos (Data Warehouse) activo continuo."
+      ],
+      "tradeOffs": {
+        "pros": "Totalmente serverless sin servidores que aprovisionar, paga solo por los bytes escaneados por consulta, alto rendimiento con formatos columnares.",
+        "cons": "No está diseñado para transacciones OLTP en tiempo real de baja latencia ni para aplicaciones de usuario final interactivas constantes."
+      },
+      "relatedTermSlugs": [
+        "amazon-s3",
+        "optimizacion-costos",
+        "aws-cloudtrail"
+      ],
+      "associatedChallengeIds": [
+        "ch-athena-log-analytics"
+      ],
+      "displayOrder": 30
+    },
+    {
+      "slug": "amazon-opensearch",
+      "title": "Amazon OpenSearch Service",
+      "category": "service",
+      "serviceCode": "AWS_OPENSEARCH",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Servicio administrado para búsqueda de texto completo, análisis de registros y monitoreo en tiempo real.",
+      "whatIs": "Amazon OpenSearch Service (sucesor de Amazon Elasticsearch Service) facilita la implementación, operación y escalado de clústeres de OpenSearch y Elasticsearch en AWS. Permite realizar búsquedas de texto completo enriquecidas, análisis de registros de aplicaciones y tableros interactivos con OpenSearch Dashboards.",
+      "whenToUse": [
+        "Motores de búsqueda de productos y búsqueda difusa (fuzzy search) para aplicaciones de comercio electrónico.",
+        "Centralización y agregación de telemetría de observabilidad y logs de seguridad en tiempo real.",
+        "Análisis de series temporales y detección de anomalías operacionales."
+      ],
+      "tradeOffs": {
+        "pros": "Búsqueda de texto completo ultrarrápida con índices invertidos, tableros visuales integrados, escalabilidad horizontal de nodos.",
+        "cons": "Gestión de capacidad y dimensionamiento de nodos maestros y de datos; costo continuo de clústeres dedicados."
+      },
+      "relatedTermSlugs": [
+        "amazon-cloudwatch",
+        "eficiencia-rendimiento"
+      ],
+      "associatedChallengeIds": [
+        "ch-opensearch-search-engine"
+      ],
+      "displayOrder": 31
+    },
+    {
+      "slug": "amazon-cognito",
+      "title": "Amazon Cognito",
+      "category": "service",
+      "serviceCode": "AWS_COGNITO",
+      "pillar": "Security",
+      "shortDefinition": "Servicio de autenticación, autorización y administración de usuarios para aplicaciones web y móviles.",
+      "whatIs": "Amazon Cognito proporciona autenticación, autorización y administración de identidades para aplicaciones web y móviles. Permite crear directorios de usuarios administrados (User Pools) con registro, inicio de sesión, MFA y recuperación de contraseña, así como otorgar credenciales temporales de AWS a usuarios autenticados (Identity Pools).",
+      "whenToUse": [
+        "Autenticación segura de usuarios finales en aplicaciones Single Page Applications (SPA) y apps móviles.",
+        "Inicio de sesión social (Google, Facebook, Apple) o federación corporativa mediante SAML / OIDC.",
+        "Generación y validación de tokens JWT estándar para proteger endpoints de Amazon API Gateway."
+      ],
+      "tradeOffs": {
+        "pros": "Soporte completo de flujo OAuth 2.0 y OpenID Connect, MFA integrado, protección avanzada contra credenciales comprometidas.",
+        "cons": "Personalización visual de páginas de inicio de sesión alojadas limitada; requiere entender la distinción entre User Pools e Identity Pools."
+      },
+      "relatedTermSlugs": [
+        "amazon-api-gateway",
+        "aws-iam",
+        "seguridad-cloud"
+      ],
+      "associatedChallengeIds": [
+        "ch-cognito-auth"
+      ],
+      "displayOrder": 32
+    },
+    {
+      "slug": "alta-disponibilidad",
+      "title": "Alta Disponibilidad (High Availability)",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Capacidad de un sistema de permanecer accesible y operativo de forma continua frente a fallas de componentes individuales.",
+      "whatIs": "La Alta Disponibilidad (HA) es un principio de diseño arquitectónico que garantiza que un sistema o servicio esté disponible y funcione correctamente durante un porcentaje acordado de tiempo (ej. 99.99%). Se logra eliminando puntos únicos de fallo mediante redundancia de componentes, balanceo de carga y distribución en múltiples Zonas de Disponibilidad.",
+      "whenToUse": [
+        "Sistemas de producción críticos donde cualquier caída de servicio impacta los ingresos o reputación del negocio.",
+        "Arquitecturas multi-AZ donde los componentes backend y de base de datos se replican activamente.",
+        "Sistemas que implementan conmutación por error automática (*failover*) sin intervención humana."
+      ],
+      "tradeOffs": {
+        "pros": "Maximiza el tiempo de actividad (*uptime*), tolerancia intrínseca a desastres locales de hardware o energía en un datacenter.",
+        "cons": "Mayor costo de infraestructura al requerir duplicidad de recursos activos y mecanismos de sincronización de datos entre zonas."
+      },
+      "relatedTermSlugs": [
+        "single-point-of-failure",
+        "multi-az-replication",
+        "escalabilidad-horizontal",
+        "application-load-balancer",
+        "auto-scaling-group"
+      ],
+      "associatedChallengeIds": [
+        "ch-ec2-high-availability",
+        "ch-alb-multi-az"
+      ],
+      "displayOrder": 33
+    },
+    {
+      "slug": "escalabilidad-horizontal",
+      "title": "Escalabilidad Horizontal (Scale-Out)",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Estrategia de añadir más instancias o nodos de cómputo para distribuir y atender una mayor carga de trabajo.",
+      "whatIs": "La escalabilidad horizontal (o scale-out / scale-in) implica incrementar o reducir la capacidad de un sistema añadiendo o retirando nodos independientes (como instancias EC2, tareas de contenedores o pods), en lugar de aumentar la potencia de una sola máquina. Se combina típicamente con balanceadores de carga y arquitecturas sin estado (stateless).",
+      "whenToUse": [
+        "Cargas de trabajo con demanda elástica y fluctuaciones de tráfico pronunciadas a lo largo del día.",
+        "Aplicaciones web stateless donde cualquier servidor puede atender cualquier solicitud de usuario.",
+        "Arquitecturas de microservicios contenerizadas que escalan réplicas dinámicamente."
+      ],
+      "tradeOffs": {
+        "pros": "Escalabilidad prácticamente infinita sin límites físicos de hardware, excelente costo-eficiencia al reducir nodos en valles de tráfico.",
+        "cons": "Requiere que la aplicación sea estrictamente sin estado (*stateless*); complejidad adicional en balanceo y descubrimiento de servicios."
+      },
+      "relatedTermSlugs": [
+        "escalabilidad-vertical",
+        "auto-scaling-group",
+        "stateless-vs-stateful",
+        "application-load-balancer"
+      ],
+      "associatedChallengeIds": [
+        "ch-asg-scaling-policies"
+      ],
+      "displayOrder": 34
+    },
+    {
+      "slug": "escalabilidad-vertical",
+      "title": "Escalabilidad Vertical (Scale-Up)",
+      "category": "concept",
+      "pillar": "CostOptimization",
+      "shortDefinition": "Estrategia de incrementar la capacidad aumentando los recursos de hardware (CPU, RAM, disco) de un único servidor.",
+      "whatIs": "La escalabilidad vertical (scale-up / scale-down) consiste en redimensionar un recurso existente asignándole más CPU, memoria o almacenamiento (por ejemplo, cambiar una instancia EC2 o base de datos RDS de tamaño t4g.medium a r6g.2xlarge).",
+      "whenToUse": [
+        "Bases de datos monolíticas relacionales tradicionales difíciles de particionar horizontalmente.",
+        "Aplicaciones heredadas que no admiten ejecución concurrente en múltiples servidores.",
+        "Ajuste rápido inicial de capacidad para absorber un incremento de carga a corto plazo."
+      ],
+      "tradeOffs": {
+        "pros": "Simplicidad arquitectónica absoluta; no requiere rediseñar la aplicación ni lidiar con sincronización distribuida.",
+        "cons": "Límite superior físico de hardware; requiere tiempo de inactividad (*downtime*) durante el redimensionamiento; riesgo de SPOF si no hay réplicas."
+      },
+      "relatedTermSlugs": [
+        "escalabilidad-horizontal",
+        "single-point-of-failure",
+        "amazon-rds"
+      ],
+      "associatedChallengeIds": [
+        "ch-rds-multi-az"
+      ],
+      "displayOrder": 35
+    },
+    {
+      "slug": "single-point-of-failure",
+      "title": "Punto Único de Falla (SPOF)",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Componente o recurso individual cuya falla provoca la interrupción total del sistema completo.",
+      "whatIs": "Un Punto Único de Falla (Single Point of Failure o SPOF) es una parte de la infraestructura de software o hardware que, si deja de funcionar, provoca que todo el sistema falle. Identificar y eliminar los SPOFs mediante redundancia, desacoplamiento y conmutación por error es el pilar central de la arquitectura cloud resiliente.",
+      "whenToUse": [
+        "Evaluación y auditoría de riesgos de arquitecturas de misión crítica (Well-Architected Review).",
+        "Diseño de topologías de red con balanceadores redundantes, múltiples zonas de disponibilidad y réplicas de datos.",
+        "Eliminación de servidores únicos que combinan base de datos y aplicación en una sola instancia."
+      ],
+      "tradeOffs": {
+        "pros": "Al eliminar los SPOFs se incrementa exponencialmente la confiabilidad y disponibilidad del negocio frente a fallas imprevistas.",
+        "cons": "Mitigar todos los SPOFs incrementa la complejidad operativa y los costos de infraestructura al requerir componentes redundantes."
+      },
+      "relatedTermSlugs": [
+        "alta-disponibilidad",
+        "multi-az-replication",
+        "auto-scaling-group",
+        "fiabilidad"
+      ],
+      "associatedChallengeIds": [
+        "ch-ha-auto-healing"
+      ],
+      "displayOrder": 36
+    },
+    {
+      "slug": "desacoplamiento-asincrono",
+      "title": "Desacoplamiento Asíncrono",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Patrón de diseño donde los componentes interactúan mediante colas o eventos sin esperar respuestas síncronas bloqueantes.",
+      "whatIs": "El desacoplamiento asíncrono separa los productores de información de los consumidores interponiendo un intermediario de mensajes (como Amazon SQS, SNS o EventBridge). Esto permite que el productor continúe su ejecución inmediatamente tras enviar el mensaje, mientras el consumidor procesa la tarea a su propio ritmo.",
+      "whenToUse": [
+        "Operaciones de procesamiento pesado en segundo plano (e.g. generación de reportes, procesamiento de pagos, transcoding de video).",
+        "Protección de servicios backend lentos contra avalanchas de tráfico mediante amortiguación de peticiones.",
+        "Comunicación entre microservicios autónomos e independientes."
+      ],
+      "tradeOffs": {
+        "pros": "Aislamiento de fallas (si el consumidor cae, los mensajes no se pierden), escalabilidad independiente de productores y consumidores, latencia percibida menor.",
+        "cons": "Consistencia eventual en lugar de inmediata; requiere manejar mensajes no entregables con Dead-Letter Queues y diseñar consumidores idempotentes."
+      },
+      "relatedTermSlugs": [
+        "amazon-sqs",
+        "amazon-sns",
+        "patron-fan-out",
+        "idempotencia",
+        "event-driven-architecture"
+      ],
+      "associatedChallengeIds": [
+        "ch-decoupled-messaging",
+        "ch-sqs-async-processing"
+      ],
+      "displayOrder": 37
+    },
+    {
+      "slug": "patron-fan-out",
+      "title": "Patrón Fan-Out (SNS + SQS)",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Patrón de mensajería donde un único evento publicado en un tema SNS se replica en paralelo hacia múltiples colas SQS.",
+      "whatIs": "El patrón Fan-Out consiste en publicar un mensaje en un tema de difusión (como Amazon SNS) que está suscrito a múltiples colas de mensajes independientes (Amazon SQS). De esta forma, cada microservicio o suscriptor recibe su propia copia del mensaje y puede procesarlo de forma asíncrona y paralela según su propia lógica de negocio.",
+      "whenToUse": [
+        "Un evento de negocio (ej. 'Pedido Creado') debe desencadenar múltiples acciones independientes: cobro, envío de email de confirmación y actualización de inventario.",
+        "Procesamiento analítico en paralelo de flujos de datos sin bloquear el flujo transaccional principal.",
+        "Integración de nuevos subsistemas a una arquitectura existente sin modificar el servicio emisor original."
+      ],
+      "tradeOffs": {
+        "pros": "Desacoplamiento total entre publicadores y suscriptores, escalabilidad masiva y paralela, adición de nuevos consumidores sin alterar el emisor.",
+        "cons": "Aumento del volumen total de mensajes en el sistema; requiere monitorear múltiples colas y gestionar DLQs individuales."
+      },
+      "relatedTermSlugs": [
+        "amazon-sns",
+        "amazon-sqs",
+        "desacoplamiento-asincrono",
+        "event-driven-architecture"
+      ],
+      "associatedChallengeIds": [
+        "ch-fanout-architecture"
+      ],
+      "displayOrder": 38
+    },
+    {
+      "slug": "stateless-vs-stateful",
+      "title": "Arquitecturas Stateless vs Stateful",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Distinción entre capas de aplicación sin estado (fácilmente escalables) y capas con estado persistente (bases de datos).",
+      "whatIs": "En una arquitectura Stateless (sin estado), los servidores de aplicación no almacenan información de sesión del cliente en su memoria local; cada solicitud contiene toda la información necesaria o delega el estado a una base de datos o caché externa. En contraste, los sistemas Stateful mantienen estado en memoria o disco local, lo que dificulta el escalado y reemplazo dinámico de nodos.",
+      "whenToUse": [
+        "Diseño de capas web y APIs que necesitan escalar horizontalmente de 1 a 100 instancias mediante Auto Scaling Groups.",
+        "Centralización de sesiones de usuario en almacenes rápidos como Amazon ElastiCache o DynamoDB.",
+        "Aislamiento de la persistencia de datos exclusivamente en servicios administrados (RDS, Aurora, S3)."
+      ],
+      "tradeOffs": {
+        "pros": "Los nodos stateless pueden eliminarse, reiniciarse o multiplicarse instantáneamente sin pérdida de datos ni desconexión de usuarios.",
+        "cons": "Requiere llamadas de red adicionales hacia bases de datos o cachés externas para recuperar el contexto de la sesión en cada petición."
+      },
+      "relatedTermSlugs": [
+        "escalabilidad-horizontal",
+        "amazon-elasticache",
+        "auto-scaling-group",
+        "alta-disponibilidad"
+      ],
+      "associatedChallengeIds": [
+        "ch-asg-scaling-policies"
+      ],
+      "displayOrder": 39
+    },
+    {
+      "slug": "caching-perimetral",
+      "title": "Caching Perimetral (Edge Caching)",
+      "category": "concept",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Técnica de almacenar respuestas y activos en ubicaciones perimetrales geográficamente cercanas al usuario.",
+      "whatIs": "El Caching Perimetral consiste en almacenar en memoria caché copias de contenido estático (imágenes, scripts, vídeos) o dinámico en cientos de Puntos de Presencia (PoP) y Edge Locations distribuidos globalmente (mediante CDNs como Amazon CloudFront). Esto permite responder a las solicitudes de los usuarios a nivel local con latencias de milisegundos mínimos sin sobrecargar el servidor de origen.",
+      "whenToUse": [
+        "Distribución global de sitios web y aplicaciones con usuarios distribuidos en diferentes continentes.",
+        "Reducción drástica de costos de transferencia de salida y carga de cómputo en servidores backend.",
+        "Protección contra sobrecargas repentinas de tráfico en lanzamientos de productos o eventos masivos."
+      ],
+      "tradeOffs": {
+        "pros": "Latencia mínima percibida por el usuario final, absorción de picos masivos de tráfico protegiendo la base de datos y origen.",
+        "cons": "Riesgo de servir contenido obsoleto si las cabeceras de expiración (TTL) o invalidaciones de caché no están bien orquestadas."
+      },
+      "relatedTermSlugs": [
+        "amazon-cloudfront",
+        "amazon-s3",
+        "eficiencia-rendimiento"
+      ],
+      "associatedChallengeIds": [
+        "ch-cloudfront-cdn"
+      ],
+      "displayOrder": 40
+    },
+    {
+      "slug": "disaster-recovery-rpo-rto",
+      "title": "Recuperación ante Desastres (RPO & RTO)",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Métricas y estrategias clave para recuperar sistemas y datos tras una catástrofe o interrupción mayor.",
+      "whatIs": "El plan de Recuperación ante Desastres (Disaster Recovery - DR) define cómo una organización responde ante catástrofes regionales. Se rige por dos métricas fundamentales: el RPO (Recovery Point Objective - cantidad máxima de pérdida de datos aceptable medida en tiempo) y el RTO (Recovery Time Objective - tiempo máximo aceptable para restaurar el servicio).",
+      "whenToUse": [
+        "Definición de políticas de continuidad de negocio y cumplimiento normativo empresarial.",
+        "Selección de estrategias DR: Backup & Restore, Pilot Light, Warm Standby o Multi-Region Active-Active.",
+        "Configuración de replicación de datos asíncrona entre diferentes regiones de AWS."
+      ],
+      "tradeOffs": {
+        "pros": "Garantiza la supervivencia del negocio y minimiza pérdidas financieras y de datos ante incidentes catastróficos.",
+        "cons": "A menor RTO y RPO deseados (e.g. Active-Active con RPO/RTO cercano a cero), el costo y la complejidad de sincronización aumentan exponencialmente."
+      },
+      "relatedTermSlugs": [
+        "alta-disponibilidad",
+        "multi-az-replication",
+        "amazon-route-53",
+        "fiabilidad"
+      ],
+      "associatedChallengeIds": [
+        "ch-route53-dns-failover"
+      ],
+      "displayOrder": 41
+    },
+    {
+      "slug": "patron-strangler-fig",
+      "title": "Patrón Strangler Fig (Monolito a Microservicios)",
+      "category": "concept",
+      "pillar": "OperationalExcellence",
+      "shortDefinition": "Estrategia de migración progresiva que reemplaza gradualmente funcionalidades de un monolito por microservicios.",
+      "whatIs": "El patrón Strangler Fig (o Higuera Estranguladora) es un enfoque de modernización de arquitecturas que permite migrar un sistema monolítico legacy a una arquitectura de microservicios de forma incremental. Se coloca un enrutador (como Application Load Balancer o API Gateway) frente a la aplicación para desviar el tráfico de endpoints específicos hacia los nuevos microservicios hasta que el monolito original pueda ser retirado por completo.",
+      "whenToUse": [
+        "Modernización y refactorización de aplicaciones monolíticas grandes y complejas sin requerir una reescritura total desde cero (Big Bang).",
+        "Migración escalonada a la nube reduciendo el riesgo de negocio y fallos operativos.",
+        "Desacoplamiento paulatino de dominios de negocio hacia servicios serverless o contenedores."
+      ],
+      "tradeOffs": {
+        "pros": "Riesgo operativo mínimo, entregas de valor continuas a producción, reversibilidad sencilla enrutando el tráfico de regreso si el nuevo servicio falla.",
+        "cons": "Durante el período de transición es necesario mantener y operar temporalmente tanto el sistema monolítico como los nuevos microservicios."
+      },
+      "relatedTermSlugs": [
+        "application-load-balancer",
+        "amazon-api-gateway",
+        "microservicios-serverless",
+        "excelencia-operativa"
+      ],
+      "associatedChallengeIds": [
+        "ch-alb-path-routing"
+      ],
+      "displayOrder": 42
+    },
+    {
+      "slug": "idempotencia",
+      "title": "Idempotencia en Mensajería",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Propiedad de una operación que produce el mismo resultado independientemente de cuántas veces se ejecute.",
+      "whatIs": "La idempotencia es una propiedad esencial en arquitecturas distribuidas y sistemas de mensajería (como colas SQS estándar). Garantiza que si un mensaje o solicitud de API se procesa múltiples veces (debido a reintentos de red o garantías de entrega 'al menos una vez'), el estado del sistema final es exactamente el mismo que si se hubiera ejecutado una sola vez.",
+      "whenToUse": [
+        "Procesamiento de transacciones financieras, pagos o generación de facturas.",
+        "Consumidores de colas de mensajería donde pueden ocurrir entregas duplicadas tras fallos transitorios.",
+        "APIs RESTful que admiten reintentos automáticos de clientes ante fallos de conexión."
+      ],
+      "tradeOffs": {
+        "pros": "Previene inconsistencias graves como cobros duplicados o duplicidad de registros en la base de datos.",
+        "cons": "Requiere almacenar identificadores de idempotencia únicos (tokens) en una base de datos rápida (como DynamoDB) para verificar si la transacción ya fue procesada."
+      },
+      "relatedTermSlugs": [
+        "amazon-sqs",
+        "desacoplamiento-asincrono",
+        "event-driven-architecture",
+        "amazon-dynamodb"
+      ],
+      "associatedChallengeIds": [
+        "ch-sqs-async-processing"
+      ],
+      "displayOrder": 43
+    },
+    {
+      "slug": "multi-az-replication",
+      "title": "Replicación Síncrona Multi-AZ",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Despliegue y replicación automática de datos en múltiples zonas de disponibilidad para conmutación ante fallos.",
+      "whatIs": "La replicación Multi-AZ es una función de alta disponibilidad en AWS (destacada en Amazon RDS y Aurora) que aprovisiona automáticamente una réplica en espera (Standby) en una Zona de Disponibilidad diferente dentro de la misma región. Los datos se replican de forma síncrona, y ante una falla del nodo primario, se produce un failover automático sin intervención manual ni pérdida de datos.",
+      "whenToUse": [
+        "Bases de datos de producción con requerimientos estrictos de cero pérdida de datos (RPO = 0).",
+        "Sistemas que necesitan mantener operaciones ininterrumpidas durante ventanas de mantenimiento o parches del motor de base de datos.",
+        "Aplicaciones críticas de negocio que exigen conmutación transparente de DNS en menos de 60 segundos."
+      ],
+      "tradeOffs": {
+        "pros": "Conmutación por error automática sin pérdida de datos, copias de seguridad tomadas desde el nodo standby sin degradar el primario.",
+        "cons": "Duplica el costo de las instancias y almacenamiento de la base de datos; la instancia standby no puede utilizarse para atender consultas de lectura (a diferencia de Aurora o Read Replicas)."
+      },
+      "relatedTermSlugs": [
+        "amazon-rds",
+        "amazon-aurora",
+        "alta-disponibilidad",
+        "read-replicas"
+      ],
+      "associatedChallengeIds": [
+        "ch-rds-multi-az"
+      ],
+      "displayOrder": 44
+    },
+    {
+      "slug": "read-replicas",
+      "title": "Réplicas de Lectura (Read Replicas)",
+      "category": "concept",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Copias de solo lectura de una base de datos para descargar consultas intensivas y escalar el rendimiento de lectura.",
+      "whatIs": "Las réplicas de lectura permiten escalar horizontalmente la capacidad de lectura de motores de bases de datos relacionales (como RDS y Aurora). Los cambios realizados en la base de datos primaria se replican de forma asíncrona en una o más réplicas dedicadas a resolver consultas de lectura pesadas.",
+      "whenToUse": [
+        "Aplicaciones web con un patrón de tráfico predominantemente de lectura (ej. 90% lecturas, 10% escrituras).",
+        "Generación de reportes analíticos complejos o paneles de control empresariales sin ralentizar las transacciones principales.",
+        "Distribución geográfica de lecturas acercando copias a usuarios en múltiples regiones."
+      ],
+      "tradeOffs": {
+        "pros": "Descarga drásticamente la base de datos primaria, escalado horizontal de lectura elástico, posibilidad de promover una réplica a primaria en caso de emergencia.",
+        "cons": "Replicación asíncrona sujeta a retrasos (*replication lag*), lo que puede provocar que los clientes lean temporalmente datos no actualizados (consistencia eventual)."
+      },
+      "relatedTermSlugs": [
+        "amazon-rds",
+        "amazon-aurora",
+        "multi-az-replication",
+        "eficiencia-rendimiento"
+      ],
+      "associatedChallengeIds": [
+        "ch-rds-read-replicas"
+      ],
+      "displayOrder": 45
+    },
+    {
+      "slug": "event-driven-architecture",
+      "title": "Arquitectura Orientada a Eventos (EDA)",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Patrón de arquitectura de software en el que las acciones se desencadenan en respuesta a la emisión de eventos de estado.",
+      "whatIs": "La Arquitectura Orientada a Eventos (Event-Driven Architecture) es un paradigma donde los componentes de software reaccionan a cambios significativos de estado (eventos) emitidos por productores y consumidos por suscriptores a través de enrutadores de eventos (como EventBridge, SNS o Kinesis). Los emisores no necesitan conocer quién consume los eventos ni cómo se procesan.",
+      "whenToUse": [
+        "Sistemas distribuidos a gran escala que requieren desacoplamiento extremo entre módulos funcionales.",
+        "Flujos de trabajo asíncronos y arquitecturas Serverless con AWS Lambda y EventBridge.",
+        "Ecosistemas empresariales donde múltiples equipos consumen eventos comunes para alimentar sus propios almacenes de datos."
+      ],
+      "tradeOffs": {
+        "pros": "Alta resiliencia, escalabilidad independiente de componentes, extensibilidad ágil al añadir nuevos consumidores sin tocar el código emisor.",
+        "cons": "Dificultad incrementada en la observabilidad y trazabilidad del flujo de negocio global; exige implementar trazabilidad distribuida (e.g. AWS X-Ray)."
+      },
+      "relatedTermSlugs": [
+        "amazon-eventbridge",
+        "amazon-sns",
+        "amazon-sqs",
+        "desacoplamiento-asincrono",
+        "patron-fan-out"
+      ],
+      "associatedChallengeIds": [
+        "ch-event-driven-architecture"
+      ],
+      "displayOrder": 46
+    },
+    {
+      "slug": "microservicios-serverless",
+      "title": "Microservicios Serverless",
+      "category": "concept",
+      "pillar": "CostOptimization",
+      "shortDefinition": "Construcción de aplicaciones como conjuntos de servicios modulares ejecutados en tecnologías sin servidor gestionadas.",
+      "whatIs": "Los microservicios sin servidor combinan los principios de diseño de microservicios (servicios autónomos, dominio único, propiedad de datos aislada) con la computación Serverless (AWS Lambda, API Gateway, DynamoDB). Cada microservicio opera como una unidad independiente que escala a cero cuando no hay demanda y no requiere aprovisionamiento de capacidad base.",
+      "whenToUse": [
+        "Desarrollo de nuevas aplicaciones nativas de nube con alta velocidad de iteración y despliegue.",
+        "Sistemas con patrones de tráfico impredecibles o estacionales donde el costo por inactividad debe ser cero.",
+        "Equipos de desarrollo ágiles que despliegan servicios de forma independiente mediante pipelines CI/CD automatizados."
+      ],
+      "tradeOffs": {
+        "pros": "Costo cero en reposo, autoescalado granular por microservicio, eliminación total de la administración de sistemas operativos y parches.",
+        "cons": "Complejidad en pruebas locales integradas, latencias de arranque en frío (cold starts) y gestión de topologías de red complejas."
+      },
+      "relatedTermSlugs": [
+        "aws-lambda",
+        "amazon-api-gateway",
+        "amazon-dynamodb",
+        "patron-strangler-fig"
+      ],
+      "associatedChallengeIds": [
+        "ch-serverless-architecture"
+      ],
+      "displayOrder": 47
+    },
+    {
+      "slug": "patron-circuit-breaker",
+      "title": "Patrón Circuit Breaker",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Mecanismo de resiliencia que interrumpe solicitudes a un servicio fallido para evitar sobrecargas y cascadas de fallas.",
+      "whatIs": "El patrón Circuit Breaker (Interruptor de Circuito) previene que una aplicación intente ejecutar repetidamente una operación que probablemente fallará. Cuando la tasa de errores hacia una dependencia externa supera un umbral, el circuito se 'abre', retornando un error inmediato o una respuesta de contingencia (fallback) sin sobrecargar al servicio degradado, permitiéndole recuperarse.",
+      "whenToUse": [
+        "Llamadas síncronas entre microservicios a través de la red susceptibles a latencia o caídas transitorias.",
+        "Integraciones con pasarelas de pago o APIs de terceros con acuerdos de nivel de servicio (SLAs) variables.",
+        "Prevención de fallos en cascada que agoten los hilos de conexión del cliente llamador."
+      ],
+      "tradeOffs": {
+        "pros": "Protege los servicios degradados evitando su colapso total, respuesta rápida con degradación elegante (*graceful degradation*) para el usuario.",
+        "cons": "Requiere implementar lógica de estados (Closed, Open, Half-Open) y mecanismos de contingencia adecuados para cada funcionalidad."
+      },
+      "relatedTermSlugs": [
+        "patron-bulkhead",
+        "throttling-rate-limiting",
+        "alta-disponibilidad",
+        "fiabilidad"
+      ],
+      "associatedChallengeIds": [
+        "ch-resilience-patterns"
+      ],
+      "displayOrder": 48
+    },
+    {
+      "slug": "patron-bulkhead",
+      "title": "Patrón Bulkhead (Aislamiento de Fallas)",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Aislamiento de recursos en compartimentos estancos para que la falla de uno no hunda todo el sistema.",
+      "whatIs": "Inspirado en los mamparos estancos de los barcos que evitan que toda la nave se inunde si se perfora un compartimento, el patrón Bulkhead aísla elementos de una aplicación en grupos o particiones independientes. De esta manera, si un servicio o consumidor consume todos los recursos asignados (CPU, conexiones o hilos), los demás servicios continúan operando con normalidad.",
+      "whenToUse": [
+        "Sistemas multi-inquilino (*multi-tenant*) donde un cliente con uso abusivo no debe degradar la experiencia de otros clientes.",
+        "Separación de grupos de hilos o conexiones para operaciones críticas frente a tareas secundarias.",
+        "Despliegue de microservicios en clústeres o VPCs independientes para contener blast radius de incidentes."
+      ],
+      "tradeOffs": {
+        "pros": "Contención estricta del radio de impacto de fallas (*blast radius*), garantiza la disponibilidad de funciones críticas del negocio.",
+        "cons": "Puede generar menor eficiencia en el uso de recursos agregados al no permitir compartir libremente capacidad ociosa entre compartimentos."
+      },
+      "relatedTermSlugs": [
+        "patron-circuit-breaker",
+        "throttling-rate-limiting",
+        "single-point-of-failure",
+        "fiabilidad"
+      ],
+      "associatedChallengeIds": [
+        "ch-resilience-patterns"
+      ],
+      "displayOrder": 49
+    },
+    {
+      "slug": "throttling-rate-limiting",
+      "title": "Throttling y Rate Limiting",
+      "category": "concept",
+      "pillar": "Reliability",
+      "shortDefinition": "Control y limitación deliberada del volumen de solicitudes para proteger la estabilidad de los servicios backend.",
+      "whatIs": "Throttling y Rate Limiting son técnicas de control de flujo que limitan el número de solicitudes que un cliente o sistema puede realizar en un período determinado (e.g. 100 peticiones por segundo). Si se excede el límite, el servicio devuelve respuestas estándar HTTP 429 (Too Many Requests), protegiendo la infraestructura contra saturaciones o ataques de denegación de servicio.",
+      "whenToUse": [
+        "Protección de APIs públicas contra abusos, raspado de datos o ataques de denegación de servicio.",
+        "Garantizar un reparto equitativo de capacidad (*fair-share*) entre diferentes clientes o aplicaciones cliente.",
+        "Evitar que picos de peticiones desborden la capacidad de procesamiento de bases de datos backend."
+      ],
+      "tradeOffs": {
+        "pros": "Garantiza la estabilidad y disponibilidad del backend frente a sobrecargas imprevistas; previene costos descontrolados por consumo abusivo.",
+        "cons": "Los clientes legítimos que superan temporalmente las cuotas reciben errores 429 si no implementan reintentos con backoff exponencial y jitter."
+      },
+      "relatedTermSlugs": [
+        "amazon-api-gateway",
+        "aws-waf",
+        "patron-circuit-breaker",
+        "fiabilidad"
+      ],
+      "associatedChallengeIds": [
+        "ch-apigw-rest-api"
+      ],
+      "displayOrder": 50
+    },
+    {
+      "slug": "blue-green-deployment",
+      "title": "Despliegues Blue/Green",
+      "category": "concept",
+      "pillar": "OperationalExcellence",
+      "shortDefinition": "Técnica de despliegue que transfiere el tráfico entre dos entornos idénticos para lograr lanzamientos con cero tiempo de inactividad.",
+      "whatIs": "El despliegue Blue/Green es una técnica de gestión de versiones que mantiene dos entornos de producción idénticos: uno activo que atiende el tráfico de producción actual (Blue) y otro inactivo con la nueva versión del software desplegada y probada (Green). Una vez validadas las pruebas en Green, el enrutador de tráfico (DNS o balanceador) conmuta instantáneamente el tráfico al nuevo entorno.",
+      "whenToUse": [
+        "Actualizaciones de aplicaciones críticas en producción con requerimiento de cero tiempo de inactividad (*zero-downtime*).",
+        "Lanzamientos con necesidad de reversión instantánea (*instant rollback*) en caso de detectar anomalías post-despliegue.",
+        "Validación de migraciones de esquemas o cambios estructurales antes de abrir el acceso a los usuarios finales."
+      ],
+      "tradeOffs": {
+        "pros": "Cero tiempo de inactividad para usuarios, reversión casi instantánea simplemente reconmutando el balanceador, pruebas reales en entorno espejo.",
+        "cons": "Duplicación temporal de costos de infraestructura al requerir mantener dos entornos de producción completos simultáneamente."
+      },
+      "relatedTermSlugs": [
+        "canary-deployment",
+        "application-load-balancer",
+        "amazon-route-53",
+        "excelencia-operativa"
+      ],
+      "associatedChallengeIds": [
+        "ch-blue-green-pipeline"
+      ],
+      "displayOrder": 51
+    },
+    {
+      "slug": "canary-deployment",
+      "title": "Despliegues Canary (Canario)",
+      "category": "concept",
+      "pillar": "OperationalExcellence",
+      "shortDefinition": "Estrategia de lanzamiento gradual que expone una nueva versión a un pequeño porcentaje de usuarios antes de abrirla al 100%.",
+      "whatIs": "Inspirado en los canarios utilizados históricamente en las minas de carbón para alertar sobre gases tóxicos, el despliegue Canary consiste en enrutar una pequeña fracción del tráfico real (e.g. 5% o 10%) a la nueva versión del software mientras el 90-95% continúa en la versión estable. Si las métricas de error y latencia son óptimas, el tráfico se incrementa progresivamente hasta alcanzar el 100%.",
+      "whenToUse": [
+        "Despliegues continuos en sistemas de escala masiva donde las pruebas sintéticas no pueden replicar todos los casos del tráfico real.",
+        "Minimización del radio de impacto (*blast radius*) de posibles regresiones o fallos en nuevas versiones.",
+        "Validación de impacto en rendimiento bajo condiciones reales de carga en producción."
+      ],
+      "tradeOffs": {
+        "pros": "Impacto mínimo en caso de fallo (solo un pequeño porcentaje de usuarios experimenta el problema), monitoreo real guiado por métricas automatizadas.",
+        "cons": "Mayor complejidad de enrutamiento y telemetría; exige compatibilidad retroactiva estricta en bases de datos y contratos de APIs."
+      },
+      "relatedTermSlugs": [
+        "blue-green-deployment",
+        "amazon-route-53",
+        "application-load-balancer",
+        "amazon-cloudwatch"
+      ],
+      "associatedChallengeIds": [
+        "ch-canary-deployment"
+      ],
+      "displayOrder": 52
+    },
+    {
+      "slug": "cqrs-pattern",
+      "title": "Patrón CQRS (Command Query Responsibility Segregation)",
+      "category": "concept",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Separación arquitectónica estricta entre los modelos y almacenes utilizados para modificar datos (Commands) y para consultarlos (Queries).",
+      "whatIs": "El patrón CQRS segrega las operaciones de modificación de datos (Commands: Crear, Actualizar, Borrar) de las operaciones de lectura y consulta (Queries). Esto permite optimizar independientemente el modelo de datos de escritura (e.g. PostgreSQL normalizado para transacciones ACID) y el modelo de datos de lectura (e.g. DynamoDB o OpenSearch desnormalizado para consultas ultrarrápidas).",
+      "whenToUse": [
+        "Aplicaciones con una asimetría masiva entre operaciones de lectura y escritura (e.g. 1000 lecturas por cada escritura).",
+        "Sistemas de alta concurrencia que requieren interfaces de consulta complejas que degradarían la base de datos transaccional.",
+        "Arquitecturas combinadas con Event Sourcing para auditoría inmutable."
+      ],
+      "tradeOffs": {
+        "pros": "Escalado independiente y optimización extrema de lecturas y escrituras, esquemas desnormalizados hechos a la medida de la interfaz de usuario.",
+        "cons": "Mayor complejidad arquitectónica; la sincronización entre el almacén de escritura y lectura es asíncrona, introduciendo consistencia eventual."
+      },
+      "relatedTermSlugs": [
+        "read-replicas",
+        "event-driven-architecture",
+        "amazon-dynamodb",
+        "amazon-rds"
+      ],
+      "associatedChallengeIds": [
+        "ch-cqrs-architecture"
+      ],
+      "displayOrder": 53
+    },
+    {
+      "slug": "zero-trust-architecture",
+      "title": "Arquitectura Zero Trust",
+      "category": "concept",
+      "pillar": "Security",
+      "shortDefinition": "Modelo de seguridad que asume que ninguna entidad es de confianza por defecto, verificando explícitamente cada solicitud.",
+      "whatIs": "El modelo Zero Trust ('Nunca confíes, siempre verifica') es una filosofía de seguridad que elimina la presunción tradicional de que los recursos dentro del perímetro de la red corporativa o VPC son seguros. Exige que cada usuario, dispositivo, servicio o llamada a la API sea autenticado, autorizado e inspeccionado continuamente, cifrando todo el tráfico en tránsito y en reposo.",
+      "whenToUse": [
+        "Comunicaciones de microservicio a microservicio en la nube mediante mTLS y tokens de identidad.",
+        "Acceso seguro de empleados y sistemas a recursos cloud sin depender exclusivamente de una VPN perimetral.",
+        "Cumplimiento de los estándares más exigentes de seguridad bancaria, gubernamental y sanitaria."
+      ],
+      "tradeOffs": {
+        "pros": "Mitigación drástica del movimiento lateral de atacantes tras una brecha de seguridad; visibilidad y control granular de cada acceso.",
+        "cons": "Mayor sobrecarga computacional de autenticación/cifrado continuo; complejidad en la administración de certificados y políticas de identidad."
+      },
+      "relatedTermSlugs": [
+        "least-privilege-principle",
+        "aws-iam",
+        "seguridad-cloud",
+        "security-group"
+      ],
+      "associatedChallengeIds": [
+        "ch-zero-trust-network"
+      ],
+      "displayOrder": 54
+    },
+    {
+      "slug": "least-privilege-principle",
+      "title": "Principio de Menor Privilegio (PoLP)",
+      "category": "concept",
+      "pillar": "Security",
+      "shortDefinition": "Principio de seguridad que otorga a cada usuario, rol o aplicación únicamente los permisos mínimos requeridos para su tarea.",
+      "whatIs": "El Principio de Menor Privilegio (Principle of Least Privilege - PoLP) es una práctica de seguridad fundamental que establece que a cualquier identidad (usuario humano, rol de IAM, servicio o proceso) se le deben conceder únicamente los permisos estrictamente necesarios para llevar a cabo su función asignada, durante el tiempo necesario y en los recursos específicos pertinentes.",
+      "whenToUse": [
+        "Diseño de políticas de IAM para roles de instancias EC2, tareas ECS y funciones Lambda.",
+        "Administración de accesos de desarrolladores y administradores a la consola de AWS evitando el uso del usuario Root o permisos AdministratorAccess.",
+        "Restricción de acceso a buckets de S3 y bases de datos confidenciales."
+      ],
+      "tradeOffs": {
+        "pros": "Reduce drásticamente el radio de explosión (*blast radius*) de credenciales comprometidas o errores humanos accidentales.",
+        "cons": "Requiere tiempo y mantenimiento continuo para auditar, definir y ajustar políticas IAM granulares a medida que evolucionan los sistemas."
+      },
+      "relatedTermSlugs": [
+        "aws-iam",
+        "zero-trust-architecture",
+        "seguridad-cloud",
+        "aws-kms"
+      ],
+      "associatedChallengeIds": [
+        "ch-iam-least-privilege"
+      ],
+      "displayOrder": 55
+    },
+    {
+      "slug": "database-sharding",
+      "title": "Fragmentación de Bases de Datos (Sharding)",
+      "category": "concept",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Patrón de particionamiento horizontal que divide un gran conjunto de datos entre múltiples instancias independientes.",
+      "whatIs": "El sharding o fragmentación es una técnica de particionamiento horizontal que divide un conjunto masivo de datos en fragmentos más pequeños e independientes (shards), distribuyéndolos en múltiples instancias de bases de datos o nodos de almacenamiento. Cada fragmento aloja un subconjunto de las filas totales, determinado comúnmente por una clave de partición (Shard Key).",
+      "whenToUse": [
+        "Bases de datos que superan los límites físicos de cómputo, memoria o almacenamiento de la mayor máquina disponible (Scale-Up).",
+        "Sistemas con millones de escrituras concurrentes que saturan los cuellos de botella de un nodo primario relacional.",
+        "Arquitecturas NoSQL nativas como Amazon DynamoDB que particionan automáticamente por clave hash."
+      ],
+      "tradeOffs": {
+        "pros": "Escalabilidad de escritura y almacenamiento prácticamente ilimitada; distribución de carga entre múltiples nodos físicos.",
+        "cons": "Alta complejidad en la capa de aplicación o middleware para enrutar consultas; operaciones cross-shard (joins entre fragmentos) son muy costosas o inviables."
+      },
+      "relatedTermSlugs": [
+        "amazon-dynamodb",
+        "escalabilidad-horizontal",
+        "eficiencia-rendimiento"
+      ],
+      "associatedChallengeIds": [
+        "ch-dynamodb-crud"
+      ],
+      "displayOrder": 56
+    },
+    {
+      "slug": "subnet-publica",
+      "title": "Subred Pública (Public Subnet)",
+      "category": "infrastructure",
+      "serviceCode": "NET_SUBNET_PUB",
+      "pillar": "Security",
+      "shortDefinition": "Subred de una VPC cuya tabla de enrutamiento tiene una ruta directa hacia un Internet Gateway (IGW).",
+      "whatIs": "Una Subred Pública es un segmento de red dentro de una VPC cuya tabla de enrutamiento asociada contiene una ruta hacia el exterior (0.0.0.0/0) apuntando directamente a un Internet Gateway (IGW). Los recursos desplegados en una subred pública pueden recibir direcciones IP públicas y ser accesibles directamente desde Internet.",
+      "whenToUse": [
+        "Despliegue de balanceadores de carga públicos (Internet-Facing ALBs/NLBs).",
+        "Instancias Bastion Host para acceso administrativo seguro por SSH/RDP.",
+        "Puertas de enlace NAT Gateway para brindar salida a Internet a recursos privados."
+      ],
+      "tradeOffs": {
+        "pros": "Permite conectividad bidireccional directa con Internet; requerida como punto de entrada perimetral de tráfico público.",
+        "cons": "Mayor exposición a amenazas y ataques externos; nunca deben alojarse bases de datos ni backends sensibles directamente en una subred pública."
+      },
+      "relatedTermSlugs": [
+        "subnet-privada",
+        "internet-gateway",
+        "nat-gateway",
+        "bastion-host",
+        "amazon-vpc"
+      ],
+      "associatedChallengeIds": [
+        "ch-vpc-custom-setup",
+        "ch-multi-tier-vpc"
+      ],
+      "displayOrder": 57
+    },
+    {
+      "slug": "subnet-privada",
+      "title": "Subred Privada (Private Subnet)",
+      "category": "infrastructure",
+      "serviceCode": "NET_SUBNET_PRIV",
+      "pillar": "Security",
+      "shortDefinition": "Subred de una VPC sin ruta directa al Internet Gateway, aislando los recursos de accesos externos directos.",
+      "whatIs": "Una Subred Privada es un rango de direcciones IP dentro de una VPC cuya tabla de enrutamiento no tiene una ruta directa hacia el Internet Gateway. Los recursos alojados en ella solo poseen direcciones IP privadas, lo que impide que clientes desde Internet inicien conexiones directas con ellos, protegiendo las capas de cómputo y persistencia críticas.",
+      "whenToUse": [
+        "Alojamiento de bases de datos relacionales (Amazon RDS, Aurora) y clústeres de caché (ElastiCache).",
+        "Instancias de backend de aplicaciones empresariales, microservicios y workers de procesamiento.",
+        "Cualquier recurso que no deba tener visibilidad pública directa en Internet."
+      ],
+      "tradeOffs": {
+        "pros": "Aislamiento de red de alta seguridad contra ataques directos de Internet; cumplimiento estricto de estándares normativos.",
+        "cons": "Para descargar parches o acceder a APIs externas requiere configurar y costear un NAT Gateway o VPC Endpoints."
+      },
+      "relatedTermSlugs": [
+        "subnet-publica",
+        "nat-gateway",
+        "amazon-rds",
+        "security-group",
+        "amazon-vpc"
+      ],
+      "associatedChallengeIds": [
+        "ch-multi-tier-vpc"
+      ],
+      "displayOrder": 58
+    },
+    {
+      "slug": "internet-gateway",
+      "title": "Internet Gateway (IGW)",
+      "category": "infrastructure",
+      "serviceCode": "NET_IGW",
+      "pillar": "Reliability",
+      "shortDefinition": "Componente de VPC escalable y altamente disponible que permite la comunicación bidireccional entre la VPC e Internet.",
+      "whatIs": "Un Internet Gateway (IGW) es un componente de VPC administrado por AWS, horizontalmente escalable, redundante y altamente disponible que permite la comunicación entre instancias de su VPC e Internet. No impone restricciones de ancho de banda ni cuellos de botella y realiza traducción de direcciones de red (NAT 1:1) para recursos con IPs públicas.",
+      "whenToUse": [
+        "Habilitar acceso público a balanceadores de carga (ALB), servidores web e instancias Bastion en subredes públicas.",
+        "Permitir la entrada y salida de tráfico HTTP/HTTPS en la frontera perimetral de la VPC.",
+        "Base de conectividad para el funcionamiento de NAT Gateways."
+      ],
+      "tradeOffs": {
+        "pros": "Disponibilidad y escalabilidad automáticas administradas por AWS sin cuellos de botella ni costo fijo por hora.",
+        "cons": "Solo puede haber un Internet Gateway adjunto por cada VPC; los recursos deben tener IPs públicas para comunicarse a través de él."
+      },
+      "relatedTermSlugs": [
+        "amazon-vpc",
+        "subnet-publica",
+        "nat-gateway",
+        "route-table"
+      ],
+      "associatedChallengeIds": [
+        "ch-vpc-custom-setup"
+      ],
+      "displayOrder": 59
+    },
+    {
+      "slug": "nat-gateway",
+      "title": "NAT Gateway",
+      "category": "infrastructure",
+      "serviceCode": "NET_NATGW",
+      "pillar": "Security",
+      "shortDefinition": "Servicio administrado que permite a instancias en subredes privadas conectarse a Internet sin exponerlas a conexiones entrantes.",
+      "whatIs": "Un NAT Gateway (Network Address Translation) es un servicio totalmente administrado por AWS que permite a los recursos situados en subredes privadas iniciar conexiones salientes hacia Internet (e.g. para descargar parches de software, consultar APIs externas o actualizar librerías), al tiempo que bloquea cualquier intento de conexión entrante no solicitada desde Internet.",
+      "whenToUse": [
+        "Actualización de dependencias y parches de seguridad en servidores de aplicación ubicados en subredes privadas.",
+        "Consumo de servicios externos de terceros (APIs REST, pasarelas de pago) desde bases de datos o backends privados.",
+        "Despliegues Multi-AZ donde se ubica un NAT Gateway en cada subred pública para garantizar alta disponibilidad de salida."
+      ],
+      "tradeOffs": {
+        "pros": "Totalmente administrado por AWS con escalado automático de ancho de banda hasta 100 Gbps, alta disponibilidad dentro de la AZ.",
+        "cons": "Costo por hora de funcionamiento más costo por gigabyte de datos transferidos; para comunicarse con servicios de AWS como S3 o DynamoDB es más económico usar VPC Endpoints."
+      },
+      "relatedTermSlugs": [
+        "subnet-privada",
+        "subnet-publica",
+        "internet-gateway",
+        "vpc-endpoint-privatelink"
+      ],
+      "associatedChallengeIds": [
+        "ch-multi-tier-vpc"
+      ],
+      "displayOrder": 60
+    },
+    {
+      "slug": "security-group",
+      "title": "Security Group (Firewall Stateful)",
+      "category": "infrastructure",
+      "serviceCode": "SEC_SG",
+      "pillar": "Security",
+      "shortDefinition": "Firewall virtual a nivel de instancia que controla el tráfico entrante y saliente con estado (Stateful).",
+      "whatIs": "Un Security Group actúa como un firewall virtual que controla el tráfico entrante (Inbound) y saliente (Outbound) a nivel de la interfaz de red elástica (ENI) de los recursos (instancias EC2, bases de datos RDS, contenedores o ALBs). Es de naturaleza 'Stateful': si se permite una solicitud entrante, la respuesta saliente se permite automáticamente sin importar las reglas de salida.",
+      "whenToUse": [
+        "Restricción estricta de puertos: permitir solo el puerto 443 en el ALB y el puerto 80/443 desde el ALB hacia las instancias EC2.",
+        "Seguridad encadenada: autorizar tráfico a la base de datos RDS permitiendo como origen únicamente el Security Group de la capa de aplicación.",
+        "Aislamiento de servicios dentro de la misma subred mediante reglas de origen basadas en otros Security Groups."
+      ],
+      "tradeOffs": {
+        "pros": "Seguridad stateful que simplifica reglas de retorno, soporte de referencias cruzadas entre Security Groups en lugar de IPs fijas, evaluación a nivel de interfaz de red.",
+        "cons": "No soporta reglas explícitas de denegación (Deny rules); todo el tráfico no permitido explícitamente se bloquea por defecto."
+      },
+      "relatedTermSlugs": [
+        "network-acl",
+        "amazon-vpc",
+        "least-privilege-principle",
+        "seguridad-cloud"
+      ],
+      "associatedChallengeIds": [
+        "ch-security-groups-hardening"
+      ],
+      "displayOrder": 61
+    },
+    {
+      "slug": "network-acl",
+      "title": "Network Access Control List (NACL Stateless)",
+      "category": "infrastructure",
+      "serviceCode": "SEC_NACL",
+      "pillar": "Security",
+      "shortDefinition": "Capa opcional de firewall a nivel de subred que evalúa reglas numeradas secuencialmente sin estado (Stateless).",
+      "whatIs": "Una Network ACL (NACL) es una capa de seguridad opcional que opera a nivel de subred para controlar el tráfico que entra y sale de ella. Es 'Stateless' (sin estado), lo que significa que las respuestas al tráfico entrante permitido deben autorizarse explícitamente en las reglas de salida (incluyendo el rango de puertos efímeros 1024-65535), y admite reglas explícitas de PERMITIR (Allow) y DENEGAR (Deny).",
+      "whenToUse": [
+        "Bloqueo inmediato de rangos de direcciones IP o bloques CIDR maliciosos conocidos (reglas explícitas de Deny).",
+        "Seguridad perimetral en profundidad como segunda línea de defensa complementaria a los Security Groups.",
+        "Cumplimiento de normativas de aislamiento estricto a nivel de frontera de subred."
+      ],
+      "tradeOffs": {
+        "pros": "Soporte de reglas explícitas de denegación (Deny), evaluación rápida en la frontera de la subred antes de llegar a los recursos.",
+        "cons": "Naturaleza stateless compleja: olvidar abrir puertos efímeros de salida (1024-65535) bloquea las respuestas legítimas."
+      },
+      "relatedTermSlugs": [
+        "security-group",
+        "subnet-publica",
+        "subnet-privada",
+        "amazon-vpc"
+      ],
+      "associatedChallengeIds": [
+        "ch-nacl-security"
+      ],
+      "displayOrder": 62
+    },
+    {
+      "slug": "route-table",
+      "title": "Tabla de Enrutamiento (Route Table)",
+      "category": "infrastructure",
+      "serviceCode": "NET_RT",
+      "pillar": "Reliability",
+      "shortDefinition": "Conjunto de reglas que determinan hacia dónde se dirige el tráfico de red de las subredes de una VPC.",
+      "whatIs": "Una Tabla de Enrutamiento (Route Table) contiene un conjunto de reglas (denominadas rutas) que se utilizan para determinar hacia dónde se dirige el tráfico de red procedente de una subred o puerta de enlace. Cada subred de una VPC debe estar asociada a una tabla de enrutamiento que dicte su camino hacia Internet, otras subredes o conexiones privadas.",
+      "whenToUse": [
+        "Configuración de subredes públicas apuntando el destino 0.0.0.0/0 hacia un Internet Gateway (IGW).",
+        "Configuración de subredes privadas dirigiendo 0.0.0.0/0 hacia un NAT Gateway.",
+        "Enrutamiento de tráfico entre VPCs interconectadas mediante VPC Peering o Transit Gateway."
+      ],
+      "tradeOffs": {
+        "pros": "Control determinista del flujo de tráfico de red, soporte de enrutamiento local automático entre todas las subredes de la misma VPC.",
+        "cons": "Configuraciones erróneas de rutas pueden aislar subredes o generar agujeros negros (*blackholes*) en la comunicación interna."
+      },
+      "relatedTermSlugs": [
+        "amazon-vpc",
+        "internet-gateway",
+        "nat-gateway",
+        "subnet-publica"
+      ],
+      "associatedChallengeIds": [
+        "ch-vpc-custom-setup"
+      ],
+      "displayOrder": 63
+    },
+    {
+      "slug": "bastion-host",
+      "title": "Bastion Host (Jump Box)",
+      "category": "infrastructure",
+      "serviceCode": "SEC_BASTION",
+      "pillar": "Security",
+      "shortDefinition": "Servidor endurecido en una subred pública utilizado como intermediario seguro para acceder a instancias privadas.",
+      "whatIs": "Un Bastion Host (o Jump Box) es una instancia de servidor especialmente protegida y endurecida que se ubica en una subred pública con el único propósito de servir como puente de acceso administrativo seguro (mediante SSH o RDP) hacia instancias alojadas en subredes privadas no expuestas a Internet.",
+      "whenToUse": [
+        "Acceso administrativo de consola por SSH a servidores Linux o RDP a servidores Windows en redes privadas.",
+        "Entornos donde no se dispone de AWS Systems Manager Session Manager o se requieren túneles de puertos específicos.",
+        "Canalización de conexiones administrativas con registro estricto de auditoría de sesiones."
+      ],
+      "tradeOffs": {
+        "pros": "Evita exponer servidores de base de datos o aplicación con IPs públicas; concentra la superficie de ataque en un único nodo altamente monitoreado.",
+        "cons": "Requiere mantenimiento, parches y endurecimiento continuo; tecnologías modernas como AWS Systems Manager Session Manager eliminan la necesidad de Bastions tradicionales."
+      },
+      "relatedTermSlugs": [
+        "subnet-publica",
+        "subnet-privada",
+        "security-group",
+        "seguridad-cloud"
+      ],
+      "associatedChallengeIds": [
+        "ch-bastion-host-access"
+      ],
+      "displayOrder": 64
+    },
+    {
+      "slug": "vpc-peering",
+      "title": "Conexión de Interconexión de VPC (VPC Peering)",
+      "category": "infrastructure",
+      "serviceCode": "NET_PEERING",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Conexión de red directa entre dos VPCs que les permite enrutar tráfico entre sí mediante direcciones IP privadas.",
+      "whatIs": "Una conexión de interconexión de VPC (VPC Peering) es una conexión de red entre dos VPCs que permite enrutar el tráfico entre ellas de forma transparente utilizando direcciones IPv4 o IPv6 privadas, como si pertenecieran a la misma red. El tráfico nunca viaja por la Internet pública y se mantiene en la infraestructura troncal de AWS.",
+      "whenToUse": [
+        "Comunicación directa y de baja latencia entre servicios alojados en diferentes VPCs o cuentas de AWS.",
+        "Acceso de aplicaciones en una VPC a servicios compartidos (e.g. autenticación, herramientas de monitoreo) en una VPC central.",
+        "Transferencia segura de datos inter-VPC con ancho de banda sin restricciones."
+      ],
+      "tradeOffs": {
+        "pros": "Sin punto único de falla ni cuellos de botella de ancho de banda, tráfico 100% privado en la red de AWS, sin costo de gateway por hora.",
+        "cons": "No admite enrutamiento transitivo (si VPC A se conecta a B y B a C, A no puede comunicarse con C a través de B sin un enlace directo o Transit Gateway); los bloques CIDR no deben superponerse."
+      },
+      "relatedTermSlugs": [
+        "transit-gateway",
+        "amazon-vpc",
+        "cidr-block"
+      ],
+      "associatedChallengeIds": [
+        "ch-vpc-peering"
+      ],
+      "displayOrder": 65
+    },
+    {
+      "slug": "transit-gateway",
+      "title": "AWS Transit Gateway",
+      "category": "infrastructure",
+      "serviceCode": "NET_TGW",
+      "pillar": "OperationalExcellence",
+      "shortDefinition": "Concentrador central de red que interconecta de forma transitiva cientos de VPCs y redes on-premises en topología estrella.",
+      "whatIs": "AWS Transit Gateway actúa como un enrutador de red en la nube altamente escalable que conecta sus VPCs y sus redes locales a través de un concentrador central en topología hub-and-spoke. Simplifica drásticamente la arquitectura de red eliminando complejas mallas de relaciones de interconexión punto a punto (VPC Peering).",
+      "whenToUse": [
+        "Organizaciones con decenas o cientos de VPCs y cuentas de AWS interconectadas entre sí.",
+        "Topologías de red corporativas con múltiples conexiones VPN y enlaces AWS Direct Connect hacia datacenters locales.",
+        "Implementación de inspección centralizada de tráfico de seguridad con appliances de firewall."
+      ],
+      "tradeOffs": {
+        "pros": "Topología simplificada hub-and-spoke, soporte completo de enrutamiento transitivo entre todas las VPCs y redes locales, administración centralizada.",
+        "cons": "Costo fijo por hora por cada VPC conectada más costo por gigabyte procesado, superior a VPC Peering directo para arquitecturas pequeñas de pocas VPCs."
+      },
+      "relatedTermSlugs": [
+        "vpc-peering",
+        "amazon-vpc",
+        "excelencia-operativa"
+      ],
+      "associatedChallengeIds": [
+        "ch-transit-gateway-hub"
+      ],
+      "displayOrder": 66
+    },
+    {
+      "slug": "cidr-block",
+      "title": "Bloque CIDR e Inter-Domain Routing",
+      "category": "infrastructure",
+      "serviceCode": "NET_CIDR",
+      "pillar": "Security",
+      "shortDefinition": "Notación estándar para especificar rangos de direcciones IP y máscaras de subred (ej. 10.0.0.0/16).",
+      "whatIs": "El enrutamiento entre dominios sin clases (CIDR) es una metodología de asignación de direcciones IP que optimiza el tamaño de las tablas de enrutamiento. En AWS, un bloque CIDR (como 10.0.0.0/16 para una VPC o 10.0.1.0/24 para una subred) define el rango total de direcciones IP privadas disponibles para aprovisionar interfaces y recursos.",
+      "whenToUse": [
+        "Diseño inicial y dimensionamiento de la topología de red de una VPC.",
+        "Segmentación de subredes públicas y privadas evitando el agotamiento de direcciones IP.",
+        "Configuración de reglas de firewall en Security Groups y Network ACLs basadas en rangos de red específicos."
+      ],
+      "tradeOffs": {
+        "pros": "Asignación flexible y jerárquica de espacio de direcciones IP privadas, control exhaustivo de enrutamiento y seguridad.",
+        "cons": "AWS reserva 5 direcciones IP por cada bloque CIDR de subred (la primera de red, el router de VPC, el DNS de Amazon, uso futuro y la de broadcast)."
+      },
+      "relatedTermSlugs": [
+        "amazon-vpc",
+        "subnet-publica",
+        "subnet-privada",
+        "security-group"
+      ],
+      "associatedChallengeIds": [
+        "ch-vpc-custom-setup"
+      ],
+      "displayOrder": 67
+    },
+    {
+      "slug": "target-group-health-checks",
+      "title": "Target Groups & Health Checks",
+      "category": "infrastructure",
+      "serviceCode": "NET_TG",
+      "pillar": "Reliability",
+      "shortDefinition": "Agrupación lógica de destinos de backend con comprobaciones periódicas de estado para enrutamiento de carga.",
+      "whatIs": "Un Target Group (Grupo de Destinos) enruta solicitudes hacia uno o varios destinos registrados (instancias EC2, contenedores ECS o funciones Lambda) utilizando el protocolo y puerto configurados. Realiza comprobaciones periódicas de estado (Health Checks) mediante peticiones HTTP/TCP para asegurar que el balanceador de carga solo envíe tráfico a destinos sanos.",
+      "whenToUse": [
+        "Configuración de destinos para balanceadores de carga Application Load Balancers y Network Load Balancers.",
+        "Detección automática y aislamiento de instancias de backend degradadas o con fallos de proceso.",
+        "Enrutamiento condicional basado en microservicios o versiones en despliegues Blue/Green."
+      ],
+      "tradeOffs": {
+        "pros": "Aislamiento automático de nodos en mal estado antes de que afecten a los usuarios, verificación continua a nivel de aplicación con códigos HTTP de éxito configurables.",
+        "cons": "Intervalos de health check mal calibrados pueden tardar en detectar una caída o marcar como no saludables instancias que sufren picos normales de carga."
+      },
+      "relatedTermSlugs": [
+        "application-load-balancer",
+        "network-load-balancer",
+        "alta-disponibilidad",
+        "auto-scaling-group"
+      ],
+      "associatedChallengeIds": [
+        "ch-alb-multi-az"
+      ],
+      "displayOrder": 68
+    },
+    {
+      "slug": "vpc-endpoint-privatelink",
+      "title": "VPC Endpoints & AWS PrivateLink",
+      "category": "infrastructure",
+      "serviceCode": "NET_VPCE",
+      "pillar": "Security",
+      "shortDefinition": "Conexión privada y segura entre una VPC y servicios de AWS o SaaS sin pasar por la Internet pública.",
+      "whatIs": "Los VPC Endpoints permiten conectar de forma privada su VPC a servicios compatibles de AWS y a servicios de endpoints de socios basados en AWS PrivateLink sin necesidad de un Internet Gateway, dispositivo NAT, conexión VPN ni AWS Direct Connect. El tráfico entre la VPC y el servicio no sale nunca de la red troncal de Amazon.",
+      "whenToUse": [
+        "Acceso directo y gratuito desde subredes privadas a Amazon S3 y DynamoDB mediante Gateway Endpoints.",
+        "Consumo seguro de servicios de AWS (KMS, Secrets Manager, SQS, SNS) desde subredes privadas sin necesidad de NAT Gateway.",
+        "Exposición segura de APIs y servicios internos a VPCs de clientes corporativos mediante PrivateLink."
+      ],
+      "tradeOffs": {
+        "pros": "Máxima seguridad sin exposición a Internet, menor costo de transferencia comparado con NAT Gateways para grandes volúmenes de datos, control con Endpoint Policies.",
+        "cons": "Los Interface Endpoints (PrivateLink) tienen un costo por hora por cada AZ donde se despliegan más costo por gigabyte procesado (a diferencia de los Gateway Endpoints de S3 y DynamoDB que son gratuitos)."
+      },
+      "relatedTermSlugs": [
+        "amazon-vpc",
+        "subnet-privada",
+        "nat-gateway",
+        "seguridad-cloud"
+      ],
+      "associatedChallengeIds": [
+        "ch-vpc-endpoints-s3"
+      ],
+      "displayOrder": 69
+    },
+    {
+      "slug": "excelencia-operativa",
+      "title": "Pilar 1: Excelencia Operativa (Operational Excellence)",
+      "category": "well-architected",
+      "pillar": "OperationalExcellence",
+      "shortDefinition": "Capacidad para dar soporte al desarrollo y ejecutar cargas de trabajo eficazmente, comprender operaciones y mejorar continuamente.",
+      "whatIs": "El pilar de Excelencia Operativa del AWS Well-Architected Framework se centra en la capacidad de ejecutar y monitorizar sistemas para ofrecer valor empresarial y mejorar continuamente los procesos y procedimientos de soporte. Incluye prácticas clave como realizar operaciones como código (IaC), cambios frecuentes pequeños y reversibles, refinamiento continuo de procedimientos operativos y anticipación de fallas.",
+      "whenToUse": [
+        "Automatización integral de infraestructura y despliegues con CloudFormation o CDK.",
+        "Establecimiento de métricas de negocio, registros centralizados y alarmas operativas con Amazon CloudWatch.",
+        "Ejecución periódica de simulaciones de fallos y GameDays para validar procedimientos de respuesta ante incidentes."
+      ],
+      "tradeOffs": {
+        "pros": "Reducción drástica del error humano, visibilidad operativa total del ciclo de vida del software, mejora continua impulsada por datos reales.",
+        "cons": "Requiere inversión cultural y de tiempo para madurar la automatización, pruebas continuas y documentación de runbooks y playbooks."
+      },
+      "relatedTermSlugs": [
+        "aws-cloudformation",
+        "amazon-cloudwatch",
+        "blue-green-deployment",
+        "canary-deployment"
+      ],
+      "associatedChallengeIds": [
+        "ch-cloudformation-iac"
+      ],
+      "displayOrder": 70
+    },
+    {
+      "slug": "seguridad-cloud",
+      "title": "Pilar 2: Seguridad en la Nube (Security)",
+      "category": "well-architected",
+      "pillar": "Security",
+      "shortDefinition": "Protección de datos, sistemas y activos empresariales mediante defensas en profundidad, cifrado y control de identidades.",
+      "whatIs": "El pilar de Seguridad se enfoca en proteger la información y los sistemas en la nube. Los temas clave incluyen la aplicación de defensas en múltiples capas (Defensa en Profundidad), control estricto de identidades y accesos (IAM), trazabilidad y auditoría de eventos, protección de datos en reposo y en tránsito, y preparación para responder automáticamente a incidentes de seguridad.",
+      "whenToUse": [
+        "Implementación de políticas de acceso de Menor Privilegio (PoLP) y autenticación multifactor (MFA).",
+        "Cifrado universal de datos en reposo (KMS) y en tránsito (TLS/SSL) en todas las capas de almacenamiento y red.",
+        "Auditoría continua de cumplimiento normativo y detección de anomalías con CloudTrail y AWS WAF."
+      ],
+      "tradeOffs": {
+        "pros": "Protección de los activos más valiosos del negocio, mitigación de riesgos de fuga de datos o multas regulatorias, confianza del cliente.",
+        "cons": "Políticas de seguridad excesivamente rígidas o mal diseñadas pueden generar fricción inicial en la velocidad de los equipos de desarrollo si no se automatizan."
+      },
+      "relatedTermSlugs": [
+        "least-privilege-principle",
+        "zero-trust-architecture",
+        "aws-iam",
+        "aws-kms",
+        "aws-waf",
+        "aws-secrets-manager"
+      ],
+      "associatedChallengeIds": [
+        "ch-iam-least-privilege",
+        "ch-waf-security-rules"
+      ],
+      "displayOrder": 71
+    },
+    {
+      "slug": "fiabilidad",
+      "title": "Pilar 3: Fiabilidad y Resiliencia (Reliability)",
+      "category": "well-architected",
+      "pillar": "Reliability",
+      "shortDefinition": "Capacidad de una carga de trabajo para desempeñar su función correcta y consistentemente cuando se espera que lo haga.",
+      "whatIs": "El pilar de Fiabilidad abarca la capacidad de un sistema para recuperarse de interrupciones de infraestructura o de servicio, adquirir dinámicamente recursos de computación para satisfacer la demanda y mitigar disrupciones como errores de configuración o problemas transitorios de red. Se fundamenta en probar procedimientos de recuperación, auto-reparación automática y diseño distribuido sin puntos únicos de falla.",
+      "whenToUse": [
+        "Diseño de arquitecturas multi-zona (Multi-AZ) y multi-región para tolerancia a catástrofes.",
+        "Implementación de auto-recuperación de instancias degradadas con Auto Scaling Groups.",
+        "Adopción de patrones de resiliencia como Circuit Breakers, colas de desacoplamiento y reintentos exponenciales con jitter."
+      ],
+      "tradeOffs": {
+        "pros": "Continuidad del negocio garantizada con alta disponibilidad, minimización del tiempo de inactividad no planificado, protección ante fallos de hardware.",
+        "cons": "Mayor costo de infraestructura por redundancia de componentes activos y complejidad en la sincronización consistente de datos."
+      },
+      "relatedTermSlugs": [
+        "alta-disponibilidad",
+        "single-point-of-failure",
+        "multi-az-replication",
+        "disaster-recovery-rpo-rto",
+        "auto-scaling-group"
+      ],
+      "associatedChallengeIds": [
+        "ch-ha-auto-healing",
+        "ch-route53-dns-failover"
+      ],
+      "displayOrder": 72
+    },
+    {
+      "slug": "eficiencia-rendimiento",
+      "title": "Pilar 4: Eficiencia del Rendimiento (Performance Efficiency)",
+      "category": "well-architected",
+      "pillar": "PerformanceEfficiency",
+      "shortDefinition": "Uso eficiente de recursos de computación, almacenamiento y bases de datos para mantener el rendimiento a medida que la demanda evoluciona.",
+      "whatIs": "El pilar de Eficiencia del Rendimiento se enfoca en utilizar los recursos de TI de manera estructurada y eficiente para cumplir con los requisitos del sistema y mantener esa eficiencia a medida que la demanda cambia y las tecnologías evolucionan. Claves del pilar incluyen democratizar tecnologías avanzadas (Serverless/Managed), globalización perimetral con CDNs y selección del tipo de recurso óptimo para cada patrón de acceso.",
+      "whenToUse": [
+        "Optimización de latencias de usuario mediante redes de entrega de contenido (CloudFront) y cachés en memoria (ElastiCache).",
+        "Selección adecuada de motores de base de datos relacionales frente a NoSQL según el patrón de acceso a los datos.",
+        "Monitoreo continuo de cuellos de botella y pruebas de carga regulares."
+      ],
+      "tradeOffs": {
+        "pros": "Experiencia de usuario ultrarrápida y fluida, aprovechamiento óptimo de los recursos informáticos, capacidad de escalar masivamente sin degradación.",
+        "cons": "Requiere monitoreo y análisis constante de perfiles de rendimiento; las soluciones altamente optimizadas pueden requerir arquitecturas especializadas."
+      },
+      "relatedTermSlugs": [
+        "caching-perimetral",
+        "amazon-cloudfront",
+        "amazon-elasticache",
+        "read-replicas",
+        "database-sharding"
+      ],
+      "associatedChallengeIds": [
+        "ch-cloudfront-cdn",
+        "ch-elasticache-redis"
+      ],
+      "displayOrder": 73
+    },
+    {
+      "slug": "optimizacion-costos",
+      "title": "Pilar 5: Optimización de Costos (Cost Optimization)",
+      "category": "well-architected",
+      "pillar": "CostOptimization",
+      "shortDefinition": "Capacidad de ejecutar sistemas para ofrecer valor empresarial al precio más bajo posible sin comprometer la calidad.",
+      "whatIs": "El pilar de Optimización de Costos se centra en evitar gastos innecesarios y comprender en qué se gasta el dinero en la nube. Implica adoptar un modelo de consumo (pagar solo por lo que se usa), medir la eficiencia global, dejar de gastar dinero en tareas de mantenimiento no diferenciadas y utilizar servicios administrados y serverless para reducir el costo total de propiedad (TCO).",
+      "whenToUse": [
+        "Dimensionamiento correcto (*Right-Sizing*) de instancias EC2 y bases de datos RDS eliminando capacidad ociosa.",
+        "Uso estratégico de instancias Spot y Savings Plans para cargas de trabajo tolerantes a interrupciones o con demanda base constante.",
+        "Configuración de políticas de ciclo de vida en Amazon S3 para transferir datos antiguos a clases de almacenamiento económico (S3 Glacier)."
+      ],
+      "tradeOffs": {
+        "pros": "Reducción sustancial de la factura mensual de AWS, alineación directa del gasto en infraestructura con el crecimiento de ingresos del negocio.",
+        "cons": "Requiere gobernanza continua, etiquetado (*tagging*) riguroso y análisis regular de costos en AWS Cost Explorer."
+      },
+      "relatedTermSlugs": [
+        "aws-lambda",
+        "microservicios-serverless",
+        "amazon-athena",
+        "auto-scaling-group"
+      ],
+      "associatedChallengeIds": [
+        "ch-asg-scaling-policies"
+      ],
+      "displayOrder": 74
+    },
+    {
+      "slug": "sostenibilidad",
+      "title": "Pilar 6: Sostenibilidad Ambiental (Sustainability)",
+      "category": "well-architected",
+      "pillar": "Sustainability",
+      "shortDefinition": "Minimización de los impactos ambientales y huella de carbono derivados de la ejecución de cargas de trabajo en la nube.",
+      "whatIs": "El pilar de Sostenibilidad se enfoca en los impactos ambientales, especialmente en el consumo de energía y la eficiencia de los recursos, para ayudar a las organizaciones a reducir su huella de carbono. Implica comprender el impacto ecológico de la infraestructura, maximizar la utilización de los recursos, adoptar tecnologías más eficientes (como procesadores AWS Graviton basados en ARM) y retirar recursos no utilizados.",
+      "whenToUse": [
+        "Migración de cargas de trabajo a procesadores AWS Graviton (basados en ARM) que ofrecen mayor rendimiento por vatio de energía consumido.",
+        "Optimización de políticas de retención de datos en S3 y CloudWatch Logs para evitar almacenar petabytes de datos obsoletos permanentemente.",
+        "Uso de arquitecturas serverless que apagan por completo el cómputo cuando no hay solicitudes activas."
+      ],
+      "tradeOffs": {
+        "pros": "Reducción directa de la huella de carbono empresarial, contribución a objetivos de sostenibilidad global (ESG), reducción simultánea de costos.",
+        "cons": "La migración de arquitecturas x86 a ARM (Graviton) puede requerir recompilar binarios o contenedores de aplicaciones."
+      },
+      "relatedTermSlugs": [
+        "aws-lambda",
+        "optimizacion-costos",
+        "microservicios-serverless"
+      ],
+      "associatedChallengeIds": [
+        "ch-serverless-architecture"
+      ],
+      "displayOrder": 75
+    }
+  ]
+}

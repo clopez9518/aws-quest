@@ -15,7 +15,21 @@
       "Las subredes dividen el rango CIDR de la VPC en segmentos para diferentes capas (Web, App, DB).",
       "La segmentación es el primer pilar de la seguridad en profundidad (Defense in Depth)."
     ],
-    "estimatedReadTime": "30 seg"
+    "estimatedReadTime": "30 seg",
+    "keyComponents": [
+      {
+        "title": "Aislamiento de Red Lógica (VPC)",
+        "description": "Entorno de red virtual dedicado a tu cuenta de AWS, aislado de otras redes virtuales y con control total del espacio de direcciones IP (CIDR).",
+        "category": "concept",
+        "slug": "amazon-vpc"
+      },
+      {
+        "title": "Subredes Públicas y Privadas",
+        "description": "Segmentos de red dentro de una VPC asignados a Availability Zones específicas para separar recursos expuestos de componentes internos.",
+        "category": "concept",
+        "slug": "subnet-publica"
+      }
+    ]
   },
   "reflectionPrompt": {
     "question": "¿Cuál es la principal ventaja de seguridad arquitectónica al subdividir una VPC en múltiples subredes?",

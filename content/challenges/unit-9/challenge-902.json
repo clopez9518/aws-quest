@@ -15,7 +15,22 @@
       "Pagas exclusivamente por los recursos de vCPU y memoria consumidos por cada tarea individual.",
       "Aísla cada tarea en su propio entorno de ejecución dedicado para máxima seguridad."
     ],
-    "estimatedReadTime": "35 seg"
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Contenedores Serverless",
+        "description": "Ejecutar contenedores bajo demanda sin aprovisionar, parchear ni administrar máquinas virtuales EC2 en el clúster.",
+        "category": "concept",
+        "slug": "aws-fargate"
+      },
+      {
+        "title": "AWS Fargate",
+        "description": "Motor de cómputo serverless para Amazon ECS que proporciona aislamiento a nivel de tarea y cobro exacto por vCPU y memoria asignados.",
+        "serviceCode": "AWS_FARGATE",
+        "category": "service",
+        "slug": "aws-fargate"
+      }
+    ]
   },
   "allowedServices": [
     {
