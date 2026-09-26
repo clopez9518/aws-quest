@@ -6,6 +6,32 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 1,
+  "briefing": {
+    "keyConcept": "Bases de Datos Relacionales Administradas (Amazon RDS)",
+    "businessScenario": "Un equipo de ingeniería gasta horas semanales aplicando parches de sistema operativo y ejecutando copias de seguridad manuales de MySQL en VMs.",
+    "learningObjective": "Aprender a delegar la administración de bases de datos relacionales en Amazon RDS para ganar automatización y fiabilidad.",
+    "keyTakeaways": [
+      "Amazon RDS automatiza tareas complejas como aprovisionamiento, backups, parches y escalado de almacenamiento.",
+      "Soporta motores relacionales líderes: PostgreSQL, MySQL, MariaDB, Oracle y SQL Server.",
+      "Permite configurar ventanas de mantenimiento automatizadas y copias de seguridad continuas con Point-in-Time Recovery."
+    ],
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Base de Datos Relacional Administrada",
+        "description": "Motor SQL con gestión automatizada de aprovisionamiento, backups, parches y escalado de hardware sin administrar el sistema operativo.",
+        "category": "concept",
+        "slug": "amazon-rds"
+      },
+      {
+        "title": "Amazon RDS",
+        "description": "Servicio de bases de datos relacionales administradas compatible con PostgreSQL, MySQL, MariaDB, Oracle y SQL Server.",
+        "serviceCode": "AWS_RDS",
+        "category": "service",
+        "slug": "amazon-rds"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "NET_VPC",

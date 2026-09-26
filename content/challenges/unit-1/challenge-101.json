@@ -15,7 +15,22 @@
       "Permite elegir sistemas operativos, tipos de instancia (CPU/RAM) y configuraciones de red personalizadas.",
       "Pagas únicamente por los recursos de cómputo que realmente utilizas."
     ],
-    "estimatedReadTime": "30 seg"
+    "estimatedReadTime": "30 seg",
+    "keyComponents": [
+      {
+        "title": "Cómputo Elástico en la Nube (IaaS)",
+        "description": "Capacidad de procesamiento virtual bajo demanda sin necesidad de adquirir ni mantener servidores físicos en un datacenter.",
+        "category": "concept",
+        "slug": "amazon-ec2"
+      },
+      {
+        "title": "Amazon EC2",
+        "description": "Servidores virtuales escalables donde puedes seleccionar CPU, memoria, almacenamiento y sistema operativo según las necesidades de tu aplicación.",
+        "serviceCode": "AWS_EC2",
+        "category": "service",
+        "slug": "amazon-ec2"
+      }
+    ]
   },
   "reflectionPrompt": {
     "question": "Al desplegar un servidor en Amazon EC2 para una aplicación web productiva, ¿cuál de los siguientes principios de diseño del pilar de Fiabilidad (Reliability) es fundamental?",

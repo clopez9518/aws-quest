@@ -39,3 +39,6 @@ Thumbs.db
 
 ## Docker volumes
 postgres_data/
+
+## Temporary scratch scripts
+scratch/

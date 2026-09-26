@@ -6,6 +6,32 @@
   "baseXP": 100,
   "requiredXP": 100,
   "orderIndex": 1,
+  "briefing": {
+    "keyConcept": "Arquitectura Web Básica de Capa Única",
+    "businessScenario": "Una pyme busca publicar su sitio web corporativo en AWS con configuración inicial simple y acceso público directo para los visitantes.",
+    "learningObjective": "Diseñar y desplegar una arquitectura web elemental conectando clientes externos a un servidor de cómputo público.",
+    "keyTakeaways": [
+      "Una instancia EC2 con servidor web (Nginx/Apache) puede servir tanto páginas estáticas como APIs dinámicas.",
+      "Requiere una IP pública o DNS accesible desde la red pública de Internet.",
+      "Es el punto de partida antes de desacoplar capas y añadir alta disponibilidad."
+    ],
+    "estimatedReadTime": "30 seg",
+    "keyComponents": [
+      {
+        "title": "Servidor Web Monolítico",
+        "description": "Aloja tanto el frontend estático como el backend dinámico en una única máquina virtual accesible a través de la red pública.",
+        "category": "concept",
+        "slug": "amazon-ec2"
+      },
+      {
+        "title": "Amazon EC2 (Web Server)",
+        "description": "Instancia con software de servidor web (Nginx/Apache) configurada para responder solicitudes HTTP en el puerto 80/443.",
+        "serviceCode": "AWS_EC2",
+        "category": "service",
+        "slug": "amazon-ec2"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_EC2",

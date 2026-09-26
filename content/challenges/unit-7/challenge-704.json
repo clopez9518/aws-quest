@@ -6,6 +6,31 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 4,
+  "briefing": {
+    "keyConcept": "Reparación de Sistemas Fuertemente Acoplados y Fallas en Cascada",
+    "businessScenario": "La caída imprevista del microservicio de inventario derribó toda la pasarela de pagos debido a llamadas HTTP síncronas bloqueantes.",
+    "learningObjective": "Reemplazar dependencias síncronas frágiles por colas SQS intermedias para lograr tolerancia a fallas y desacoplamiento real.",
+    "keyTakeaways": [
+      "Las comunicaciones síncronas directas entre microservicios propagan fallos en cascada por toda la arquitectura.",
+      "El uso de colas SQS amortigua interrupciones temporales y almacena las peticiones hasta que el destino se recupere.",
+      "Mejora la fiabilidad global del sistema permitiendo degradación elegante (graceful degradation)."
+    ],
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Eliminación de Fallas en Cascada",
+        "description": "Evitar que la caída de un servicio secundario bloquee o colapse los procesos principales del negocio.",
+        "category": "concept",
+        "slug": "patron-circuit-breaker"
+      },
+      {
+        "title": "Búfer de Resiliencia con SQS",
+        "description": "Interponer colas de mensajes para retener peticiones cuando los servidores destino experimentan interrupciones temporales.",
+        "category": "concept",
+        "slug": "amazon-sqs"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_EC2",

@@ -6,6 +6,32 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Protección Web Perimetral con AWS WAF (Web Application Firewall)",
+    "businessScenario": "Un sitio de comercio electrónico experimenta constantes ataques de inyección SQL (SQLi), Cross-Site Scripting (XSS) y bots de scraping.",
+    "learningObjective": "Implementar AWS WAF asociando Web ACLs y reglas gestionadas a CloudFront o ALB para mitigar ataques comunes en Capa 7.",
+    "keyTakeaways": [
+      "AWS WAF inspecciona peticiones HTTP/HTTPS entrantes y bloquea patrones maliciosos antes de que lleguen a los servidores.",
+      "Ofrece reglas administradas por AWS (AWS Managed Rules) contra el Top 10 de vulnerabilidades de OWASP.",
+      "Permite aplicar límites de tasa (Rate Limiting) para frenar ataques de fuerza bruta y DDoS en capa de aplicación."
+    ],
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Firewall de Aplicaciones Web (Capa 7)",
+        "description": "Inspección de tráfico HTTP/HTTPS para detectar y mitigar ataques comunes como SQL Injection (SQLi), Cross-Site Scripting (XSS) y bots.",
+        "category": "concept",
+        "slug": "aws-waf"
+      },
+      {
+        "title": "AWS WAF",
+        "description": "Servicio de firewall web que aplica listas de control de acceso (Web ACLs) y reglas administradas directamente en CloudFront o ALB.",
+        "serviceCode": "AWS_WAF",
+        "category": "service",
+        "slug": "aws-waf"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_WAF",

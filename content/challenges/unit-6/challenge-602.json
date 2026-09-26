@@ -6,6 +6,32 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Creación de APIs Serverless con Amazon API Gateway y AWS Lambda",
+    "businessScenario": "Un equipo de desarrollo móvil necesita publicar endpoints REST seguros para su app sin mantener servidores web ni configurar sistemas operativos.",
+    "learningObjective": "Integrar Amazon API Gateway con AWS Lambda para construir una API REST totalmente administrada y escalable.",
+    "keyTakeaways": [
+      "Amazon API Gateway gestiona la autenticación, control de tráfico (throttling), versionado y validación de endpoints HTTP/REST.",
+      "Invoca funciones AWS Lambda de forma síncrona para procesar la lógica de negocio y retornar respuestas.",
+      "Escala automáticamente desde cero hasta miles de peticiones por segundo con pago estricto por uso."
+    ],
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "Puerta de Enlace API Serverless",
+        "description": "Punto de entrada unificado que expone endpoints REST/HTTP seguros, gestionando autenticación, CORS y control de tráfico (throttling).",
+        "category": "concept",
+        "slug": "amazon-api-gateway"
+      },
+      {
+        "title": "Amazon API Gateway",
+        "description": "Servicio administrado para crear, publicar y proteger APIs REST y WebSocket a cualquier escala que invocan directamente a AWS Lambda.",
+        "serviceCode": "AWS_API_GATEWAY",
+        "category": "service",
+        "slug": "amazon-api-gateway"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_APIGATEWAY",

@@ -6,6 +6,31 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Arquitectura Segura de 2 Capas (Cómputo + Datos)",
+    "businessScenario": "Una aplicación financiera exige que su base de datos nunca tenga acceso público directo y solo acepte conexiones del servidor de aplicación.",
+    "learningObjective": "Diseñar una arquitectura de 2 capas aislando la base de datos en una subred privada y restringiendo el tráfico con Security Groups encadenados.",
+    "keyTakeaways": [
+      "Las bases de datos deben residir invariablemente en subredes privadas sin dirección IP pública.",
+      "El Security Group de RDS debe autorizar conexiones entrantes únicamente referenciando el Security Group de EC2.",
+      "Este diseño impide el acceso no autorizado incluso si una IP interna cambia."
+    ],
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Arquitectura de 2 Capas (Cómputo + Datos)",
+        "description": "Patrón de seguridad que aísla la base de datos en subredes privadas, permitiendo acceso exclusivo únicamente desde la capa de cómputo autorizada.",
+        "category": "concept",
+        "slug": "stateless-vs-stateful"
+      },
+      {
+        "title": "Security Groups Encadenados",
+        "description": "Reglas de firewall que autorizan tráfico entrante a la base de datos referenciando el ID del Security Group de EC2 en lugar de IPs fijas.",
+        "category": "concept",
+        "slug": "security-group"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "NET_VPC",

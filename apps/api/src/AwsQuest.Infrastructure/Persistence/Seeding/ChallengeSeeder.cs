@@ -14,8 +14,11 @@ public class ChallengeSeeder(
     IAppDbContext context,
     IChallengeContentReader contentReader,
     IConfiguration configuration,
-    ILogger<ChallengeSeeder> logger) : IChallengeSeeder
+    ILogger<ChallengeSeeder> logger,
+    IDictionaryContentReader? dictionaryReader = null) : IChallengeSeeder
 {
+    private readonly IDictionaryContentReader _dictionaryReader = dictionaryReader ?? new DictionaryContentReader();
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
@@ -224,6 +227,64 @@ public class ChallengeSeeder(
                 }
 
                 await context.SaveChangesAsync(cancellationToken);
+
+                // 4. Sincronizar Glosario / Diccionario de Términos
+                var dictionaryPackage = await _dictionaryReader.ReadDictionaryAsync(contentPath, cancellationToken);
+                if (dictionaryPackage.Terms != null && dictionaryPackage.Terms.Count > 0)
+                {
+                    foreach (var tDto in dictionaryPackage.Terms)
+                    {
+                        var term = context.DictionaryTerms.Local.FirstOrDefault(t => t.Slug == tDto.Slug)
+                            ?? await context.DictionaryTerms.FirstOrDefaultAsync(t => t.Slug == tDto.Slug, cancellationToken);
+
+                        if (term == null)
+                        {
+                            term = new DictionaryTerm
+                            {
+                                Slug = tDto.Slug,
+                                Title = tDto.Title,
+                                Category = tDto.Category,
+                                ServiceCode = tDto.ServiceCode,
+                                Pillar = tDto.Pillar,
+                                ShortDefinition = tDto.ShortDefinition,
+                                WhatIs = tDto.WhatIs,
+                                WhenToUse = tDto.WhenToUse ?? [],
+                                TradeOffs = new DictionaryTradeOffs
+                                {
+                                    Pros = tDto.TradeOffs?.Pros ?? string.Empty,
+                                    Cons = tDto.TradeOffs?.Cons ?? string.Empty
+                                },
+                                RelatedTermSlugs = tDto.RelatedTermSlugs ?? [],
+                                AssociatedChallengeIds = tDto.AssociatedChallengeIds ?? [],
+                                DisplayOrder = tDto.DisplayOrder,
+                                CreatedAt = DateTime.UtcNow
+                            };
+                            context.DictionaryTerms.Add(term);
+                        }
+                        else
+                        {
+                            term.Title = tDto.Title;
+                            term.Category = tDto.Category;
+                            term.ServiceCode = tDto.ServiceCode;
+                            term.Pillar = tDto.Pillar;
+                            term.ShortDefinition = tDto.ShortDefinition;
+                            term.WhatIs = tDto.WhatIs;
+                            term.WhenToUse = tDto.WhenToUse ?? [];
+                            term.TradeOffs = new DictionaryTradeOffs
+                            {
+                                Pros = tDto.TradeOffs?.Pros ?? string.Empty,
+                                Cons = tDto.TradeOffs?.Cons ?? string.Empty
+                            };
+                            term.RelatedTermSlugs = tDto.RelatedTermSlugs ?? [];
+                            term.AssociatedChallengeIds = tDto.AssociatedChallengeIds ?? [];
+                            term.DisplayOrder = tDto.DisplayOrder;
+                            term.UpdatedAt = DateTime.UtcNow;
+                        }
+                    }
+                    await context.SaveChangesAsync(cancellationToken);
+                    logger.LogInformation("[ChallengeSeeder] {Count} términos de diccionario sincronizados.", dictionaryPackage.Terms.Count);
+                }
+
                 if (transaction != null)
                 {
                     await transaction.CommitAsync(cancellationToken);

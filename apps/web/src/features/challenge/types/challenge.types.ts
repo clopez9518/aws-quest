@@ -33,6 +33,17 @@ export interface ChallengeAllowedServiceDto {
 }
 
 /**
+ * Componente o concepto clave en la micro-cápsula de contexto.
+ */
+export interface BriefingKeyComponentDto {
+  title: string;
+  description: string;
+  serviceCode?: string | null;
+  category?: 'concept' | 'service' | string | null;
+  slug?: string | null;
+}
+
+/**
  * Micro-cápsula de contexto y briefing pre-desafío.
  */
 export interface ChallengeBriefingDto {
@@ -40,6 +51,7 @@ export interface ChallengeBriefingDto {
   businessScenario: string;
   learningObjective: string;
   keyTakeaways: string[];
+  keyComponents?: BriefingKeyComponentDto[];
   estimatedReadTime?: string;
 }
 

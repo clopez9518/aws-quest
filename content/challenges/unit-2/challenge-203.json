@@ -6,6 +6,39 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Aceleración y Distribución Perimetral (Amazon CloudFront + S3)",
+    "businessScenario": "Una startup con usuarios en múltiples continentes experimenta alta latencia al cargar imágenes y assets desde un único bucket S3 regional.",
+    "learningObjective": "Configurar una red de distribución de contenidos (CDN) para almacenar en caché contenido estático cerca de los usuarios finales.",
+    "keyTakeaways": [
+      "Amazon CloudFront distribuye contenido globalmente mediante una red mundial de Edge Locations.",
+      "Reduce drásticamente la latencia mediante almacenamiento en caché perimetral (Edge Caching).",
+      "Disminuye los costos de transferencia de datos de salida (Data Transfer Out) desde el origen S3."
+    ],
+    "estimatedReadTime": "35 seg",
+    "keyComponents": [
+      {
+        "title": "CDN / Caché de Borde (Edge Caching)",
+        "description": "Red de distribución que entrega contenido desde ubicaciones geográficamente cercanas a los usuarios, reduciendo la latencia y la carga en el origen.",
+        "category": "concept",
+        "slug": "caching-perimetral"
+      },
+      {
+        "title": "Amazon CloudFront",
+        "description": "Servicio CDN de AWS que distribuye contenido de forma segura y veloz mediante cientos de Edge Locations interconectadas.",
+        "serviceCode": "AWS_CLOUDFRONT",
+        "category": "service",
+        "slug": "amazon-cloudfront"
+      },
+      {
+        "title": "Amazon S3 (Bucket de Origen)",
+        "description": "Almacén centralizado de assets que actúa como origen seguro para la distribución de CloudFront.",
+        "serviceCode": "AWS_S3",
+        "category": "service",
+        "slug": "amazon-s3"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_CLOUDFRONT",

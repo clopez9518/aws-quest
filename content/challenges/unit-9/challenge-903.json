@@ -6,6 +6,31 @@
   "baseXP": 200,
   "requiredXP": 1300,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Migración y Modernización de Monolito EC2 a Contenedores Fargate",
+    "businessScenario": "Una aplicación web monolítica instalada manualmente en una máquina virtual EC2 presenta dificultades de mantenimiento y despliegues riesgosos.",
+    "learningObjective": "Modernizar la aplicación contenerizándola sobre ECS Fargate con balanceo de carga ALB y despliegues inmutables.",
+    "keyTakeaways": [
+      "Contenerizar aplicaciones facilita despliegues consistentes, reproducibles e inmutables en cualquier entorno.",
+      "La combinación de ALB + Fargate permite despliegues 'Blue/Green' y 'Rolling Updates' con cero tiempo de inactividad.",
+      "Reduce drásticamente el costo operativo al eliminar la administración de sistemas operativos de host."
+    ],
+    "estimatedReadTime": "45 seg",
+    "keyComponents": [
+      {
+        "title": "Modernización de Cargas de Trabajo (VM a Contenedores)",
+        "description": "Migrar aplicaciones legadas instaladas manualmente en servidores virtuales hacia microservicios contenerizados reproducibles.",
+        "category": "concept",
+        "slug": "patron-strangler-fig"
+      },
+      {
+        "title": "ECS Fargate + Application Load Balancer",
+        "description": "Arquitectura de contenedores serverless con balanceo de carga y soporte para despliegues continuos sin tiempo de inactividad.",
+        "category": "concept",
+        "slug": "aws-fargate"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_ALB",

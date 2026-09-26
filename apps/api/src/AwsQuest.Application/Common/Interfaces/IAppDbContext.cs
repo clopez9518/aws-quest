@@ -14,6 +14,7 @@ public interface IAppDbContext
     DbSet<ChallengeService> ChallengeServices { get; }
     DbSet<UserProgress> UserProgresses { get; }
     DbSet<ChallengeAttempt> ChallengeAttempts { get; }
+    DbSet<DictionaryTerm> DictionaryTerms { get; }
 
     DatabaseFacade Database { get; }
 

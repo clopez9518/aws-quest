@@ -13,6 +13,8 @@ interface WorkspaceHeaderProps {
   nodeCount: number;
   hasBriefing?: boolean;
   onOpenBriefing?: () => void;
+  isSimulating?: boolean;
+  onToggleSimulation?: () => void;
   onOpenHints: () => void;
   onSubmit: () => void;
   isSubmitting?: boolean;
@@ -58,6 +60,8 @@ export function WorkspaceHeader({
   nodeCount,
   hasBriefing,
   onOpenBriefing,
+  isSimulating,
+  onToggleSimulation,
   onOpenHints,
   onSubmit,
   isSubmitting = false
@@ -125,6 +129,25 @@ export function WorkspaceHeader({
           <Clock className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
           <span>{formatTimer(secondsElapsed)}</span>
         </div>
+
+        {/* Botón Simular Tráfico */}
+        {onToggleSimulation && (
+          <button
+            data-testid="traffic-simulation-toggle-button"
+            type="button"
+            onClick={onToggleSimulation}
+            className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold transition-all ${
+              isSimulating
+                ? 'border-emerald-500 bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 shadow-sm shadow-emerald-500/20'
+                : 'border-slate-200 dark:border-slate-700 bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200'
+            }`}
+            aria-label={isSimulating ? 'Detener simulación de tráfico' : 'Iniciar simulación de tráfico'}
+            title="Simular flujo dinámico de paquetes y tráfico en el canvas"
+          >
+            <Zap className={`w-3.5 h-3.5 ${isSimulating ? 'text-emerald-500 animate-pulse' : 'text-amber-500'}`} />
+            <span className="hidden md:inline">{isSimulating ? 'Simulando' : 'Simular'}</span>
+          </button>
+        )}
 
         {/* Botón Briefing */}
         {onOpenBriefing && (

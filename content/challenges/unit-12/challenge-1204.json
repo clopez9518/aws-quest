@@ -6,6 +6,31 @@
   "baseXP": 200,
   "requiredXP": 2650,
   "orderIndex": 4,
+  "briefing": {
+    "keyConcept": "Arquitectura Serverless Global Activo-Activo Multi-Región",
+    "businessScenario": "Una red social global necesita tiempos de respuesta inferiores a 100ms en todo el mundo y tolerancia total ante la caída de una región completa de AWS.",
+    "learningObjective": "Diseñar una solución serverless multi-región combinando Route 53 de baja latencia, CloudFront, Lambda y DynamoDB Global Tables.",
+    "keyTakeaways": [
+      "DynamoDB Global Tables ofrece replicación multi-región totalmente administrada y bidireccional con tiempos de sincronización en milisegundos.",
+      "Route 53 enruta el tráfico al punto geográfico más cercano con menor latencia mediante 'Latency-Based Routing'.",
+      "Proporciona máxima resiliencia ante desastres regionales con conmutación por error transparente para el usuario."
+    ],
+    "estimatedReadTime": "50 seg",
+    "keyComponents": [
+      {
+        "title": "Arquitectura Serverless Activo-Activo Multi-Región",
+        "description": "Despliegue distribuido en múltiples regiones de AWS para ofrecer latencia sub-100ms y tolerancia total ante desastres regionales.",
+        "category": "concept",
+        "slug": "disaster-recovery-rpo-rto"
+      },
+      {
+        "title": "Route 53 Latency Routing + DynamoDB Global Tables",
+        "description": "Enrutamiento DNS por menor latencia geográfica combinado con replicación NoSQL bidireccional automática en milisegundos.",
+        "category": "concept",
+        "slug": "disaster-recovery-rpo-rto"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_CLOUDFRONT",

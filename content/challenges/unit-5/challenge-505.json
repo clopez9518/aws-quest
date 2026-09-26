@@ -6,6 +6,31 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 5,
+  "briefing": {
+    "keyConcept": "Respuesta SRE ante Saturación Crítica de Servidores",
+    "businessScenario": "El servidor principal de la empresa se encuentra al 100% de CPU arrojando errores HTTP 503; se requiere estabilizar el servicio de emergencia.",
+    "learningObjective": "Diagnosticar cuellos de botella de capacidad e implementar balanceo y escalado horizontal para recuperar la operatividad.",
+    "keyTakeaways": [
+      "Escalar verticalmente (instancias más grandes) tiene un límite físico y no resuelve el punto único de falla.",
+      "El escalado horizontal detrás de un balanceador de carga permite absorber picos de tráfico indefinidamente.",
+      "Monitorear métricas de saturación y latencia es vital para disparar acciones de recuperación oportunas."
+    ],
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Respuesta ante Incidentes de Saturación",
+        "description": "Mitigación de degradación de servicio (errores 503/504) reemplazando instancias saturadas y habilitando distribución de carga.",
+        "category": "concept",
+        "slug": "auto-scaling-group"
+      },
+      {
+        "title": "ALB + EC2 Multi-AZ",
+        "description": "Patrón de infraestructura para estabilizar aplicaciones bajo alta demanda distribuyendo el tráfico entre múltiples servidores.",
+        "category": "concept",
+        "slug": "application-load-balancer"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "NET_VPC",

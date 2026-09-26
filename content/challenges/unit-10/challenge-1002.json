@@ -6,6 +6,31 @@
   "baseXP": 150,
   "requiredXP": 1350,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Diagnóstico Operacional y Detección de Fallas mediante Métricas",
+    "businessScenario": "Usuarios reportan lentitud intermitente y el equipo necesita diagnosticar cuál componente de la arquitectura está causando la degradación.",
+    "learningObjective": "Analizar métricas de latencia, CPU y conexiones activas para identificar la causa raíz de un incidente antes de que afecte a los clientes.",
+    "keyTakeaways": [
+      "Correlacionar métricas de balanceador (ALB), servidores (EC2) y base de datos (RDS) acelera el diagnóstico de incidentes.",
+      "Las alarmas compuestas de CloudWatch permiten evaluar múltiples condiciones antes de alertar al personal de guardia.",
+      "La observabilidad proactiva reduce drásticamente el tiempo medio de resolución (MTTR)."
+    ],
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Diagnóstico Operacional Basado en Métricas",
+        "description": "Monitorear la salud de la arquitectura mediante umbrales automatizados para detectar anomalías antes de que afecten a los clientes.",
+        "category": "concept",
+        "slug": "amazon-cloudwatch"
+      },
+      {
+        "title": "CloudWatch Alarms",
+        "description": "Alarmas que vigilan métricas clave (CPU, latencia, errores 5xx) y disparan acciones automáticas de escalado o notificaciones.",
+        "category": "concept",
+        "slug": "amazon-cloudwatch"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_ALB",

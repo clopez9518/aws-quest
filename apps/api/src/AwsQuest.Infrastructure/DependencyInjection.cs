@@ -50,6 +50,10 @@ public static class DependencyInjection
         services.AddScoped<IMasterServicesService, AwsQuest.Infrastructure.Services.MasterServicesService>();
         services.AddScoped<ISystemConfigService, AwsQuest.Infrastructure.Services.SystemConfigService>();
 
+        // Glosario / Diccionario Arquitectónico
+        services.AddScoped<IDictionaryContentReader, AwsQuest.Infrastructure.Persistence.Seeding.DictionaryContentReader>();
+        services.AddScoped<IDictionaryService, AwsQuest.Infrastructure.Services.DictionaryService>();
+
         return services;
     }
 }

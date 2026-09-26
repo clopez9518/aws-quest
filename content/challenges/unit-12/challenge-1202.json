@@ -6,6 +6,31 @@
   "baseXP": 200,
   "requiredXP": 2250,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Diseño para Tráfico Extremadamente Impredecible y Picos Masivos",
+    "businessScenario": "Una plataforma de venta de boletos para eventos masivos pasa de 20 a 500,000 usuarios concurrentes en cuestión de segundos al iniciar la venta.",
+    "learningObjective": "Combinar caching perimetral, capas de amortiguación con colas y cómputo elástico para absorber picos extremos sin caídas.",
+    "keyTakeaways": [
+      "Las arquitecturas para tráfico impredecible deben desacoplar la recepción de peticiones del procesamiento de órdenes mediante colas SQS.",
+      "CloudFront y WAF protegen los balanceadores absorbiendo el tráfico estático y frenando bots maliciosos.",
+      "Las bases de datos deben configurarse con réplicas de lectura y escalado elástico (ej. DynamoDB On-Demand o Aurora Serverless)."
+    ],
+    "estimatedReadTime": "45 seg",
+    "keyComponents": [
+      {
+        "title": "Amortiguación de Tráfico Explosivo",
+        "description": "Desacoplar la recepción de peticiones del procesamiento de órdenes mediante colas intermedias y cómputo serverless bajo demanda.",
+        "category": "concept",
+        "slug": "throttling-rate-limiting"
+      },
+      {
+        "title": "CloudFront + WAF + SQS + DynamoDB On-Demand",
+        "description": "Stack de resiliencia extrema para eventos con millones de usuarios concurrentes sin degradación de base de datos.",
+        "category": "concept",
+        "slug": "patron-bulkhead"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_APIGATEWAY",

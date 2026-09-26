@@ -100,6 +100,14 @@ public class ChallengeSeederTests
         challenge502!.EvaluationRulesJson.Should().Contain("AWS_ALB");
         challenge502.HintsJson.Should().Contain("penaltyPoints");
         challenge502.AllowedServices.Should().HaveCountGreaterThanOrEqualTo(2);
+
+        var termsCount = await context.DictionaryTerms.CountAsync();
+        termsCount.Should().BeGreaterThanOrEqualTo(20);
+
+        var ec2Term = await context.DictionaryTerms.FirstOrDefaultAsync(t => t.Slug == "amazon-ec2");
+        ec2Term.Should().NotBeNull();
+        ec2Term!.Category.Should().Be("service");
+        ec2Term.ServiceCode.Should().Be("AWS_EC2");
     }
 
     [Fact]
@@ -126,16 +134,19 @@ public class ChallengeSeederTests
         var servicesCount1 = await context.AwsServices.CountAsync();
         var unitsCount1 = await context.Units.CountAsync();
         var challengesCount1 = await context.Challenges.CountAsync();
+        var termsCount1 = await context.DictionaryTerms.CountAsync();
 
         // Act - Segunda ejecución (Idempotencia)
         await seeder.SeedAsync();
         var servicesCount2 = await context.AwsServices.CountAsync();
         var unitsCount2 = await context.Units.CountAsync();
         var challengesCount2 = await context.Challenges.CountAsync();
+        var termsCount2 = await context.DictionaryTerms.CountAsync();
 
         // Assert
         servicesCount2.Should().Be(servicesCount1);
         unitsCount2.Should().Be(unitsCount1);
         challengesCount2.Should().Be(challengesCount1);
+        termsCount2.Should().Be(termsCount1);
     }
 }

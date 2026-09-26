@@ -15,7 +15,21 @@
       "ALB distribuye el tráfico HTTP/HTTPS entre múltiples zonas de disponibilidad.",
       "RDS Multi-AZ provee replicación síncrona en standby ante fallos en el centro de datos primario."
     ],
-    "estimatedReadTime": "45 seg"
+    "estimatedReadTime": "45 seg",
+    "keyComponents": [
+      {
+        "title": "Arquitectura Web de 3 Capas de Alta Disponibilidad",
+        "description": "Separación de la capa de borde (CloudFront), cómputo elástico (ALB + EC2 Multi-AZ) y capa de datos relacional (RDS Multi-AZ).",
+        "category": "concept",
+        "slug": "alta-disponibilidad"
+      },
+      {
+        "title": "E-Commerce Resiliente de Grado Productivo",
+        "description": "Solución arquitectónica robusta diseñada para soportar fallos de zona de disponibilidad y picos de venta online continuos.",
+        "category": "concept",
+        "slug": "alta-disponibilidad"
+      }
+    ]
   },
   "reflectionPrompt": {
     "question": "En esta arquitectura empresarial de 3 capas, ¿cuál es el beneficio crítico de combinar Amazon CloudFront en el borde junto a un Application Load Balancer (ALB) y RDS Multi-AZ?",

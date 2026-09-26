@@ -6,6 +6,31 @@
   "baseXP": 200,
   "requiredXP": 2850,
   "orderIndex": 5,
+  "briefing": {
+    "keyConcept": "Auditoría Integral con los 6 Pilares del AWS Well-Architected Framework",
+    "businessScenario": "Un cliente corporativo solicita una auditoría exhaustiva de su infraestructura cloud para certificar que cumple con los más altos estándares de la industria.",
+    "learningObjective": "Evaluar y corregir una arquitectura completa analizando Excelencia Operativa, Seguridad, Fiabilidad, Rendimiento, Costos y Sostenibilidad.",
+    "keyTakeaways": [
+      "El Well-Architected Framework provee un enfoque estructurado para evaluar arquitecturas frente a las mejores prácticas de AWS.",
+      "Identificar y mitigar 'High Risk Issues' (HRIs) previene incidentes graves de seguridad, saturación o sobrecostos.",
+      "Una arquitectura óptima equilibra las compensaciones (trade-offs) entre costo, rendimiento y redundancia."
+    ],
+    "estimatedReadTime": "50 seg",
+    "keyComponents": [
+      {
+        "title": "Los 6 Pilares del AWS Well-Architected Framework",
+        "description": "Marco metodológico para evaluar arquitecturas: Excelencia Operativa, Seguridad, Fiabilidad, Rendimiento, Costos y Sostenibilidad.",
+        "category": "concept",
+        "slug": "excelencia-operativa"
+      },
+      {
+        "title": "Mitigación de High Risk Issues (HRIs)",
+        "description": "Identificación y corrección estructurada de vulnerabilidades críticas, puntos únicos de falla y sobrecostos en la nube.",
+        "category": "concept",
+        "slug": "fiabilidad"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_WAF",
@@ -51,7 +76,9 @@
         "id": "rds-1",
         "serviceCode": "AWS_RDS",
         "label": "RDS Single-AZ Sin Monitoreo",
-        "config": { "isMultiAz": false }
+        "config": {
+          "isMultiAz": false
+        }
       }
     ],
     "connections": [

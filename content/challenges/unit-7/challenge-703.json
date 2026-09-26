@@ -6,6 +6,32 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Arquitecturas Orientadas a Eventos con Amazon EventBridge",
+    "businessScenario": "Una empresa con múltiples microservicios necesita coordinar flujos de trabajo basados en cambios de estado sin crear acoplamiento punto a punto.",
+    "learningObjective": "Construir un bus de eventos en Amazon EventBridge con reglas de filtrado para enrutar eventos hacia destinos específicos.",
+    "keyTakeaways": [
+      "Amazon EventBridge es un bus de eventos serverless que simplifica la conexión de aplicaciones con datos de múltiples fuentes.",
+      "Utiliza reglas declarativas basadas en patrones JSON para filtrar y enrutar eventos hacia targets específicos.",
+      "Facilita la evolución de arquitecturas Event-Driven desacopladas y escalables."
+    ],
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Arquitecturas Orientadas a Eventos (EDA)",
+        "description": "Diseño donde los servicios reaccionan a cambios de estado emitiendo y consumiendo eventos mediante un bus centralizado.",
+        "category": "concept",
+        "slug": "event-driven-architecture"
+      },
+      {
+        "title": "Amazon EventBridge",
+        "description": "Bus de eventos serverless que enruta eventos basándose en reglas y patrones JSON declarativos hacia múltiples destinos.",
+        "serviceCode": "AWS_EVENTBRIDGE",
+        "category": "service",
+        "slug": "amazon-eventbridge"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_EVENTBRIDGE",

@@ -84,4 +84,33 @@ describe('WorkspaceHeader Component', () => {
     fireEvent.click(briefingButton);
     expect(onOpenBriefing).toHaveBeenCalledTimes(1);
   });
+
+  it('debe renderizar el botón de Simular Tráfico y responder al clic', () => {
+    const onToggleSimulation = vi.fn();
+    render(
+      <MemoryRouter>
+        <WorkspaceHeader {...defaultProps} onToggleSimulation={onToggleSimulation} isSimulating={false} />
+      </MemoryRouter>
+    );
+
+    const simButton = screen.getByRole('button', { name: /iniciar simulación de tráfico/i });
+    expect(simButton).toBeInTheDocument();
+    expect(screen.getByText('Simular')).toBeInTheDocument();
+
+    fireEvent.click(simButton);
+    expect(onToggleSimulation).toHaveBeenCalledTimes(1);
+  });
+
+  it('debe mostrar estado activo cuando isSimulating es true', () => {
+    const onToggleSimulation = vi.fn();
+    render(
+      <MemoryRouter>
+        <WorkspaceHeader {...defaultProps} onToggleSimulation={onToggleSimulation} isSimulating={true} />
+      </MemoryRouter>
+    );
+
+    const simButton = screen.getByRole('button', { name: /detener simulación de tráfico/i });
+    expect(simButton).toBeInTheDocument();
+    expect(screen.getByText('Simulando')).toBeInTheDocument();
+  });
 });

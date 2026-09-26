@@ -6,6 +6,31 @@
   "baseXP": 200,
   "requiredXP": 2450,
   "orderIndex": 3,
+  "briefing": {
+    "keyConcept": "Modernización de Monolitos con el Patrón Strangler Fig",
+    "businessScenario": "Un sistema empresarial monolítico sobre un servidor legado presenta altos costos de mantenimiento y riesgo constante de caída ante cualquier despliegue.",
+    "learningObjective": "Descomponer gradualmente el monolito en microservicios independientes sobre contenedores y serverless utilizando enrutamiento inteligente.",
+    "keyTakeaways": [
+      "El patrón Strangler Fig permite migrar funcionalidades pieza por pieza sin necesidad de una reescritura total de golpe (Big Bang).",
+      "Un balanceador de carga o API Gateway redirige rutas específicas (/orders, /users) hacia los nuevos microservicios.",
+      "Reduce el riesgo operativo y permite entregas de valor continuas al negocio durante la transición."
+    ],
+    "estimatedReadTime": "50 seg",
+    "keyComponents": [
+      {
+        "title": "Patrón Strangler Fig",
+        "description": "Estrategia de modernización que reemplaza progresivamente funcionalidades de un monolito por microservicios independientes.",
+        "category": "concept",
+        "slug": "patron-strangler-fig"
+      },
+      {
+        "title": "ALB Path Routing + ECS Fargate",
+        "description": "Enrutamiento inteligente en el balanceador que redirige rutas específicas hacia nuevos microservicios contenerizados.",
+        "category": "concept",
+        "slug": "patron-strangler-fig"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_ALB",

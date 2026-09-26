@@ -6,6 +6,31 @@
   "baseXP": 200,
   "requiredXP": 150,
   "orderIndex": 4,
+  "briefing": {
+    "keyConcept": "Arquitectura Web Global Resiliente y Segura de Múltiples Capas",
+    "businessScenario": "Una institución financiera exige una arquitectura web perimetral de grado enterprise con mitigación DDoS, WAF, CDN y alta disponibilidad Multi-AZ.",
+    "learningObjective": "Integrar Route 53, CloudFront, AWS WAF, ALB y EC2 Multi-AZ en una solución robusta y alineada a las mejores prácticas de seguridad y fiabilidad.",
+    "keyTakeaways": [
+      "La defensa en profundidad protege cada capa: DNS (Route 53), Borde (CloudFront + WAF), Entrada (ALB) y Cómputo (EC2 Multi-AZ).",
+      "AWS Shield Standard mitiga automáticamente ataques DDoS volumétricos en capas 3 y 4 en el borde.",
+      "Garantiza continuidad operacional, baja latencia mundial y cumplimiento estricto de seguridad."
+    ],
+    "estimatedReadTime": "45 seg",
+    "keyComponents": [
+      {
+        "title": "Defensa en Profundidad Perimetral",
+        "description": "Estrategia de seguridad multinivel que protege el DNS, el borde de la red, el balanceador y los servidores de cómputo.",
+        "category": "concept",
+        "slug": "zero-trust-architecture"
+      },
+      {
+        "title": "Stack Web Resiliente Enterprise",
+        "description": "Integración completa de Route 53, CloudFront, AWS WAF, Application Load Balancer y Auto Scaling Multi-AZ.",
+        "category": "concept",
+        "slug": "alta-disponibilidad"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_ROUTE53",

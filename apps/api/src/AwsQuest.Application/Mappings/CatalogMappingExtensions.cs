@@ -139,6 +139,14 @@ public static class CatalogMappingExtensions
                         BusinessScenario = briefingModel.BusinessScenario,
                         LearningObjective = briefingModel.LearningObjective,
                         KeyTakeaways = briefingModel.KeyTakeaways,
+                        KeyComponents = briefingModel.KeyComponents?.Select(kc => new BriefingKeyComponentDto
+                        {
+                            Title = kc.Title,
+                            Description = kc.Description,
+                            ServiceCode = kc.ServiceCode,
+                            Category = kc.Category,
+                            Slug = kc.Slug
+                        }).ToList() ?? [],
                         EstimatedReadTime = briefingModel.EstimatedReadTime
                     };
                 }

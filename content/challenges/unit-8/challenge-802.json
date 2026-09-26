@@ -6,6 +6,31 @@
   "baseXP": 150,
   "requiredXP": 120,
   "orderIndex": 2,
+  "briefing": {
+    "keyConcept": "Aceleración de APIs y Caching Global con CloudFront y ALB",
+    "businessScenario": "Una plataforma SaaS sufre alta latencia en llamadas API y descargas de assets para usuarios ubicados en otros continentes respecto a la región de AWS.",
+    "learningObjective": "Integrar Amazon CloudFront frente a un Application Load Balancer para optimizar el rendimiento y la latencia global.",
+    "keyTakeaways": [
+      "CloudFront utiliza la red global de fibra óptica de AWS para transportar peticiones dinámicas reduciendo el handshake TLS/TCP.",
+      "Almacena en caché respuestas estáticas en el borde y reenvía tráfico dinámico directamente al ALB.",
+      "Protege al balanceador de carga de picos directos de tráfico en la red pública."
+    ],
+    "estimatedReadTime": "40 seg",
+    "keyComponents": [
+      {
+        "title": "Aceleración de APIs y Contenido Dinámico",
+        "description": "Optimizar conexiones TCP/TLS utilizando la red troncal de fibra óptica de AWS para transportar tráfico dinámico hacia el balanceador.",
+        "category": "concept",
+        "slug": "amazon-cloudfront"
+      },
+      {
+        "title": "CloudFront + Application Load Balancer",
+        "description": "Combinación que entrega caché perimetral para archivos estáticos y aceleración de red para peticiones dinámicas de API.",
+        "category": "concept",
+        "slug": "amazon-cloudfront"
+      }
+    ]
+  },
   "allowedServices": [
     {
       "serviceCode": "AWS_CLOUDFRONT",
