@@ -12,6 +12,15 @@ export function XpProgressBar({ totalXp }: XpProgressBarProps) {
   const [isPulsing, setIsPulsing] = useState(false);
   const prevXpRef = useRef(totalXp);
 
+  // Título de rango según el nivel
+  const getLevelTitle = (lvl: number) => {
+    if (lvl >= 8) return 'Master Cloud Architect';
+    if (lvl >= 6) return 'Lead Infrastructure Architect';
+    if (lvl >= 4) return 'Solutions Architect';
+    if (lvl >= 2) return 'Cloud Practitioner';
+    return 'Junior Cloud Architect';
+  };
+
   // Detectar incremento de XP para disparar animación y píldora flotante
   useEffect(() => {
     const prev = prevXpRef.current;
@@ -33,10 +42,10 @@ export function XpProgressBar({ totalXp }: XpProgressBarProps) {
 
   return (
     <div
-      className={`relative flex items-center space-x-3 bg-slate-100 dark:bg-slate-800/90 border px-3 py-1.5 rounded-full shadow-inner transition-all duration-300 ${
+      className={`relative flex items-center space-x-2.5 bg-[#111827] border px-3 py-1.5 rounded-lg shadow-elevation-card transition-all duration-300 ${
         isPulsing
-          ? 'border-amber-500 ring-2 ring-amber-500/30 dark:ring-amber-400/20'
-          : 'border-slate-200 dark:border-slate-700/80'
+          ? 'border-[#FF9900] ring-2 ring-[#FF9900]/40 shadow-glow-amber'
+          : 'border-[#374151] hover:border-slate-500'
       }`}
     >
       {/* Píldora Flotante Animada (+XP) */}
@@ -45,7 +54,7 @@ export function XpProgressBar({ totalXp }: XpProgressBarProps) {
           data-testid="xp-floating-delta"
           role="status"
           aria-live="polite"
-          className="absolute -bottom-7 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] shadow-lg shadow-amber-500/30 animate-bounce flex items-center space-x-1 z-30 pointer-events-none"
+          className="absolute -bottom-7 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-[#FF9900] text-[#0B0F19] font-black text-[10px] shadow-lg shadow-[#FF9900]/40 animate-bounce flex items-center space-x-1 z-30 pointer-events-none"
         >
           <Zap className="w-2.5 h-2.5 fill-current" />
           <span>+{xpDelta} XP</span>
@@ -53,21 +62,28 @@ export function XpProgressBar({ totalXp }: XpProgressBarProps) {
       )}
 
       {/* Badge de Nivel */}
-      <div data-testid="header-level-badge" className="flex items-center space-x-1.5 text-amber-600 dark:text-amber-400">
-        <Award className="w-4 h-4" />
-        <span className="text-xs font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
-          Nivel {level}
-        </span>
+      <div data-testid="header-level-badge" className="flex items-center space-x-1.5 text-[#FFC082]">
+        <div className="w-5 h-5 rounded bg-[#FF9900]/10 border border-[#FF9900]/30 flex items-center justify-center text-[#FF9900]">
+          <Award className="w-3.5 h-3.5" />
+        </div>
+        <div className="flex flex-col">
+          <span className="text-xs font-bold text-slate-100 whitespace-nowrap leading-none">
+            Nivel {level}
+          </span>
+          <span className="text-[10px] text-slate-400 font-mono hidden md:inline leading-none mt-0.5">
+            {getLevelTitle(level)}
+          </span>
+        </div>
       </div>
 
-      <span className="text-slate-300 dark:text-slate-600 text-xs">|</span>
+      <span className="text-[#374151] text-xs">|</span>
 
       {/* Barra de Progreso XP */}
       <div className="flex items-center space-x-2">
-        <div className="w-24 sm:w-32 h-2 bg-slate-200 dark:bg-slate-950/80 rounded-full overflow-hidden border border-slate-300 dark:border-slate-700/50 relative">
+        <div className="w-20 sm:w-28 h-1.5 bg-[#0B0F19] rounded-full overflow-hidden border border-[#374151]/80 relative">
           <div
-            className={`h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-700 ease-out ${
-              isPulsing ? 'shadow-[0_0_12px_rgba(245,158,11,0.8)] brightness-110' : 'shadow-[0_0_8px_rgba(245,158,11,0.5)]'
+            className={`h-full bg-gradient-to-r from-[#FF9900] to-[#FFC082] rounded-full transition-all duration-700 ease-out ${
+              isPulsing ? 'shadow-[0_0_12px_rgba(255,153,0,0.9)] brightness-125' : 'shadow-[0_0_6px_rgba(255,153,0,0.5)]'
             }`}
             style={{ width: `${percentage}%` }}
             role="progressbar"
@@ -78,11 +94,15 @@ export function XpProgressBar({ totalXp }: XpProgressBarProps) {
             aria-valuetext={`${currentLevelXp} de ${xpForNextLevel} XP para nivel ${level + 1}`}
           />
         </div>
-        <div data-testid="header-total-xp" className="flex items-center text-[10px] font-mono font-medium text-amber-700 dark:text-amber-300 whitespace-nowrap">
-          <Zap className="w-2.5 h-2.5 mr-0.5 text-amber-500 dark:text-amber-400" />
+        <div
+          data-testid="header-total-xp"
+          className="flex items-center text-[10px] font-mono font-semibold text-[#FFC082] whitespace-nowrap"
+        >
+          <Zap className="w-2.5 h-2.5 mr-0.5 text-[#FF9900] fill-current" />
           <span>{currentLevelXp}/{xpForNextLevel} XP</span>
         </div>
       </div>
     </div>
   );
 }
+

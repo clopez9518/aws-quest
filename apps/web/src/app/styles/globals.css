@@ -4,9 +4,34 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased selection:bg-amber-500 selection:text-slate-950;
+    @apply bg-[#0B0F19] text-slate-100 font-sans antialiased selection:bg-[#FF9900] selection:text-slate-950;
     overflow-x: hidden;
   }
+}
+
+/* Dot-Matrix Substrate Pattern for Canvas and Technical Backgrounds */
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(55, 65, 81, 0.45) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom Technical Console Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0F19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262A35;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
 }
 
 /* React Flow Canvas Customizations */
@@ -14,7 +39,13 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  border: 2px solid #0f172a;
+  border: 2px solid #0B0F19;
+  background-color: #38BDF8;
+}
+
+.react-flow__handle:hover {
+  background-color: #FF9900;
+  box-shadow: 0 0 8px #FF9900;
 }
 
 @keyframes edgeFlow {
@@ -45,4 +76,5 @@
     animation: none !important;
   }
 }
+
 

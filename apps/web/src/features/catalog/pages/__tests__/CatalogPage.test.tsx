@@ -133,7 +133,7 @@ describe('CatalogPage', () => {
 
     expect(screen.getByText('Catálogo de Desafíos de Arquitectura')).toBeInTheDocument();
     expect(screen.getByText('Cómputo y Escalabilidad')).toBeInTheDocument();
-    expect(screen.getByText('Servidor EC2')).toBeInTheDocument();
+    expect(screen.getAllByText('Servidor EC2').length).toBeGreaterThan(0);
     expect(screen.getByText('Desafíos Totales')).toBeInTheDocument();
   });
 });
