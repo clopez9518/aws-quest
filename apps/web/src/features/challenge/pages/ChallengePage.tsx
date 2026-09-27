@@ -24,6 +24,7 @@ import {
 import { WorkspaceHeader } from '../components/WorkspaceHeader';
 import { ProblemContextPanel } from '../components/ProblemContextPanel';
 import { ArchitectureCanvas } from '../components/ArchitectureCanvas';
+import { NodeInspectorPanel } from '../../canvas/components/controls/NodeInspectorPanel';
 import { HintDrawer } from '../components/HintDrawer';
 import { ChallengeWorkspaceSkeleton } from '../components/ChallengeWorkspaceSkeleton';
 import { ChallengeErrorState } from '../components/ChallengeErrorState';
@@ -328,6 +329,9 @@ export function ChallengePage() {
 
         {/* Panel Central: Lienzo Interactivo de React Flow */}
         <ArchitectureCanvas />
+
+        {/* Panel Lateral de Inspección Reactivo (Stitch Screen 2 & 3) */}
+        <NodeInspectorPanel />
 
         {/* Panel Lateral Derecho: Cajón de Pistas */}
         <HintDrawer

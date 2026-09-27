@@ -81,7 +81,7 @@ function ArchitectureCanvasInner() {
     <div
       data-testid="architecture-canvas"
       ref={reactFlowWrapper}
-      className="relative flex-1 min-h-0 min-w-0 h-full w-full bg-slate-50/50 dark:bg-slate-950/50 overflow-hidden"
+      className="relative flex-1 min-h-0 min-w-0 h-full w-full bg-[#0B0F19] overflow-hidden select-none"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
@@ -104,12 +104,13 @@ function ArchitectureCanvasInner() {
         }}
         proOptions={{ hideAttribution: true }}
       >
-        {/* Dot Grid adaptativo al modo claro y oscuro */}
+        {/* Dot Grid sobre substrato #0B0F19 */}
         <Background
           variant={BackgroundVariant.Dots}
           gap={20}
           size={1.5}
-          className="bg-transparent dark:opacity-40"
+          color="rgba(75, 85, 99, 0.4)"
+          className="bg-[#0B0F19]"
         />
 
         {/* Barra flotante de herramientas */}
@@ -139,3 +140,4 @@ export function ArchitectureCanvas() {
     </ReactFlowProvider>
   );
 }
+

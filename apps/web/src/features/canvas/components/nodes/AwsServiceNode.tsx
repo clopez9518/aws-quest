@@ -33,18 +33,18 @@ export function AwsServiceNode({
   const isRds = serviceCode === 'AWS_RDS';
   const isS3 = serviceCode === 'AWS_S3';
 
-  // Configuración de bordes y fondos según el estado visual y selección
+  // Configuración de bordes y fondos según el estado visual y selección (Stitch Tokens)
   const statusStyles = {
     default: selected
-      ? 'border-amber-500 ring-2 ring-amber-500/40 shadow-lg shadow-amber-500/10 scale-[1.02] bg-white dark:bg-slate-900'
-      : 'border-slate-200 dark:border-slate-700/80 hover:border-slate-400 dark:hover:border-slate-500 bg-white dark:bg-slate-900/90 shadow-sm hover:shadow-md',
+      ? 'border-amber-500 ring-2 ring-amber-500/40 shadow-glow-amber/20 scale-[1.02] bg-[#111827]'
+      : 'border-[#374151] hover:border-slate-500 bg-[#111827] shadow-elevation-card hover:shadow-md',
     selected:
-      'border-amber-500 ring-2 ring-amber-500/40 shadow-lg shadow-amber-500/10 scale-[1.02] bg-white dark:bg-slate-900',
-    pass: 'border-emerald-500 ring-2 ring-emerald-500/30 bg-emerald-50/70 dark:bg-emerald-950/30 shadow-emerald-500/10',
+      'border-amber-500 ring-2 ring-amber-500/40 shadow-glow-amber/20 scale-[1.02] bg-[#111827]',
+    pass: 'border-emerald-500 ring-2 ring-emerald-500/30 bg-emerald-950/40 shadow-emerald-500/10',
     error:
-      'border-red-500 ring-2 ring-red-500/40 bg-red-50/70 dark:bg-red-950/30 animate-pulse shadow-red-500/10',
+      'border-red-500 ring-2 ring-red-500/40 bg-rose-950/40 animate-pulse shadow-rose-500/10',
     warning:
-      'border-amber-500 ring-2 ring-amber-500/30 bg-amber-50/70 dark:bg-amber-950/30 shadow-amber-500/10'
+      'border-amber-500 ring-2 ring-amber-500/30 bg-amber-950/40 shadow-amber-500/10'
   };
 
   return (
@@ -61,13 +61,13 @@ export function AwsServiceNode({
         type="target"
         position={Position.Top}
         id="target-top"
-        className="w-3 h-3 rounded-full bg-amber-500 border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair"
+        className="w-3 h-3 rounded-full bg-[#FF9900] border-2 border-[#111827] transition-transform hover:scale-125 !cursor-crosshair"
       />
       <Handle
         type="source"
         position={Position.Top}
         id="source-top"
-        className="w-3 h-3 rounded-full bg-amber-500 border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair"
+        className="w-3 h-3 rounded-full bg-[#FF9900] border-2 border-[#111827] transition-transform hover:scale-125 !cursor-crosshair"
       />
 
       {/* Handles Laterales */}
@@ -75,32 +75,32 @@ export function AwsServiceNode({
         type="target"
         position={Position.Left}
         id="target-left"
-        className="w-3 h-3 rounded-full bg-amber-500 border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair"
+        className="w-3 h-3 rounded-full bg-[#FF9900] border-2 border-[#111827] transition-transform hover:scale-125 !cursor-crosshair"
       />
       <Handle
         type="source"
         position={Position.Left}
         id="source-left"
-        className="w-3 h-3 rounded-full bg-amber-500 border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair"
+        className="w-3 h-3 rounded-full bg-[#FF9900] border-2 border-[#111827] transition-transform hover:scale-125 !cursor-crosshair"
       />
 
       <Handle
         type="target"
         position={Position.Right}
         id="target-right"
-        className="w-3 h-3 rounded-full bg-amber-500 border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair"
+        className="w-3 h-3 rounded-full bg-[#FF9900] border-2 border-[#111827] transition-transform hover:scale-125 !cursor-crosshair"
       />
       <Handle
         type="source"
         position={Position.Right}
         id="source-right"
-        className="w-3 h-3 rounded-full bg-amber-500 border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair"
+        className="w-3 h-3 rounded-full bg-[#FF9900] border-2 border-[#111827] transition-transform hover:scale-125 !cursor-crosshair"
       />
 
       {/* Cabecera del Nodo: Icono, Nombre, Categoría y Botón Eliminar */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800/70 p-1.5 flex items-center justify-center shrink-0 border border-slate-200/60 dark:border-slate-700/60 shadow-inner">
+          <div className="w-9 h-9 rounded-lg bg-[#0B0F19] p-1.5 flex items-center justify-center shrink-0 border border-[#374151] shadow-inner">
             <img
               src={data.iconUrl || '/icons/aws/default.svg'}
               alt={data.name || data.serviceCode}
@@ -112,12 +112,12 @@ export function AwsServiceNode({
           </div>
           <div className="min-w-0">
             <h4
-              className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate"
+              className="text-xs font-bold text-slate-100 truncate"
               title={data.name || data.serviceCode}
             >
               {data.name || data.serviceCode}
             </h4>
-            <span className="inline-block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">
+            <span className="inline-block text-[10px] font-mono font-semibold text-slate-400 uppercase tracking-wider truncate">
               {data.category || 'AWS Service'}
             </span>
           </div>
@@ -127,7 +127,7 @@ export function AwsServiceNode({
         <button
           type="button"
           onClick={handleDelete}
-          className="nodrag nopan p-1 rounded-md text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 transition-colors opacity-70 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-1 focus:ring-red-500"
+          className="nodrag nopan p-1 rounded-md text-slate-400 hover:text-rose-400 hover:bg-rose-950/50 transition-colors opacity-70 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-1 focus:ring-rose-500 cursor-pointer"
           title="Eliminar servicio del canvas"
           aria-label="Eliminar servicio del canvas"
         >
@@ -136,7 +136,7 @@ export function AwsServiceNode({
       </div>
 
       {/* Controles Interactivos de Configuración Técnica */}
-      <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800/80 flex flex-col gap-1.5">
+      <div className="mt-2.5 pt-2 border-t border-[#374151]/80 flex flex-col gap-1.5">
         {/* Configuración de EC2 */}
         {isEc2 && (
           <div className="flex flex-wrap items-center gap-1.5">
@@ -148,10 +148,10 @@ export function AwsServiceNode({
                 updateNodeConfig(id, { autoScaling: !data.config?.autoScaling });
               }}
               className={cn(
-                'nodrag nopan inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-medium border transition-colors cursor-pointer',
+                'nodrag nopan inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-mono font-semibold border transition-colors cursor-pointer',
                 data.config?.autoScaling
-                  ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/80 dark:text-blue-200 border-blue-300 dark:border-blue-700 shadow-sm'
-                  : 'bg-slate-100/70 text-slate-500 dark:bg-slate-800/60 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-200/70'
+                  ? 'bg-sky-950/80 text-sky-300 border-sky-600/70 shadow-sm'
+                  : 'bg-[#0B0F19] text-slate-400 border-[#374151] hover:bg-[#1F2937]'
               )}
               title="Alternar Auto Scaling Group"
             >
@@ -160,7 +160,7 @@ export function AwsServiceNode({
             </button>
 
             <div className="flex items-center gap-1">
-              <span className="text-[9px] text-slate-500 dark:text-slate-400 font-medium">Instancias:</span>
+              <span className="text-[9px] font-mono text-slate-400">Instancias:</span>
               <select
                 aria-label="Cantidad de instancias EC2"
                 value={data.config?.instanceCount || 1}
@@ -168,7 +168,7 @@ export function AwsServiceNode({
                   e.stopPropagation();
                   updateNodeConfig(id, { instanceCount: parseInt(e.target.value, 10) });
                 }}
-                className="nodrag nopan text-[9px] font-semibold rounded px-1.5 py-0.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="nodrag nopan text-[9px] font-mono font-bold rounded px-1.5 py-0.5 border border-[#374151] bg-[#0B0F19] text-slate-200 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#FF9900]"
               >
                 <option value={1}>1x</option>
                 <option value={2}>2x</option>
@@ -190,10 +190,10 @@ export function AwsServiceNode({
                 updateNodeConfig(id, { isMultiAz: !data.config?.isMultiAz });
               }}
               className={cn(
-                'nodrag nopan inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-medium border transition-colors cursor-pointer',
+                'nodrag nopan inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-mono font-semibold border transition-colors cursor-pointer',
                 data.config?.isMultiAz
-                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/80 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700 shadow-sm'
-                  : 'bg-slate-100/70 text-slate-500 dark:bg-slate-800/60 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-200/70'
+                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-600/70 shadow-sm'
+                  : 'bg-[#0B0F19] text-slate-400 border-[#374151] hover:bg-[#1F2937]'
               )}
               title="Alternar Redundancia Multi-AZ"
             >
@@ -209,10 +209,10 @@ export function AwsServiceNode({
                 updateNodeConfig(id, { isPublic: !data.config?.isPublic });
               }}
               className={cn(
-                'nodrag nopan inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-medium border transition-colors cursor-pointer',
+                'nodrag nopan inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-mono font-semibold border transition-colors cursor-pointer',
                 data.config?.isPublic
-                  ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/80 dark:text-purple-200 border-purple-300 dark:border-purple-700'
-                  : 'bg-slate-100/70 text-slate-500 dark:bg-slate-800/60 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-200/70'
+                  ? 'bg-purple-950/80 text-purple-300 border-purple-600/70'
+                  : 'bg-[#0B0F19] text-slate-400 border-[#374151] hover:bg-[#1F2937]'
               )}
               title="Alternar acceso público"
             >
@@ -225,7 +225,7 @@ export function AwsServiceNode({
         {/* Configuración de S3 */}
         {isS3 && (
           <div className="flex items-center gap-1">
-            <span className="text-[9px] text-slate-500 dark:text-slate-400 font-medium">Clase:</span>
+            <span className="text-[9px] font-mono text-slate-400">Clase:</span>
             <select
               aria-label="Clase de almacenamiento S3"
               value={data.config?.storageClass || 'Standard'}
@@ -233,7 +233,7 @@ export function AwsServiceNode({
                 e.stopPropagation();
                 updateNodeConfig(id, { storageClass: e.target.value });
               }}
-              className="nodrag nopan text-[9px] font-semibold rounded px-1.5 py-0.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer focus:outline-none focus:ring-1 focus:ring-amber-500"
+              className="nodrag nopan text-[9px] font-mono font-bold rounded px-1.5 py-0.5 border border-[#374151] bg-[#0B0F19] text-slate-200 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#FF9900]"
             >
               <option value="Standard">Standard</option>
               <option value="Intelligent-Tiering">Intelligent-Tiering</option>
@@ -244,21 +244,21 @@ export function AwsServiceNode({
 
         {/* Badges para otros servicios si tienen configuraciones preexistentes */}
         {!isEc2 && !isRds && !isS3 && data.config && (
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1 font-mono">
             {data.config.isMultiAz && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold bg-emerald-950/60 text-emerald-300 border border-emerald-700/50">
                 <ShieldCheck className="w-2.5 h-2.5" />
                 Multi-AZ
               </span>
             )}
             {data.config.autoScaling && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-medium bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/60">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold bg-sky-950/60 text-sky-300 border border-sky-700/50">
                 <TrendingUp className="w-2.5 h-2.5" />
                 Auto Scaling
               </span>
             )}
             {data.config.instanceCount && data.config.instanceCount > 1 && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-medium bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-semibold bg-amber-950/60 text-amber-300 border border-amber-700/50">
                 <Layers className="w-2.5 h-2.5" />
                 x{data.config.instanceCount} inst.
               </span>
@@ -267,22 +267,22 @@ export function AwsServiceNode({
         )}
       </div>
 
-      {/* Banner Inferior de Estado / Diagnóstico (Fase 6) */}
+      {/* Banner Inferior de Estado / Diagnóstico */}
       {data.statusMessage && visualStatus !== 'default' && (
         <div
           className={cn(
-            'mt-2 p-1.5 rounded text-[10px] flex items-center gap-1.5 border',
+            'mt-2 p-1.5 rounded text-[10px] font-mono flex items-center gap-1.5 border',
             visualStatus === 'pass' &&
-              'bg-emerald-100/70 dark:bg-emerald-950/70 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200',
+              'bg-emerald-950/70 border-emerald-600/70 text-emerald-300',
             visualStatus === 'error' &&
-              'bg-red-100/70 dark:bg-red-950/70 border-red-300 dark:border-red-800 text-red-800 dark:text-red-200',
+              'bg-rose-950/70 border-rose-600/70 text-rose-300',
             visualStatus === 'warning' &&
-              'bg-amber-100/70 dark:bg-amber-950/70 border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-200'
+              'bg-amber-950/70 border-amber-600/70 text-amber-300'
           )}
         >
-          {visualStatus === 'pass' && <CheckCircle2 className="w-3 h-3 shrink-0" />}
-          {visualStatus === 'error' && <AlertTriangle className="w-3 h-3 shrink-0" />}
-          {visualStatus === 'warning' && <Info className="w-3 h-3 shrink-0" />}
+          {visualStatus === 'pass' && <CheckCircle2 className="w-3 h-3 shrink-0 text-emerald-400" />}
+          {visualStatus === 'error' && <AlertTriangle className="w-3 h-3 shrink-0 text-rose-400" />}
+          {visualStatus === 'warning' && <Info className="w-3 h-3 shrink-0 text-amber-400" />}
           <span className="truncate">{data.statusMessage}</span>
         </div>
       )}
@@ -292,14 +292,15 @@ export function AwsServiceNode({
         type="target"
         position={Position.Bottom}
         id="target-bottom"
-        className="w-3 h-3 rounded-full bg-amber-500 border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair"
+        className="w-3 h-3 rounded-full bg-[#FF9900] border-2 border-[#111827] transition-transform hover:scale-125 !cursor-crosshair"
       />
       <Handle
         type="source"
         position={Position.Bottom}
         id="source-bottom"
-        className="w-3 h-3 rounded-full bg-amber-500 border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair"
+        className="w-3 h-3 rounded-full bg-[#FF9900] border-2 border-[#111827] transition-transform hover:scale-125 !cursor-crosshair"
       />
     </div>
   );
 }
+
