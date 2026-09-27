@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { cn } from '../utils/cn';
 
@@ -29,8 +29,7 @@ export const DrawerBase: React.FC<DrawerBaseProps> = ({
   className,
   'aria-label': ariaLabel,
 }) => {
-  const drawerRef = useRef<HTMLDivElement>(null);
-  useFocusTrap(drawerRef, isOpen);
+  const drawerRef = useFocusTrap<HTMLDivElement>({ isOpen, onClose });
 
   useEffect(() => {
     if (!isOpen) return;

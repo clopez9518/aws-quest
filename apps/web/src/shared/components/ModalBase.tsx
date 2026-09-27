@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { cn } from '../utils/cn';
 
@@ -27,8 +27,7 @@ export const ModalBase: React.FC<ModalBaseProps> = ({
   className,
   'aria-label': ariaLabel,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
-  useFocusTrap(modalRef, isOpen);
+  const modalRef = useFocusTrap<HTMLDivElement>({ isOpen, onClose });
 
   useEffect(() => {
     if (!isOpen) return;

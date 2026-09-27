@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Layers, Sparkles, Trophy, Flame, Shield, Award, FilterX } from 'lucide-react';
+import { Layers, Sparkles, Flame, Shield, Award, FilterX } from 'lucide-react';
 import { useUnits } from '../hooks/useUnits';
 import { useSystemConfig } from '../hooks/useSystemConfig';
 import { AccessModeToggle } from '../components/AccessModeToggle';

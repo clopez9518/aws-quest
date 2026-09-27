@@ -206,7 +206,7 @@ export function ProblemContextPanel({
             )}
 
             {/* Botón / Banner de Acceso al Briefing */}
-            {onOpenBriefing && (
+            {(hasBriefing || onOpenBriefing) && onOpenBriefing && (
               <button
                 type="button"
                 onClick={onOpenBriefing}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, AlertTriangle, CheckCircle2, CircleDashed } from 'lucide-react';
+import { Zap, CheckCircle2, CircleDashed } from 'lucide-react';
 import { CatalogChallengeDto } from '../types/catalog.types';
 
 interface SuggestedMissionWidgetProps {

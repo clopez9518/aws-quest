@@ -19,7 +19,11 @@ const categoryLabels: Record<FeedbackCategory, string> = {
   performance: 'Rendimiento',
   costOptimization: 'Optimización de Costos',
   hintPenalty: 'Penalización de Pistas',
-  configuration: 'Configuración'
+  configuration: 'Configuración',
+  placement: 'Ubicación y Zonas de Disponibilidad',
+  networkTopology: 'Topología de Red',
+  securityGroup: 'Grupos de Seguridad (Firewall)',
+  reliability: 'Fiabilidad y Resiliencia'
 };
 
 export const FeedbackList: React.FC<FeedbackListProps> = ({

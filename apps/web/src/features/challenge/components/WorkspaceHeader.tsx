@@ -154,7 +154,7 @@ export function WorkspaceHeader({
         )}
 
         {/* Botón Briefing */}
-        {onOpenBriefing && (
+        {(hasBriefing ?? true) && onOpenBriefing && (
           <button
             data-testid="briefing-trigger-button"
             type="button"

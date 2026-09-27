@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import React from 'react';
 import { DictionaryLink } from '../DictionaryLink';
 import { useDictionaryStore } from '../../stores/useDictionaryStore';
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { NodeInspectorPanel } from '../NodeInspectorPanel';
 import { useCanvasStore } from '../../../stores/useCanvasStore';
@@ -16,6 +16,8 @@ describe('NodeInspectorPanel Component', () => {
             serviceCode: 'AWS_EC2',
             name: 'EC2 Web Server',
             category: 'Compute',
+            iconUrl: '',
+            config: {},
           },
         },
       ],
@@ -37,6 +39,7 @@ describe('NodeInspectorPanel Component', () => {
             serviceCode: 'AWS_EC2',
             name: 'EC2 Web Server',
             category: 'Compute',
+            iconUrl: '',
             config: {
               autoScaling: false,
               instanceCount: 1,

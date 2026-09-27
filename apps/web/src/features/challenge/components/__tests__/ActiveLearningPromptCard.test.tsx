@@ -48,12 +48,11 @@ describe('ActiveLearningPromptCard Component', () => {
     useAuthStore.setState({
       user: {
         id: 'user-1',
+        name: 'Cloud Tester',
         email: 'tester@awsquest.io',
-        displayName: 'Cloud Tester',
         totalXP: 150,
         level: 1,
-        isGuest: false,
-        createdAt: new Date().toISOString()
+        isGuest: false
       },
       accessToken: 'test-token',
       isInitialized: true,

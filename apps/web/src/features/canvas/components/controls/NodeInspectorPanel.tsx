@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   X,
   Sliders,
   Activity,
   HeartPulse,
   TrendingUp,
-  ShieldCheck,
-  Globe,
   Layers,
   Server,
   Database
@@ -148,8 +146,8 @@ export function NodeInspectorPanel() {
                   <label htmlFor="alb-scheme-select" className="text-[10px] text-slate-400 block">Esquema</label>
                   <select
                     id="alb-scheme-select"
-                    value={config.scheme || 'internet-facing'}
-                    onChange={(e) => updateNodeConfig(id, { scheme: e.target.value })}
+                    value={config.isPublic ? 'internet-facing' : 'internal'}
+                    onChange={(e) => updateNodeConfig(id, { isPublic: e.target.value === 'internet-facing' })}
                     className="w-full px-2 py-1 rounded bg-[#111827] border border-[#374151] text-slate-200 text-xs focus:outline-none"
                   >
                     <option value="internet-facing">Internet-facing</option>
@@ -161,8 +159,8 @@ export function NodeInspectorPanel() {
                   <label htmlFor="alb-protocol-select" className="text-[10px] text-slate-400 block">Protocolo de Escucha</label>
                   <select
                     id="alb-protocol-select"
-                    value={config.protocol || 'HTTP'}
-                    onChange={(e) => updateNodeConfig(id, { protocol: e.target.value })}
+                    value={config.subnetType || 'HTTP'}
+                    onChange={(e) => updateNodeConfig(id, { subnetType: e.target.value })}
                     className="w-full px-2 py-1 rounded bg-[#111827] border border-[#374151] text-slate-200 text-xs focus:outline-none"
                   >
                     <option value="HTTP">HTTP (Puerto 80)</option>
