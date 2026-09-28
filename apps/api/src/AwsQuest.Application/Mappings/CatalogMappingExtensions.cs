@@ -68,7 +68,8 @@ public static class CatalogMappingExtensions
                 MaxInstances = cs.MaxInstances,
                 IsDistractor = cs.IsDistractor,
                 Kind = cs.Service.Kind,
-                PlacementScope = cs.Service.PlacementScope
+                PlacementScope = cs.Service.PlacementScope,
+                DictionarySlug = AwsQuest.Application.Common.DictionarySlugResolver.ResolveSlug(cs.Service.Code)
             }).ToList();
 
         // 2. Deserializar definiciones de pistas
@@ -145,7 +146,9 @@ public static class CatalogMappingExtensions
                             Description = kc.Description,
                             ServiceCode = kc.ServiceCode,
                             Category = kc.Category,
-                            Slug = kc.Slug
+                            Slug = !string.IsNullOrWhiteSpace(kc.Slug) 
+                                ? kc.Slug 
+                                : AwsQuest.Application.Common.DictionarySlugResolver.ResolveSlug(kc.ServiceCode)
                         }).ToList() ?? [],
                         EstimatedReadTime = briefingModel.EstimatedReadTime
                     };

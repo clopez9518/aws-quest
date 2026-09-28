@@ -61,6 +61,16 @@
       "serviceCode": "AWS_RDS",
       "maxInstances": 1,
       "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_LAMBDA",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_CLOUDFRONT",
+      "maxInstances": null,
+      "isDistractor": true
     }
   ],
   "hints": [

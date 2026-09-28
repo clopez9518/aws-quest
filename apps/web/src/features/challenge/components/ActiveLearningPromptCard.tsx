@@ -32,43 +32,43 @@ const pillarMetadata: Record<
 > = {
   Security: {
     label: 'Seguridad',
-    bg: 'bg-red-500/10 dark:bg-red-950/40',
-    text: 'text-red-700 dark:text-red-400',
+    bg: 'bg-red-500/10',
+    text: 'text-red-400',
     border: 'border-red-500/30',
     icon: <Shield className="w-3.5 h-3.5" />
   },
   Reliability: {
     label: 'Fiabilidad',
-    bg: 'bg-blue-500/10 dark:bg-blue-950/40',
-    text: 'text-blue-700 dark:text-blue-400',
+    bg: 'bg-blue-500/10',
+    text: 'text-blue-400',
     border: 'border-blue-500/30',
     icon: <Activity className="w-3.5 h-3.5" />
   },
   PerformanceEfficiency: {
     label: 'Rendimiento',
-    bg: 'bg-amber-500/10 dark:bg-amber-950/40',
-    text: 'text-amber-700 dark:text-amber-400',
+    bg: 'bg-amber-500/10',
+    text: 'text-amber-400',
     border: 'border-amber-500/30',
     icon: <Zap className="w-3.5 h-3.5" />
   },
   CostOptimization: {
     label: 'Optimización de Costos',
-    bg: 'bg-emerald-500/10 dark:bg-emerald-950/40',
-    text: 'text-emerald-700 dark:text-emerald-400',
+    bg: 'bg-emerald-500/10',
+    text: 'text-emerald-400',
     border: 'border-emerald-500/30',
     icon: <DollarSign className="w-3.5 h-3.5" />
   },
   OperationalExcellence: {
     label: 'Excelencia Operativa',
-    bg: 'bg-purple-500/10 dark:bg-purple-950/40',
-    text: 'text-purple-700 dark:text-purple-400',
+    bg: 'bg-purple-500/10',
+    text: 'text-purple-400',
     border: 'border-purple-500/30',
     icon: <Sparkles className="w-3.5 h-3.5" />
   },
   Sustainability: {
     label: 'Sostenibilidad',
-    bg: 'bg-teal-500/10 dark:bg-teal-950/40',
-    text: 'text-teal-700 dark:text-teal-400',
+    bg: 'bg-teal-500/10',
+    text: 'text-teal-400',
     border: 'border-teal-500/30',
     icon: <Leaf className="w-3.5 h-3.5" />
   }
@@ -120,13 +120,15 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
   return (
     <div
       data-testid="active-learning-prompt-card"
-      className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-indigo-50/60 via-slate-50 to-amber-50/40 dark:from-indigo-950/30 dark:via-slate-900 dark:to-amber-950/20 border border-indigo-200/70 dark:border-indigo-800/50 shadow-sm transition-all space-y-4"
+      className="p-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900/90 border border-indigo-200 dark:border-indigo-500/30 shadow-md shadow-indigo-950/10 transition-all space-y-4 relative overflow-hidden"
     >
+      <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
+
       {/* Header con Badges */}
-      <div className="flex flex-wrap items-center justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 relative z-10">
         <div className="flex items-center space-x-2">
-          <span className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/30">
-            <HelpCircle className="w-3.5 h-3.5 text-indigo-500" />
+          <span className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/30 dark:border-indigo-500/40">
+            <HelpCircle className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
             <span>Reflexión Activa</span>
           </span>
 
@@ -138,14 +140,14 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
           </span>
         </div>
 
-        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30">
-          <Sparkles className="w-3.5 h-3.5 mr-1 text-amber-500" />
+        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/40 shadow-xs animate-pulse">
+          <Sparkles className="w-3.5 h-3.5 mr-1 text-amber-500 dark:text-amber-400" />
           +{prompt.bonusXP || 25} Bonus XP
         </span>
       </div>
 
       {/* Pregunta Conceptual */}
-      <div className="space-y-1">
+      <div className="space-y-1 relative z-10">
         <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 leading-snug">
           {prompt.question}
         </h4>
@@ -155,7 +157,7 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
       </div>
 
       {/* Lista de Opciones */}
-      <div className="space-y-2.5" role="radiogroup" aria-label="Opciones de reflexión">
+      <div className="space-y-2.5 relative z-10" role="radiogroup" aria-label="Opciones de reflexión">
         {prompt.options.map((option) => {
           const isSelected = selectedOptionId === option.id;
           const explanationObj = result?.allExplanations.find((e) => e.id === option.id);
@@ -163,22 +165,22 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
           const isRevealed = Boolean(result);
 
           let optionCardStyle =
-            'border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-indigo-700';
+            'border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/50 text-slate-800 dark:text-slate-300 hover:border-indigo-400 dark:hover:border-indigo-500/50 hover:bg-slate-100 dark:hover:bg-slate-850/50';
 
           if (isRevealed) {
             if (isOptionCorrect) {
               optionCardStyle =
-                'border-emerald-500 bg-emerald-50/80 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200';
+                'border-emerald-500/60 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-900 dark:text-emerald-200';
             } else if (isSelected && !isOptionCorrect) {
               optionCardStyle =
-                'border-rose-500 bg-rose-50/80 dark:bg-rose-950/40 text-rose-900 dark:text-rose-200';
+                'border-rose-500/60 bg-rose-50 dark:bg-rose-950/30 text-rose-900 dark:text-rose-200';
             } else {
               optionCardStyle =
-                'border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-800/30 text-slate-500 dark:text-slate-400 opacity-70';
+                'border-slate-200 dark:border-slate-800/80 bg-slate-100/60 dark:bg-slate-950/30 text-slate-400 dark:text-slate-500 opacity-60';
             }
           } else if (isSelected) {
             optionCardStyle =
-              'border-indigo-500 bg-indigo-50/80 dark:bg-indigo-950/40 text-indigo-900 dark:text-indigo-200 shadow-sm ring-1 ring-indigo-500/50';
+              'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-900 dark:text-indigo-100 shadow-xs ring-1 ring-indigo-500/50';
           }
 
           return (
@@ -199,7 +201,7 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
                   checked={isSelected}
                   onChange={() => setSelectedOptionId(option.id)}
                   disabled={isRevealed || isSubmitting || Boolean(prompt.isCompleted)}
-                  className="w-4 h-4 mt-0.5 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800"
+                  className="w-4 h-4 mt-0.5 text-indigo-600 focus:ring-indigo-400 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900"
                 />
                 <div className="flex-1 text-xs sm:text-sm font-medium leading-relaxed">
                   <span>{option.text}</span>
@@ -209,24 +211,24 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
                     <div
                       className={`mt-2 p-2.5 rounded-lg text-xs font-normal border ${
                         explanationObj.isCorrect
-                          ? 'bg-emerald-100/60 dark:bg-emerald-900/40 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200'
-                          : 'bg-rose-100/60 dark:bg-rose-900/40 border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-200'
+                          ? 'bg-emerald-100/80 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200'
+                          : 'bg-rose-100/80 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 text-rose-900 dark:text-rose-200'
                       }`}
                     >
                       <div className="flex items-center gap-1.5 font-bold mb-0.5">
                         {explanationObj.isCorrect ? (
                           <>
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                             <span>¡Justificación Correcta!</span>
                           </>
                         ) : (
                           <>
-                            <XCircle className="w-3.5 h-3.5 text-rose-600" />
+                            <XCircle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
                             <span>Concepto a Mejorar</span>
                           </>
                         )}
                       </div>
-                      <p>{explanationObj.explanation}</p>
+                      <p className="text-slate-700 dark:text-slate-300">{explanationObj.explanation}</p>
                     </div>
                   )}
                 </div>
@@ -238,19 +240,23 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
 
       {/* Feedback de Error si ocurre */}
       {error && (
-        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-400 text-xs">
+        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs">
           {error}
         </div>
       )}
 
       {/* Botón de Confirmación o Estado Final */}
       {!result && !prompt.isCompleted && (
-        <div className="flex items-center justify-end pt-1">
+        <div className="flex items-center justify-end pt-1 relative z-10">
           <button
             type="button"
             onClick={handleSubmit}
             disabled={!selectedOptionId || isSubmitting}
-            className="inline-flex items-center justify-center px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-indigo-500/20 transition-all duration-150"
+            className={`inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all duration-150 cursor-pointer ${
+              selectedOptionId && !isSubmitting
+                ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 shadow-amber-500/20'
+                : 'bg-indigo-600/60 text-white/70 disabled:opacity-50 disabled:cursor-not-allowed'
+            }`}
           >
             {isSubmitting ? (
               <>
@@ -270,17 +276,17 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
       {/* Banner de Éxito cuando se completa */}
       {result && (
         <div
-          className={`p-3.5 rounded-xl border flex items-center justify-between ${
+          className={`p-3.5 rounded-xl border flex items-center justify-between relative z-10 ${
             result.isCorrect
-              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
-              : 'bg-amber-500/10 border-amber-500/30 text-amber-800 dark:text-amber-300'
+              ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
+              : 'bg-amber-50 dark:bg-amber-950/30 border-amber-300 dark:border-amber-500/30 text-amber-800 dark:text-amber-300'
           }`}
         >
           <div className="flex items-center space-x-2">
             {result.isCorrect ? (
-              <Sparkles className="w-5 h-5 text-emerald-500 shrink-0" />
+              <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
             ) : (
-              <HelpCircle className="w-5 h-5 text-amber-500 shrink-0" />
+              <HelpCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
             )}
             <span className="text-xs sm:text-sm font-bold">
               {result.isCorrect

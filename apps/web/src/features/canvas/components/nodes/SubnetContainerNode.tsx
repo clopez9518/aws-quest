@@ -45,10 +45,10 @@ export function SubnetContainerNode({
     Public: {
       label: 'Public Subnet',
       icon: Globe,
-      border: 'border-emerald-400 dark:border-emerald-500/80',
-      bg: 'bg-emerald-50/30 dark:bg-emerald-950/20',
-      badgeBg: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/80 dark:text-emerald-200 border-emerald-200 dark:border-emerald-700',
-      headerText: 'text-emerald-900 dark:text-emerald-100',
+      border: 'border-emerald-500/70',
+      bg: 'bg-emerald-50/70 dark:bg-emerald-950/15',
+      badgeBg: 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700/60',
+      headerText: 'text-emerald-900 dark:text-emerald-300',
       handleColor: 'bg-emerald-500',
       resizerColor: '#10b981',
       resizerLineClass: 'border-emerald-500'
@@ -56,24 +56,24 @@ export function SubnetContainerNode({
     Private: {
       label: 'Private Subnet',
       icon: Shield,
-      border: 'border-blue-400/90 dark:border-blue-500/70',
-      bg: 'bg-slate-50/40 dark:bg-slate-900/30',
-      badgeBg: 'bg-blue-100 text-blue-800 dark:bg-blue-900/80 dark:text-blue-200 border-blue-200 dark:border-blue-700',
-      headerText: 'text-blue-900 dark:text-blue-100',
-      handleColor: 'bg-blue-500',
-      resizerColor: '#3b82f6',
-      resizerLineClass: 'border-blue-500'
+      border: 'border-[#38BDF8]/60',
+      bg: 'bg-sky-50/70 dark:bg-sky-950/15',
+      badgeBg: 'bg-sky-100 dark:bg-sky-950/80 text-sky-800 dark:text-sky-300 border-sky-300 dark:border-sky-700/60',
+      headerText: 'text-sky-900 dark:text-sky-300',
+      handleColor: 'bg-[#38BDF8]',
+      resizerColor: '#38BDF8',
+      resizerLineClass: 'border-[#38BDF8]'
     },
     Isolated: {
       label: 'Isolated Subnet',
       icon: Lock,
-      border: 'border-purple-400 dark:border-purple-500/80',
-      bg: 'bg-purple-50/30 dark:bg-purple-950/20',
-      badgeBg: 'bg-purple-100 text-purple-800 dark:bg-purple-900/80 dark:text-purple-200 border-purple-200 dark:border-purple-700',
-      headerText: 'text-purple-900 dark:text-purple-100',
-      handleColor: 'bg-purple-500',
-      resizerColor: '#8b5cf6',
-      resizerLineClass: 'border-purple-500'
+      border: 'border-[#8B5CF6]/70',
+      bg: 'bg-purple-50/70 dark:bg-purple-950/15',
+      badgeBg: 'bg-purple-100 dark:bg-purple-950/80 text-purple-800 dark:text-purple-300 border-purple-300 dark:border-purple-700/60',
+      headerText: 'text-purple-900 dark:text-purple-300',
+      handleColor: 'bg-[#8B5CF6]',
+      resizerColor: '#8B5CF6',
+      resizerLineClass: 'border-[#8B5CF6]'
     }
   }[tier];
 
@@ -84,10 +84,10 @@ export function SubnetContainerNode({
       role="region"
       aria-label={`${tierConfig.label} ${id}`}
       className={cn(
-        'relative rounded-xl border-2 border-dashed p-3 transition-all duration-200 select-none w-full h-full min-w-[240px] min-h-[200px]',
+        'relative rounded-2xl border-2 border-dashed p-3 transition-all duration-200 select-none w-full h-full min-w-[240px] min-h-[200px]',
         tierConfig.border,
         tierConfig.bg,
-        selected && 'ring-2 ring-amber-500/40 shadow-md'
+        selected && 'ring-2 ring-[#FF9900]/40 shadow-glow-amber/15'
       )}
     >
       <NodeResizer
@@ -96,130 +96,115 @@ export function SubnetContainerNode({
         isVisible={selected}
         color={tierConfig.resizerColor}
         lineClassName={tierConfig.resizerLineClass}
-        handleClassName="w-2.5 h-2.5 rounded-sm border border-white dark:border-slate-900 shadow-sm"
+        handleClassName="w-2.5 h-2.5 rounded-sm border border-white dark:border-[#111827] shadow-sm"
       />
-      {/* Handles superiores */}
+
+      {/* Handles Superiores */}
       <Handle
         type="target"
         position={Position.Top}
         id="subnet-target-top"
-        className={cn(
-          'w-3 h-3 rounded-full border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair',
-          tierConfig.handleColor
-        )}
+        className={`w-2.5 h-2.5 rounded-full ${tierConfig.handleColor} border-2 border-white dark:border-[#111827] transition-transform hover:scale-125 !cursor-crosshair`}
       />
       <Handle
         type="source"
         position={Position.Top}
         id="subnet-source-top"
-        className={cn(
-          'w-3 h-3 rounded-full border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair',
-          tierConfig.handleColor
-        )}
+        className={`w-2.5 h-2.5 rounded-full ${tierConfig.handleColor} border-2 border-white dark:border-[#111827] transition-transform hover:scale-125 !cursor-crosshair`}
       />
 
-      {/* Handles laterales */}
+      {/* Handles Laterales */}
       <Handle
         type="target"
         position={Position.Left}
         id="subnet-target-left"
-        className={cn(
-          'w-3 h-3 rounded-full border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair',
-          tierConfig.handleColor
-        )}
+        className={`w-2.5 h-2.5 rounded-full ${tierConfig.handleColor} border-2 border-white dark:border-[#111827] transition-transform hover:scale-125 !cursor-crosshair`}
       />
       <Handle
         type="source"
         position={Position.Left}
         id="subnet-source-left"
-        className={cn(
-          'w-3 h-3 rounded-full border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair',
-          tierConfig.handleColor
-        )}
+        className={`w-2.5 h-2.5 rounded-full ${tierConfig.handleColor} border-2 border-white dark:border-[#111827] transition-transform hover:scale-125 !cursor-crosshair`}
       />
 
       <Handle
         type="target"
         position={Position.Right}
         id="subnet-target-right"
-        className={cn(
-          'w-3 h-3 rounded-full border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair',
-          tierConfig.handleColor
-        )}
+        className={`w-2.5 h-2.5 rounded-full ${tierConfig.handleColor} border-2 border-white dark:border-[#111827] transition-transform hover:scale-125 !cursor-crosshair`}
       />
       <Handle
         type="source"
         position={Position.Right}
         id="subnet-source-right"
-        className={cn(
-          'w-3 h-3 rounded-full border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair',
-          tierConfig.handleColor
-        )}
+        className={`w-2.5 h-2.5 rounded-full ${tierConfig.handleColor} border-2 border-white dark:border-[#111827] transition-transform hover:scale-125 !cursor-crosshair`}
       />
 
-      {/* Cabecera de la Subred */}
-      <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-200/60 dark:border-slate-700/60">
+      {/* Encabezado de la Subred */}
+      <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-300/50 dark:border-[#374151]/50">
         <div className="flex items-center gap-2 min-w-0">
-          <div className={cn('p-1 rounded-md border', tierConfig.badgeBg)}>
-            <Icon className="w-3.5 h-3.5" />
+          <div className="p-1 rounded-lg bg-white dark:bg-[#0B0F19] border border-slate-200 dark:border-[#374151] shadow-xs">
+            <Icon className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
           </div>
           <div className="min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className={cn('text-xs font-bold truncate', tierConfig.headerText)}>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className={`text-[11px] font-bold ${tierConfig.headerText} truncate`}>
                 {data.name || tierConfig.label}
               </span>
-              <span className={cn('px-1.5 py-0.2 rounded text-[9px] font-mono font-semibold border', tierConfig.badgeBg)}>
+              <span
+                className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-bold border ${tierConfig.badgeBg}`}
+              >
                 {cidr}
               </span>
-              <select
-                aria-label="Seleccionar tipo de subred"
-                value={tier}
-                onChange={handleTierChange}
-                className={cn(
-                  'nodrag nopan text-[10px] font-semibold rounded px-1.5 py-0.5 border cursor-pointer focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors',
-                  tierConfig.badgeBg
-                )}
-              >
-                <option value="Public" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">Public</option>
-                <option value="Private" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">Private</option>
-                <option value="Isolated" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">Isolated</option>
-              </select>
             </div>
-            <span className="text-[9px] text-slate-500 dark:text-slate-400 font-mono block">
-              ID: {id}
-            </span>
           </div>
         </div>
 
         <button
           type="button"
           onClick={handleDelete}
-          className="nodrag nopan p-1 rounded-md text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 transition-colors"
-          title="Eliminar Subred"
-          aria-label="Eliminar Subred"
+          className="nodrag nopan p-1 rounded text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition-colors opacity-70 hover:opacity-100 focus:opacity-100 focus:outline-none cursor-pointer"
+          title="Eliminar subred"
+          aria-label="Eliminar subred"
         >
           <Trash2 className="w-3.5 h-3.5" />
         </button>
       </div>
 
-      {/* Handles inferiores */}
+      {/* Selector Rápido de Tipo de Subred */}
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400">Tipo de Acceso:</span>
+        <select
+          aria-label="Tipo de subred"
+          value={tier}
+          onChange={handleTierChange}
+          className="nodrag nopan text-[9px] font-mono font-bold rounded px-1.5 py-0.5 border border-slate-200 dark:border-[#374151] bg-white dark:bg-[#0B0F19] text-slate-800 dark:text-slate-200 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#FF9900]"
+        >
+          <option value="Public">Public (Internet)</option>
+          <option value="Private">Private (Internal)</option>
+          <option value="Isolated">Isolated (DB Only)</option>
+        </select>
+      </div>
+
+      {/* Contenedor interior de recursos */}
+      <div className="w-full h-[calc(100%-60px)] rounded-lg border border-dashed border-slate-300/60 dark:border-slate-700/40 bg-white/40 dark:bg-[#0B0F19]/20 p-2 pointer-events-none flex flex-col justify-end">
+        <span className="text-[8px] font-mono text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right select-none">
+          Subnet Scope
+        </span>
+      </div>
+
+      {/* Handles Inferiores */}
       <Handle
         type="target"
         position={Position.Bottom}
         id="subnet-target-bottom"
-        className={cn(
-          'w-3 h-3 rounded-full border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair',
-          tierConfig.handleColor
-        )}
+        className={`w-2.5 h-2.5 rounded-full ${tierConfig.handleColor} border-2 border-white dark:border-[#111827] transition-transform hover:scale-125 !cursor-crosshair`}
       />
       <Handle
         type="source"
         position={Position.Bottom}
         id="subnet-source-bottom"
-        className={cn(
-          'w-3 h-3 rounded-full border-2 border-white dark:border-slate-900 transition-transform hover:scale-125 !cursor-crosshair',
-          tierConfig.handleColor
-        )}
+        className={`w-2.5 h-2.5 rounded-full ${tierConfig.handleColor} border-2 border-white dark:border-[#111827] transition-transform hover:scale-125 !cursor-crosshair`}
       />
     </div>
   );

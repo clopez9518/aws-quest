@@ -11,23 +11,23 @@ interface DictionaryTermCardProps {
 const CATEGORY_META: Record<string, { label: string; badge: string; icon: React.ReactNode }> = {
   service: {
     label: 'Servicio AWS',
-    badge: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
-    icon: <Server className="w-4 h-4 text-blue-500" />,
+    badge: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30',
+    icon: <Server className="w-4 h-4 text-blue-600 dark:text-blue-400" />,
   },
   concept: {
     label: 'Concepto Cloud',
-    badge: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
-    icon: <Database className="w-4 h-4 text-purple-500" />,
+    badge: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30',
+    icon: <Database className="w-4 h-4 text-purple-600 dark:text-purple-400" />,
   },
   infrastructure: {
     label: 'Red & Seguridad',
-    badge: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
-    icon: <Globe className="w-4 h-4 text-emerald-500" />,
+    badge: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
+    icon: <Globe className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
   },
   'well-architected': {
     label: 'Well-Architected',
-    badge: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
-    icon: <Shield className="w-4 h-4 text-amber-500" />,
+    badge: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30',
+    icon: <Shield className="w-4 h-4 text-amber-600 dark:text-amber-400" />,
   },
 };
 
@@ -37,8 +37,8 @@ export const DictionaryTermCard: React.FC<DictionaryTermCardProps> = ({
 }) => {
   const meta = CATEGORY_META[term.category] || {
     label: term.category,
-    badge: 'bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20',
-    icon: <Layers className="w-4 h-4 text-slate-500" />,
+    badge: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400 border-slate-300 dark:border-slate-700',
+    icon: <Layers className="w-4 h-4 text-slate-500 dark:text-slate-400" />,
   };
 
   return (
@@ -46,13 +46,13 @@ export const DictionaryTermCard: React.FC<DictionaryTermCardProps> = ({
       role="article"
       aria-label={`Término: ${term.title}`}
       onClick={() => onOpenDetail(term.slug)}
-      className="flex flex-col justify-between p-5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800/80 hover:border-amber-500/50 dark:hover:border-amber-500/50 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group backdrop-blur-sm"
+      className="flex flex-col justify-between p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500/60 shadow-xs hover:shadow-lg hover:shadow-amber-500/5 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
     >
       <div>
         {/* Top meta info & badges */}
         <div className="flex items-center justify-between gap-2 mb-3">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-750 flex items-center justify-center group-hover:scale-105 transition-transform">
               {meta.icon}
             </div>
             <span
@@ -63,14 +63,14 @@ export const DictionaryTermCard: React.FC<DictionaryTermCardProps> = ({
           </div>
 
           {term.serviceCode && (
-            <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 bg-slate-100/80 dark:bg-slate-800/80 px-2 py-0.5 rounded-md">
+            <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">
               {term.serviceCode}
             </span>
           )}
         </div>
 
         {/* Title */}
-        <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 group-hover:text-amber-500 transition-colors mb-2">
+        <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors mb-2">
           {term.title}
         </h3>
 
@@ -81,7 +81,7 @@ export const DictionaryTermCard: React.FC<DictionaryTermCardProps> = ({
       </div>
 
       {/* Footer / WAF Pillars & Action */}
-      <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2 mt-auto">
+      <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2 mt-auto">
         <div className="flex flex-wrap gap-1.5 overflow-hidden max-w-[70%]">
           {term.pillar && (
             <span
@@ -98,7 +98,7 @@ export const DictionaryTermCard: React.FC<DictionaryTermCardProps> = ({
             e.stopPropagation();
             onOpenDetail(term.slug);
           }}
-          className="inline-flex items-center space-x-1 text-xs font-semibold text-amber-600 dark:text-amber-400 group-hover:text-amber-500 transition-colors"
+          className="inline-flex items-center space-x-1 text-xs font-semibold text-amber-600 dark:text-amber-400 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors cursor-pointer"
           aria-label={`Ver ficha técnica de ${term.title}`}
         >
           <span>Ficha</span>

@@ -61,6 +61,16 @@
       "serviceCode": "AWS_RDS",
       "maxInstances": 1,
       "isDistractor": false
+    },
+    {
+      "serviceCode": "AWS_S3",
+      "maxInstances": null,
+      "isDistractor": true
+    },
+    {
+      "serviceCode": "AWS_DYNAMODB",
+      "maxInstances": null,
+      "isDistractor": true
     }
   ],
   "hints": [

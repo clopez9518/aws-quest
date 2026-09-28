@@ -88,6 +88,7 @@ public class ChallengeAllowedServiceDto
     public bool IsDistractor { get; init; }
     public ResourceKind Kind { get; init; }
     public PlacementScope PlacementScope { get; init; }
+    public string DictionarySlug { get; init; } = string.Empty;
 }
 
 public class HintsSummaryDto

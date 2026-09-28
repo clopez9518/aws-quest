@@ -21,15 +21,15 @@ export function AttemptHistoryCard({
   const isPassed = attempt.passed;
 
   return (
-    <div data-testid="attempt-history-card" className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs space-y-2.5 transition-all hover:border-slate-300 dark:hover:border-slate-700">
+    <div data-testid="attempt-history-card" className="p-3 rounded-xl border border-slate-800 bg-slate-900/90 shadow-xs space-y-2.5 transition-all hover:border-slate-700">
       {/* Cabecera: Número de intento, Badge de reciente y Estado/Score */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center space-x-1.5 min-w-0">
-          <span className="text-xs font-bold text-slate-800 dark:text-slate-100">
+          <span className="text-xs font-bold text-slate-100">
             Intento #{attemptNumber}
           </span>
           {isLatest && (
-            <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
+            <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20">
               Reciente
             </span>
           )}
@@ -40,8 +40,8 @@ export function AttemptHistoryCard({
           <span
             className={`inline-flex items-center space-x-1 px-1.5 py-0.5 text-[10px] font-bold rounded-md border ${
               isPassed
-                ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20'
-                : 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/20'
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
             }`}
           >
             {isPassed ? (
@@ -55,8 +55,8 @@ export function AttemptHistoryCard({
           <span
             className={`text-xs font-mono font-extrabold ${
               isPassed
-                ? 'text-emerald-600 dark:text-emerald-400'
-                : 'text-rose-600 dark:text-rose-400'
+                ? 'text-emerald-400'
+                : 'text-rose-400'
             }`}
           >
             {attempt.score}/100
@@ -65,17 +65,17 @@ export function AttemptHistoryCard({
       </div>
 
       {/* Metadatos: Tiempo, Pistas, Nodos y Conexiones */}
-      <div className="grid grid-cols-2 gap-1.5 text-[11px] text-slate-500 dark:text-slate-400 pt-0.5">
+      <div className="grid grid-cols-2 gap-1.5 text-[11px] text-slate-400 pt-0.5">
         <div
           className="flex items-center space-x-1 truncate"
           title={formatExactDate(attempt.createdAt)}
         >
-          <Clock className="w-3 h-3 text-slate-400 shrink-0" />
+          <Clock className="w-3 h-3 text-slate-500 shrink-0" />
           <span className="truncate">{formatRelativeTime(attempt.createdAt)}</span>
         </div>
 
         <div className="flex items-center space-x-1 truncate">
-          <Lightbulb className="w-3 h-3 text-amber-500 shrink-0" />
+          <Lightbulb className="w-3 h-3 text-amber-400 shrink-0" />
           <span>
             {attempt.hintsUsed === 0
               ? 'Sin pistas'
@@ -84,14 +84,14 @@ export function AttemptHistoryCard({
         </div>
 
         <div className="flex items-center space-x-1 truncate">
-          <Box className="w-3 h-3 text-blue-500 shrink-0" />
+          <Box className="w-3 h-3 text-sky-400 shrink-0" />
           <span>
             {componentsCount} {componentsCount === 1 ? 'servicio' : 'servicios'}
           </span>
         </div>
 
         <div className="flex items-center space-x-1 truncate">
-          <Share2 className="w-3 h-3 text-indigo-500 shrink-0" />
+          <Share2 className="w-3 h-3 text-indigo-400 shrink-0" />
           <span>
             {connectionsCount} {connectionsCount === 1 ? 'conexión' : 'conexiones'}
           </span>
@@ -104,7 +104,7 @@ export function AttemptHistoryCard({
         data-testid="restore-attempt-button"
         onClick={() => onRestore(attempt)}
         aria-label={`Cargar intento número ${attemptNumber} con calificación ${attempt.score} en el lienzo`}
-        className="w-full mt-1.5 flex items-center justify-center space-x-1.5 py-1.5 px-3 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800/80 hover:bg-amber-500 hover:text-white dark:hover:bg-amber-500 dark:hover:text-white text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80 transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+        className="w-full mt-1.5 flex items-center justify-center space-x-1.5 py-1.5 px-3 rounded-lg text-xs font-semibold bg-slate-800/90 hover:bg-amber-500 hover:text-slate-950 text-slate-200 border border-slate-700/80 hover:border-amber-400 transition-all cursor-pointer shadow-xs active:scale-[0.98]"
       >
         <RotateCcw className="w-3 h-3" />
         <span>Cargar en Canvas</span>
