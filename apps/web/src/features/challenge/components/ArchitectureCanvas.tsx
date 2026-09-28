@@ -10,6 +10,7 @@ import {
 import '@xyflow/react/dist/style.css';
 
 import { useCanvasStore } from '../../canvas/stores/useCanvasStore';
+import { useTheme } from '../../../shared/hooks/useTheme';
 import { nodeTypes, edgeTypes } from '../../canvas/components/canvasElementTypes';
 import { ServicePaletteItem } from '../../canvas/types/canvas.types';
 import { CanvasToolbar } from './CanvasToolbar';
@@ -19,6 +20,7 @@ import { TrafficSimulationHUD } from '../../canvas/components/controls/TrafficSi
 function ArchitectureCanvasInner() {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const { isDark } = useTheme();
 
   const nodes = useCanvasStore((state) => state.nodes);
   const edges = useCanvasStore((state) => state.edges);
@@ -81,7 +83,7 @@ function ArchitectureCanvasInner() {
     <div
       data-testid="architecture-canvas"
       ref={reactFlowWrapper}
-      className="relative flex-1 min-h-0 min-w-0 h-full w-full bg-[#0B0F19] overflow-hidden select-none"
+      className="relative flex-1 min-h-0 min-w-0 h-full w-full bg-slate-100 dark:bg-[#0B0F19] overflow-hidden select-none transition-colors duration-200"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
@@ -104,13 +106,13 @@ function ArchitectureCanvasInner() {
         }}
         proOptions={{ hideAttribution: true }}
       >
-        {/* Dot Grid sobre substrato #0B0F19 */}
+        {/* Dot Grid adaptativo */}
         <Background
           variant={BackgroundVariant.Dots}
           gap={20}
           size={1.5}
-          color="rgba(75, 85, 99, 0.4)"
-          className="bg-[#0B0F19]"
+          color={isDark ? 'rgba(75, 85, 99, 0.45)' : 'rgba(148, 163, 184, 0.55)'}
+          className="bg-slate-100 dark:bg-[#0B0F19]"
         />
 
         {/* Barra flotante de herramientas */}
@@ -140,4 +142,3 @@ export function ArchitectureCanvas() {
     </ReactFlowProvider>
   );
 }
-

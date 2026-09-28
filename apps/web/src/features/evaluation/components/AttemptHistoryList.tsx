@@ -7,7 +7,7 @@ import { AttemptHistorySkeleton } from './AttemptHistorySkeleton';
 
 export interface AttemptHistoryListProps {
   challengeId?: string;
-  onRestoreAttempt: (attempt: ChallengeAttemptHistoryDto, attemptNumber: number) => void;
+  onRestoreAttempt?: (attempt: ChallengeAttemptHistoryDto, attemptNumber: number) => void;
 }
 
 export function AttemptHistoryList({
@@ -87,7 +87,7 @@ export function AttemptHistoryList({
               attempt={attempt}
               attemptNumber={attemptNumber}
               isLatest={isLatest}
-              onRestore={(att) => onRestoreAttempt(att, attemptNumber)}
+              onRestore={(att) => onRestoreAttempt?.(att, attemptNumber)}
             />
           );
         })}

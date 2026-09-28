@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { cn } from '../utils/cn';
 
@@ -29,19 +29,6 @@ export const ModalBase: React.FC<ModalBaseProps> = ({
 }) => {
   const modalRef = useFocusTrap<HTMLDivElement>({ isOpen, onClose });
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
-
   if (!isOpen) return null;
 
   const sizeClasses = {
@@ -61,7 +48,7 @@ export const ModalBase: React.FC<ModalBaseProps> = ({
     >
       {/* Backdrop con Blur */}
       <div
-        className="fixed inset-0 bg-[#0A0E18]/80 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
         onClick={onClose}
         aria-hidden="true"
         data-testid="modal-backdrop"
@@ -72,22 +59,22 @@ export const ModalBase: React.FC<ModalBaseProps> = ({
         ref={modalRef}
         tabIndex={-1}
         className={cn(
-          'relative w-full bg-[#111827] border border-[#374151] rounded-xl shadow-elevation-modal z-10 my-8 overflow-hidden outline-none animate-in fade-in zoom-in-95 duration-150',
+          'relative w-full bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] rounded-2xl shadow-2xl z-10 my-8 overflow-hidden outline-none animate-in fade-in zoom-in-95 duration-150',
           sizeClasses[size],
           className
         )}
       >
         {/* Encabezado */}
         {(title || showCloseButton) && (
-          <div className="flex items-start justify-between p-5 sm:p-6 border-b border-[#374151]/60 bg-[#171B26]/50">
+          <div className="flex items-start justify-between p-5 sm:p-6 border-b border-slate-200 dark:border-[#374151]/60 bg-slate-50/80 dark:bg-[#171B26]/50">
             <div className="flex-1 pr-4">
               {title && (
-                <h2 className="text-lg sm:text-xl font-bold text-slate-100 tracking-tight">
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                   {title}
                 </h2>
               )}
               {description && (
-                <p className="mt-1 text-xs sm:text-sm text-slate-400 leading-relaxed">
+                <p className="mt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                   {description}
                 </p>
               )}
@@ -97,7 +84,7 @@ export const ModalBase: React.FC<ModalBaseProps> = ({
                 type="button"
                 onClick={onClose}
                 aria-label="Cerrar modal"
-                className="p-1.5 text-slate-400 hover:text-white hover:bg-[#1F2937] rounded transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#FF9900]"
+                className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1F2937] rounded-lg transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#FF9900]"
               >
                 <svg
                   className="w-5 h-5"
@@ -114,11 +101,11 @@ export const ModalBase: React.FC<ModalBaseProps> = ({
         )}
 
         {/* Cuerpo */}
-        <div className="p-5 sm:p-6 max-h-[75vh] overflow-y-auto">{children}</div>
+        <div className="p-5 sm:p-6 max-h-[75vh] overflow-y-auto text-slate-900 dark:text-slate-100">{children}</div>
 
         {/* Pie */}
         {footer && (
-          <div className="p-4 sm:p-5 border-t border-[#374151]/60 bg-[#0E1320]/60 flex items-center justify-end gap-3">
+          <div className="p-4 sm:p-5 border-t border-slate-200 dark:border-[#374151]/60 bg-slate-50/80 dark:bg-[#0E1320]/60 flex items-center justify-end gap-3">
             {footer}
           </div>
         )}

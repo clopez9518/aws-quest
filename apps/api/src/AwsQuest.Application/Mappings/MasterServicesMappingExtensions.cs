@@ -16,6 +16,7 @@ public static class MasterServicesMappingExtensions
         IsActive = service.IsActive,
         Kind = service.Kind,
         PlacementScope = service.PlacementScope,
-        DefaultConfigJson = service.DefaultConfigJson
+        DefaultConfigJson = service.DefaultConfigJson,
+        DictionarySlug = AwsQuest.Application.Common.DictionarySlugResolver.ResolveSlug(service.Code)
     };
 }

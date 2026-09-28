@@ -52,22 +52,17 @@ describe('NodeInspectorPanel Component', () => {
     render(<NodeInspectorPanel />);
 
     expect(screen.getByText('EC2 Web Server')).toBeInTheDocument();
-    expect(screen.getByText('Propiedades')).toBeInTheDocument();
-    expect(screen.getByText('Health Checks')).toBeInTheDocument();
-    expect(screen.getByText('Telemetría')).toBeInTheDocument();
+    expect(screen.getByText('Propiedades del Recurso')).toBeInTheDocument();
+    expect(screen.getByText('Elasticidad y Cómputo EC2')).toBeInTheDocument();
 
-    // Cambiar a tab Health
-    const healthTab = screen.getByRole('button', { name: /Health Checks/i });
-    fireEvent.click(healthTab);
+    // Modificar nombre
+    const nameInput = screen.getByLabelText(/Nombre del Recurso/i);
+    fireEvent.change(nameInput, { target: { value: 'Frontend EC2 Fleet' } });
+    expect(useCanvasStore.getState().nodes[0].data.name).toBe('Frontend EC2 Fleet');
 
-    expect(screen.getByText('2/2 Sanas')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('GET /health')).toBeInTheDocument();
-
-    // Cambiar a tab Telemetría
-    const metricsTab = screen.getByRole('button', { name: /Telemetría/i });
-    fireEvent.click(metricsTab);
-
-    expect(screen.getByText('1,024 req/s')).toBeInTheDocument();
-    expect(screen.getByText('14.2 ms')).toBeInTheDocument();
+    // Cambiar toggle auto-scaling
+    const toggleButton = screen.getByRole('button', { name: /DESACTIVADO/i });
+    fireEvent.click(toggleButton);
+    expect(useCanvasStore.getState().nodes[0].data.config?.autoScaling).toBe(true);
   });
 });

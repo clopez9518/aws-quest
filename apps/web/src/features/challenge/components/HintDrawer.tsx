@@ -41,20 +41,20 @@ export function HintDrawer({
 
       <aside
         data-testid="hint-drawer"
-        className="fixed top-14 bottom-0 right-0 w-80 sm:w-96 bg-slate-900 border-l border-slate-800 z-30 flex flex-col shadow-2xl select-none"
+        className="fixed top-14 bottom-0 right-0 w-80 sm:w-96 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 z-30 flex flex-col shadow-2xl select-none"
         aria-label="Cajón de pistas"
       >
         {/* Cabecera del Drawer */}
-        <div className="h-14 border-b border-slate-800 px-4 flex items-center justify-between shrink-0 bg-slate-900/90">
+        <div className="h-14 border-b border-slate-200 dark:border-slate-800 px-4 flex items-center justify-between shrink-0 bg-white/90 dark:bg-slate-900/90">
           <div className="flex items-center space-x-2">
-            <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
               <Lightbulb className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-xs sm:text-sm font-bold text-slate-100">
+              <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100">
                 Pistas Progresivas
               </h3>
-              <span className="text-[11px] font-mono text-slate-400">
+              <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
                 {unlockedCount} de {hints.length} desbloqueadas
               </span>
             </div>
@@ -64,7 +64,7 @@ export function HintDrawer({
             type="button"
             data-testid="close-hint-drawer-button"
             onClick={onClose}
-            className="p-1.5 rounded-lg border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors"
+            className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
             aria-label="Cerrar pistas"
           >
             <X className="w-4 h-4" />
@@ -73,7 +73,7 @@ export function HintDrawer({
 
         {/* Resumen de Penalización */}
         {totalPenalty > 0 && (
-          <div data-testid="hint-penalty-summary" className="px-4 py-2 bg-amber-500/10 border-b border-amber-500/20 flex items-center justify-between text-xs text-amber-300">
+          <div data-testid="hint-penalty-summary" className="px-4 py-2 bg-amber-500/10 border-b border-amber-500/20 flex items-center justify-between text-xs text-amber-700 dark:text-amber-300">
             <span>Penalización acumulada:</span>
             <span className="font-mono font-bold">-{totalPenalty} pts</span>
           </div>
@@ -91,20 +91,20 @@ export function HintDrawer({
                 data-testid="hint-card"
                 className={`p-3.5 rounded-xl border transition-all ${
                   isUnlocked
-                    ? 'bg-slate-950/60 border-amber-500/40 shadow-sm'
+                    ? 'bg-amber-500/5 dark:bg-slate-950/60 border-amber-500/30 dark:border-amber-500/40 shadow-xs'
                     : isNext
-                    ? 'bg-slate-850/50 border-slate-700'
-                    : 'bg-slate-950/30 border-slate-850 opacity-60'
+                    ? 'bg-slate-50 dark:bg-slate-850/50 border-slate-300 dark:border-slate-700'
+                    : 'bg-slate-100/50 dark:bg-slate-950/30 border-slate-200 dark:border-slate-850 opacity-60'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-1.5">
                     {isUnlocked ? (
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                     ) : (
-                      <Lock className="w-3.5 h-3.5 text-slate-500" />
+                      <Lock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                     )}
-                    <h4 className="text-xs font-bold text-slate-100">
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100">
                       Pista #{hint.orderIndex}
                     </h4>
                   </div>
@@ -112,8 +112,8 @@ export function HintDrawer({
                   <span
                     className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
                       isUnlocked
-                        ? 'bg-amber-500/10 text-amber-300 font-bold border border-amber-500/20'
-                        : 'bg-slate-800 text-slate-400'
+                        ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300 font-bold border border-amber-500/20'
+                        : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
                     }`}
                   >
                     -{hint.penaltyPoints} pts
@@ -121,12 +121,12 @@ export function HintDrawer({
                 </div>
 
                 {isUnlocked ? (
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                     {hint.text}
                   </p>
                 ) : isNext ? (
                   <div className="space-y-2 mt-2">
-                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
                       Esta pista está disponible. Puedes revelarla asumiendo la penalización de puntuación.
                     </p>
                     <button
@@ -141,7 +141,7 @@ export function HintDrawer({
                     </button>
                   </div>
                 ) : (
-                  <p className="text-[11px] text-slate-500 italic">
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500 italic">
                     Completa o desbloquea las pistas anteriores para acceder a esta pista (RN-06).
                   </p>
                 )}

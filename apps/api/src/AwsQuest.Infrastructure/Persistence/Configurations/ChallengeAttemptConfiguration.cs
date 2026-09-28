@@ -28,9 +28,8 @@ public class ChallengeAttemptConfiguration : IEntityTypeConfiguration<ChallengeA
 
         builder.Property(e => e.CreatedAt).IsRequired();
 
-        // Índices
+        // Índices de consulta e historial
         builder.HasIndex(e => new { e.ProgressId, e.CreatedAt });
-        builder.HasIndex(e => e.ProgressId);
 
         // Relaciones
         builder.HasOne(e => e.Progress)

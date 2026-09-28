@@ -7,8 +7,8 @@ export const ArchitectCliTipWidget: React.FC = () => {
   --source-db-instance-identifier rds-prod-master`;
 
   return (
-    <div className="p-4 rounded-xl bg-[#111827] border border-[#374151] shadow-elevation-card space-y-2.5">
-      <div className="flex items-center justify-between text-xs font-bold text-slate-100 uppercase tracking-wider">
+    <div className="p-4 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] shadow-xs dark:shadow-elevation-card space-y-2.5">
+      <div className="flex items-center justify-between text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
         <div className="flex items-center space-x-2">
           <Terminal className="w-4 h-4 text-[#FF9900]" />
           <span>Tip del Arquitecto</span>
@@ -17,17 +17,17 @@ export const ArchitectCliTipWidget: React.FC = () => {
           type="button"
           onClick={() => navigator.clipboard.writeText(codeSnippet)}
           aria-label="Copiar comando al portapapeles"
-          className="p-1 rounded text-slate-400 hover:text-white hover:bg-[#1F2937] transition-colors cursor-pointer"
+          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1F2937] transition-colors cursor-pointer"
         >
           <Copy className="w-3.5 h-3.5" />
         </button>
       </div>
 
-      <div className="p-3 rounded-lg bg-[#0B0F19] border border-[#374151] font-mono text-[11px] text-[#7BD0FF] leading-relaxed overflow-x-auto select-all">
+      <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#0B0F19] border border-slate-200 dark:border-[#374151] font-mono text-[11px] text-sky-800 dark:text-[#7BD0FF] leading-relaxed overflow-x-auto select-all">
         <code>{codeSnippet}</code>
       </div>
 
-      <p className="text-[11px] text-slate-400 leading-relaxed">
+      <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
         Usa el comando anterior en modo sandbox CLI para acelerar el triaje y mitigar sobrecarga en el nodo primario.
       </p>
     </div>

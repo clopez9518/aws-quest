@@ -47,11 +47,11 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       aria-modal="true"
       aria-labelledby="auth-modal-title"
       data-testid="auth-modal"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0A0E18]/80 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200"
     >
       <div
         ref={modalRef}
-        className="w-full max-w-md bg-[#111827] border border-[#374151] rounded-xl shadow-elevation-modal p-6 relative overflow-hidden outline-none"
+        className="w-full max-w-md bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] rounded-xl shadow-elevation-modal p-6 relative overflow-hidden outline-none"
       >
         {/* Glow de acento Stitch */}
         <div className="absolute top-0 right-0 w-36 h-36 bg-[#FF9900]/10 rounded-full blur-3xl pointer-events-none" />
@@ -59,7 +59,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         {/* Botón de Cierre */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded text-slate-400 hover:text-white hover:bg-[#1F2937] transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#FF9900]"
+          className="absolute top-4 right-4 p-1.5 rounded text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1F2937] transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#FF9900]"
           aria-label="Cerrar modal"
         >
           <X className="w-5 h-5" />
@@ -70,10 +70,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-[#FF9900]/10 text-[#FF9900] mb-3 border border-[#FF9900]/30 shadow-glow-amber/20">
             <Sparkles className="w-6 h-6 fill-current" />
           </div>
-          <h2 id="auth-modal-title" className="text-xl font-bold text-slate-100 tracking-tight">
+          <h2 id="auth-modal-title" className="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
             {mode === 'register' ? 'Conserva tu progreso' : 'Bienvenido de nuevo'}
           </h2>
-          <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto leading-relaxed">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs mx-auto leading-relaxed">
             {mode === 'register'
               ? `Crea una cuenta permanente para sincronizar tus ${user?.totalXP ?? 0} XP y récords históricos.`
               : 'Inicia sesión para continuar con tu ruta de aprendizaje de AWS.'}
@@ -81,7 +81,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         </div>
 
         {/* Tabs de Selección */}
-        <div className="flex rounded bg-[#0B0F19] p-1 border border-[#374151] mb-5">
+        <div className="flex rounded bg-slate-100 dark:bg-[#0B0F19] p-1 border border-slate-200 dark:border-[#374151] mb-5">
           <button
             type="button"
             data-testid="auth-tab-register"
@@ -90,7 +90,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               setErrorMessage(null);
             }}
             className={`flex-1 py-1.5 text-xs font-semibold rounded transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
-              mode === 'register' ? 'bg-[#FF9900] text-[#0B0F19] font-bold shadow-sm' : 'text-slate-400 hover:text-slate-200'
+              mode === 'register' ? 'bg-[#FF9900] text-[#0B0F19] font-bold shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
             <UserPlus className="w-3.5 h-3.5" />
@@ -104,7 +104,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               setErrorMessage(null);
             }}
             className={`flex-1 py-1.5 text-xs font-semibold rounded transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
-              mode === 'login' ? 'bg-[#FF9900] text-[#0B0F19] font-bold shadow-sm' : 'text-slate-400 hover:text-slate-200'
+              mode === 'login' ? 'bg-[#FF9900] text-[#0B0F19] font-bold shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
             <LogIn className="w-3.5 h-3.5" />
@@ -114,8 +114,8 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
         {/* Mensaje de Error */}
         {errorMessage && (
-          <div className="mb-4 p-3 rounded bg-rose-950/40 border border-rose-800/80 flex items-start space-x-2 text-xs text-rose-300">
-            <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-rose-400" />
+          <div className="mb-4 p-3 rounded bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800/80 flex items-start space-x-2 text-xs text-rose-700 dark:text-rose-300">
+            <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-rose-500 dark:text-rose-400" />
             <span>{errorMessage}</span>
           </div>
         )}
@@ -124,7 +124,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'register' && (
             <div>
-              <label htmlFor="auth-modal-name" className="block text-xs font-semibold text-slate-300 mb-1.5">Nombre Completo</label>
+              <label htmlFor="auth-modal-name" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nombre Completo</label>
               <input
                 id="auth-modal-name"
                 data-testid="auth-name-input"
@@ -133,13 +133,13 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Ej. Carlos López"
-                className="w-full px-3.5 py-2 rounded bg-[#0B0F19] border border-[#374151] text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-[#FF9900] focus:ring-1 focus:ring-[#FF9900] transition-all"
+                className="w-full px-3.5 py-2 rounded bg-slate-50 dark:bg-[#0B0F19] border border-slate-300 dark:border-[#374151] text-slate-900 dark:text-slate-100 text-xs placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF9900] focus:ring-1 focus:ring-[#FF9900] transition-all"
               />
             </div>
           )}
 
           <div>
-            <label htmlFor="auth-modal-email" className="block text-xs font-semibold text-slate-300 mb-1.5">Correo Electrónico</label>
+            <label htmlFor="auth-modal-email" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Correo Electrónico</label>
             <input
               id="auth-modal-email"
               data-testid="auth-email-input"
@@ -148,12 +148,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="nombre@ejemplo.com"
-              className="w-full px-3.5 py-2 rounded bg-[#0B0F19] border border-[#374151] text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-[#FF9900] focus:ring-1 focus:ring-[#FF9900] transition-all"
+              className="w-full px-3.5 py-2 rounded bg-slate-50 dark:bg-[#0B0F19] border border-slate-300 dark:border-[#374151] text-slate-900 dark:text-slate-100 text-xs placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF9900] focus:ring-1 focus:ring-[#FF9900] transition-all"
             />
           </div>
 
           <div>
-            <label htmlFor="auth-modal-password" className="block text-xs font-semibold text-slate-300 mb-1.5">Contraseña</label>
+            <label htmlFor="auth-modal-password" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Contraseña</label>
             <input
               id="auth-modal-password"
               data-testid="auth-password-input"
@@ -163,7 +163,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Mínimo 6 caracteres"
-              className="w-full px-3.5 py-2 rounded bg-[#0B0F19] border border-[#374151] text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-[#FF9900] focus:ring-1 focus:ring-[#FF9900] transition-all"
+              className="w-full px-3.5 py-2 rounded bg-slate-50 dark:bg-[#0B0F19] border border-slate-300 dark:border-[#374151] text-slate-900 dark:text-slate-100 text-xs placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF9900] focus:ring-1 focus:ring-[#FF9900] transition-all"
             />
           </div>
 

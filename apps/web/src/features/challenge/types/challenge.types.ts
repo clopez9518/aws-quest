@@ -30,6 +30,7 @@ export interface ChallengeAllowedServiceDto {
   iconUrl: string;
   maxInstances?: number | null;
   isDistractor: boolean;
+  dictionarySlug?: string | null;
 }
 
 /**

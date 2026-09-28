@@ -83,15 +83,15 @@ export function ServicePalette({ allowedServices }: ServicePaletteProps) {
     <div data-testid="service-palette" className="flex flex-col h-full space-y-2.5">
       {/* Selector de Pestañas (Servicios vs Redes) */}
       {!searchQuery && networkServices.length > 0 && (
-        <div className="flex rounded-lg bg-[#0B0F19] p-0.5 border border-[#374151] text-xs font-semibold">
+        <div className="flex rounded-lg bg-slate-100 dark:bg-[#0B0F19] p-0.5 border border-slate-200 dark:border-[#374151] text-xs font-semibold">
           <button
             type="button"
             onClick={() => setActiveTab('services')}
             className={cn(
               'flex-1 py-1 px-2 rounded flex items-center justify-center gap-1.5 transition-all cursor-pointer',
               activeTab === 'services'
-                ? 'bg-[#1F2937] text-[#FF9900] shadow-sm font-bold'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white dark:bg-[#1F2937] text-[#FF9900] shadow-sm font-bold'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             )}
           >
             <Server className="w-3.5 h-3.5" />
@@ -104,8 +104,8 @@ export function ServicePalette({ allowedServices }: ServicePaletteProps) {
             className={cn(
               'flex-1 py-1 px-2 rounded flex items-center justify-center gap-1.5 transition-all cursor-pointer',
               activeTab === 'network'
-                ? 'bg-[#1F2937] text-[#38BDF8] shadow-sm font-bold'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white dark:bg-[#1F2937] text-sky-600 dark:text-[#38BDF8] shadow-sm font-bold'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             )}
           >
             <Network className="w-3.5 h-3.5" />
@@ -122,7 +122,7 @@ export function ServicePalette({ allowedServices }: ServicePaletteProps) {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Buscar servicios..."
-          className="w-full pl-8 pr-3 py-1.5 rounded-lg text-xs bg-[#0B0F19] border border-[#374151] text-slate-100 placeholder-slate-500 focus:outline-none focus:border-[#FF9900] focus:ring-1 focus:ring-[#FF9900]"
+          className="w-full pl-8 pr-3 py-1.5 rounded-lg text-xs bg-white dark:bg-[#0B0F19] border border-slate-200 dark:border-[#374151] text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-[#FF9900] focus:ring-1 focus:ring-[#FF9900]"
         />
       </div>
 
@@ -135,7 +135,7 @@ export function ServicePalette({ allowedServices }: ServicePaletteProps) {
         ) : (
           categories.map((category) => (
             <div key={category} className="space-y-1">
-              <div className="flex items-center space-x-1.5 text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">
+              <div className="flex items-center space-x-1.5 text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 <Layers className="w-3 h-3 text-[#FF9900]" />
                 <span>{category}</span>
               </div>

@@ -17,11 +17,10 @@ export function RootLayout() {
   const location = useLocation();
 
   const isCatalog = location.pathname.startsWith('/catalog');
-  const isChallenge = location.pathname.startsWith('/challenges');
   const isDictionary = location.pathname.startsWith('/dictionary');
 
   return (
-    <div className="h-screen flex flex-col bg-[#0B0F19] text-slate-100 antialiased selection:bg-[#FF9900] selection:text-slate-950 overflow-hidden">
+    <div className="h-screen flex flex-col bg-slate-100 dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 antialiased selection:bg-[#FF9900] selection:text-slate-950 overflow-hidden">
       {/* WCAG 2.4.1 (A) Skip Link accesible */}
       <a
         href="#main-content"
@@ -33,7 +32,7 @@ export function RootLayout() {
       {/* Persistent Global Header - Command Console Bar */}
       <header
         role="banner"
-        className="h-16 border-b border-[#374151]/80 bg-[#111827] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 shrink-0 shadow-elevation-card"
+        className="h-16 border-b border-slate-200 dark:border-[#374151]/80 bg-white dark:bg-[#111827] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 shrink-0 shadow-xs dark:shadow-elevation-card transition-colors"
       >
         {/* Brand & Logo con Constelación Stitch */}
         <div className="flex items-center space-x-3">
@@ -43,7 +42,7 @@ export function RootLayout() {
             aria-label="AWS Quest - Ir al Catálogo"
           >
             {/* Emblema Constelación */}
-            <div className="w-9 h-9 rounded-lg bg-[#171B26] border border-[#FF9900]/70 flex items-center justify-center shadow-glow-amber/20 group-hover:border-[#FF9900] group-hover:scale-105 transition-all">
+            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#171B26] border border-[#FF9900]/70 flex items-center justify-center shadow-glow-amber/20 group-hover:border-[#FF9900] group-hover:scale-105 transition-all">
               <svg className="w-5 h-5 text-[#FF9900]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 3L4 19h16L12 3z" stroke="currentColor" fill="none" />
                 <path d="M7.5 13.5h9" stroke="currentColor" />
@@ -54,14 +53,14 @@ export function RootLayout() {
             </div>
             <div>
               <div className="flex items-center space-x-1.5">
-                <h1 className="text-sm font-black tracking-wider text-white group-hover:text-[#FFC082] transition-colors uppercase">
+                <h1 className="text-sm font-black tracking-wider text-slate-900 dark:text-white group-hover:text-[#FF9900] dark:group-hover:text-[#FFC082] transition-colors uppercase">
                   AWS Quest
                 </h1>
-                <span className="text-[10px] font-bold px-1.5 py-0.2 bg-[#FF9900]/10 text-[#FFC082] border border-[#FF9900]/40 rounded font-mono">
+                <span className="text-[10px] font-bold px-1.5 py-0.2 bg-amber-500/10 text-amber-700 dark:text-[#FFC082] border border-amber-500/30 dark:border-[#FF9900]/40 rounded font-mono">
                   v2.4 Pro
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 tracking-widest font-mono uppercase block -mt-0.5">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 tracking-widest font-mono uppercase block -mt-0.5">
                 Architecture Arena
               </span>
             </div>
@@ -69,39 +68,23 @@ export function RootLayout() {
         </div>
 
         {/* Navigation Links Tácticos */}
-        <nav className="hidden lg:flex items-center space-x-1" aria-label="Navegación principal">
+        <nav className="hidden lg:flex items-center space-x-1.5" aria-label="Navegación principal">
           <Link
             to="/catalog"
-            className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
               isCatalog
-                ? 'text-[#FFC082] bg-[#1F2937] border border-[#374151]'
-                : 'text-slate-300 hover:text-white hover:bg-[#1F2937]/50'
+                ? 'text-amber-700 dark:text-[#FFC082] bg-amber-50 dark:bg-[#1F2937] border border-amber-300 dark:border-[#374151]'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1F2937]/50'
             }`}
           >
             Itinerario & Desafíos
           </Link>
           <Link
-            to="/catalog"
-            className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
-              isChallenge
-                ? 'text-[#38BDF8] bg-[#1F2937] border border-[#374151]'
-                : 'text-slate-300 hover:text-white hover:bg-[#1F2937]/50'
-            }`}
-          >
-            Architecture Builder
-          </Link>
-          <Link
-            to="/catalog"
-            className="px-3 py-1.5 text-xs font-semibold rounded text-slate-300 hover:text-white hover:bg-[#1F2937]/50 transition-colors"
-          >
-            Triaje de Incidentes
-          </Link>
-          <Link
             to="/dictionary"
-            className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
               isDictionary
-                ? 'text-[#FFC082] bg-[#1F2937] border border-[#374151]'
-                : 'text-slate-300 hover:text-white hover:bg-[#1F2937]/50'
+                ? 'text-amber-700 dark:text-[#FFC082] bg-amber-50 dark:bg-[#1F2937] border border-amber-300 dark:border-[#374151]'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1F2937]/50'
             }`}
           >
             Diccionario Cloud & Pilares
@@ -114,13 +97,13 @@ export function RootLayout() {
           <button
             type="button"
             onClick={() => openSpotlight()}
-            className="flex items-center space-x-2 px-3 py-1.5 text-xs font-medium text-slate-300 bg-[#0B0F19] hover:bg-[#1F2937] hover:text-white rounded border border-[#374151] transition-all cursor-pointer shadow-inner focus-visible:ring-2 focus-visible:ring-[#FF9900]"
+            className="flex items-center space-x-2 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#0B0F19] hover:bg-slate-200 dark:hover:bg-[#1F2937] hover:text-slate-900 dark:hover:text-white rounded-lg border border-slate-300 dark:border-[#374151] transition-all cursor-pointer shadow-inner focus-visible:ring-2 focus-visible:ring-[#FF9900]"
             aria-label="Abrir glosario y diccionario (Ctrl + K)"
             title="Abrir glosario y diccionario (Ctrl + K)"
           >
             <Search className="w-3.5 h-3.5 text-[#FF9900]" />
-            <span className="hidden xl:inline text-slate-400">Buscar en glosario...</span>
-            <kbd className="hidden sm:inline-block ml-1 px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-[#111827] border border-[#374151] rounded text-[#7BD0FF]">
+            <span className="hidden xl:inline text-slate-500 dark:text-slate-400">Buscar en glosario...</span>
+            <kbd className="hidden sm:inline-block ml-1 px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-white dark:bg-[#111827] border border-slate-300 dark:border-[#374151] rounded text-sky-600 dark:text-[#7BD0FF]">
               ⌘K
             </kbd>
           </button>
@@ -136,7 +119,7 @@ export function RootLayout() {
         id="main-content"
         role="main"
         tabIndex={-1}
-        className="flex-1 flex flex-col min-h-0 min-w-0 overflow-auto focus:outline-none bg-[#0B0F19]"
+        className="flex-1 flex flex-col min-h-0 min-w-0 overflow-auto focus:outline-none bg-slate-100 dark:bg-[#0B0F19]"
       >
         <Outlet />
       </main>

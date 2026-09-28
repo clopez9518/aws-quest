@@ -8,18 +8,18 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', children, ...props }, ref) => {
     const variantClasses = {
-      default: 'bg-[#111827] border border-[#374151]',
-      elevated: 'bg-[#1F2937] border border-[#374151] shadow-elevation-card',
+      default: 'bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] shadow-xs',
+      elevated: 'bg-white dark:bg-[#1F2937] border border-slate-200 dark:border-[#374151] shadow-elevation-card',
       interactive:
-        'bg-[#111827] border border-[#374151] hover:border-slate-500 hover:bg-[#171B26] transition-all duration-150 cursor-pointer',
-      outline: 'bg-transparent border border-[#374151]',
-      focus: 'bg-[#171B26] border border-[#FF9900]/80 shadow-glow-amber/20',
+        'bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-[#171B26] transition-all duration-150 cursor-pointer shadow-xs hover:shadow-md',
+      outline: 'bg-transparent border border-slate-200 dark:border-[#374151]',
+      focus: 'bg-amber-50/60 dark:bg-[#171B26] border border-[#FF9900]/80 shadow-glow-amber/20',
     };
 
     return (
       <div
         ref={ref}
-        className={cn('rounded-lg overflow-hidden', variantClasses[variant], className)}
+        className={cn('rounded-xl overflow-hidden', variantClasses[variant], className)}
         {...props}
       >
         {children}
@@ -33,7 +33,7 @@ export const CardHeader = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
   ({ className, children, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('p-4 sm:p-5 flex flex-col gap-1 border-b border-[#374151]/60', className)}
+      className={cn('p-4 sm:p-5 flex flex-col gap-1 border-b border-slate-200 dark:border-[#374151]/60', className)}
       {...props}
     >
       {children}
@@ -46,7 +46,7 @@ export const CardTitle = forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTM
   ({ className, children, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn('text-base sm:text-lg font-semibold text-slate-100 tracking-tight', className)}
+      className={cn('text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 tracking-tight', className)}
       {...props}
     >
       {children}
@@ -57,7 +57,7 @@ CardTitle.displayName = 'CardTitle';
 
 export const CardDescription = forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
   ({ className, children, ...props }, ref) => (
-    <p ref={ref} className={cn('text-xs sm:text-sm text-slate-400 leading-relaxed', className)} {...props}>
+    <p ref={ref} className={cn('text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed', className)} {...props}>
       {children}
     </p>
   )
@@ -77,10 +77,7 @@ export const CardFooter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
   ({ className, children, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn(
-        'p-4 sm:p-5 pt-0 flex items-center justify-between border-t border-[#374151]/60 bg-[#0E1320]/40',
-        className
-      )}
+      className={cn('p-4 sm:p-5 border-t border-slate-200 dark:border-[#374151]/60 bg-slate-50 dark:bg-[#0E1320]/60 flex items-center justify-between', className)}
       {...props}
     >
       {children}

@@ -13,7 +13,6 @@ import {
   ChallengeDifficultyFilter,
 } from '../components/CatalogFiltersToolbar';
 import { SuggestedMissionWidget } from '../components/SuggestedMissionWidget';
-import { WafPillarsRadarWidget } from '../components/WafPillarsRadarWidget';
 import { ArchitectCliTipWidget } from '../components/ArchitectCliTipWidget';
 import { CatalogChallengeDto, UnitResponseDto } from '../types/catalog.types';
 
@@ -134,16 +133,16 @@ export function CatalogPage() {
   return (
     <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
       {/* Cabecera Principal y Selector de Modo */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-[#374151]">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#374151]">
         <div>
           <div className="flex items-center space-x-2 text-xs font-mono font-bold text-[#FF9900] uppercase tracking-wider mb-1">
             <Layers className="w-4 h-4 text-[#FF9900]" />
             <span>ITINERARIO OFICIAL • 3 Olas • 12 Unidades • {totalChallenges || 49} Desafíos</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-100">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
             Catálogo de Desafíos de Arquitectura
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
             Entrenamiento táctico basado en incidentes de producción reales y patrones del AWS Well-Architected Framework.
           </p>
         </div>
@@ -155,7 +154,7 @@ export function CatalogPage() {
             onToggle={(mode) => updateAccessMode(mode)}
             isUpdating={isUpdating}
           />
-          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-700/50">
+          <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-700/50">
             • Motor Anti-Farm Activo
           </span>
         </div>
@@ -165,19 +164,19 @@ export function CatalogPage() {
       {!isLoading && !isError && totalChallenges > 0 && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Card 1: Desafíos Totales / Progreso */}
-          <div className="p-4 rounded-xl bg-[#111827] border border-[#374151] shadow-elevation-card flex flex-col justify-between">
-            <span className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
+          <div className="p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] shadow-elevation-card flex flex-col justify-between">
+            <span className="text-[11px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
               Desafíos Totales
             </span>
             <div className="mt-2 flex items-baseline justify-between">
-              <span className="text-xl sm:text-2xl font-black text-slate-100">
+              <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100">
                 {completedChallenges.length}/{totalChallenges}
               </span>
               <span className="text-xs font-mono font-bold text-[#FF9900]">
                 {totalChallenges > 0 ? Math.round((completedChallenges.length / totalChallenges) * 100) : 0}%
               </span>
             </div>
-            <div className="w-full bg-[#0B0F19] h-1.5 rounded-full overflow-hidden border border-[#374151] mt-2">
+            <div className="w-full bg-slate-100 dark:bg-[#0B0F19] h-1.5 rounded-full overflow-hidden border border-slate-200 dark:border-[#374151] mt-2">
               <div
                 className="bg-[#FF9900] h-full rounded-full transition-all duration-500"
                 style={{
@@ -188,9 +187,9 @@ export function CatalogPage() {
           </div>
 
           {/* Card 2: XP de Catálogo */}
-          <div className="p-4 rounded-xl bg-[#111827] border border-[#374151] shadow-elevation-card flex flex-col justify-between">
+          <div className="p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] shadow-elevation-card flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
+              <span className="text-[11px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                 XP de Catálogo
               </span>
               <Flame className="w-4 h-4 text-[#FF9900]" />
@@ -199,25 +198,25 @@ export function CatalogPage() {
               <span className="text-xl sm:text-2xl font-black text-[#FF9900]">
                 {earnedXP.toLocaleString()} pts
               </span>
-              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-700/50">
+              <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-300 dark:border-emerald-700/50">
                 x1.25 hoy
               </span>
             </div>
-            <span className="text-[11px] text-slate-400 mt-2">
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-2">
               De {totalUnits} Unidades de Aprendizaje
             </span>
           </div>
 
           {/* Card 3: Récord Promedio */}
-          <div className="p-4 rounded-xl bg-[#111827] border border-[#374151] shadow-elevation-card flex flex-col justify-between">
+          <div className="p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] shadow-elevation-card flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
+              <span className="text-[11px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                 Récord Promedio
               </span>
               <Award className="w-4 h-4 text-[#38BDF8]" />
             </div>
             <div className="mt-2 flex items-baseline justify-between">
-              <span className="text-xl sm:text-2xl font-black text-slate-100">
+              <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100">
                 {averageScore > 0 ? `${averageScore}` : '--'}{' '}
                 <span className="text-xs font-normal text-slate-400">/ 100</span>
               </span>
@@ -225,29 +224,29 @@ export function CatalogPage() {
                 {completedChallenges.length > 0 ? `${completedChallenges.length} evaluados` : 'Sin intentos'}
               </span>
             </div>
-            <span className="text-[11px] text-slate-400 mt-2">
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-2">
               Umbral mínimo de pase: 70 pts
             </span>
           </div>
 
           {/* Card 4: Pilares Dominados */}
-          <div className="p-4 rounded-xl bg-[#111827] border border-[#374151] shadow-elevation-card flex flex-col justify-between">
+          <div className="p-4 rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] shadow-elevation-card flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
+              <span className="text-[11px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                 Pilares Dominados
               </span>
               <Shield className="w-4 h-4 text-[#8B5CF6]" />
             </div>
             <div className="mt-2 flex items-baseline justify-between">
-              <span className="text-xl sm:text-2xl font-black text-slate-100">
+              <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100">
                 {completedChallenges.length >= 10 ? '5' : completedChallenges.length >= 5 ? '3' : '1'}{' '}
                 <span className="text-xs font-normal text-slate-400">/ 5 WAF</span>
               </span>
-              <span className="text-[10px] font-mono text-[#8B5CF6] bg-purple-950/60 px-1.5 py-0.5 rounded border border-purple-700/50">
+              <span className="text-[10px] font-mono text-purple-700 dark:text-[#8B5CF6] bg-purple-100 dark:bg-purple-950/60 px-1.5 py-0.5 rounded border border-purple-300 dark:border-purple-700/50">
                 Well-Architected
               </span>
             </div>
-            <span className="text-[11px] text-slate-400 mt-2">
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-2">
               Seguridad, Fiabilidad, Costos, Perf, Ops
             </span>
           </div>
@@ -297,19 +296,19 @@ export function CatalogPage() {
                 />
               ))
             ) : (
-              <div className="p-10 rounded-xl bg-[#111827] border border-[#374151] text-center space-y-3">
+              <div className="p-10 rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] text-center space-y-3">
                 <FilterX className="w-8 h-8 text-slate-400 mx-auto" />
-                <h3 className="text-base font-bold text-slate-200">
+                <h3 className="text-base font-bold text-slate-800 dark:text-slate-200">
                   No se encontraron desafíos con los filtros aplicados
                 </h3>
-                <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
                   Prueba modificando el término de búsqueda o restableciendo los filtros de dificultad y tipo.
                 </p>
                 {hasActiveFilters && (
                   <button
                     type="button"
                     onClick={handleResetFilters}
-                    className="mt-2 px-3 py-1.5 rounded-lg bg-[#1F2937] hover:bg-[#262A35] text-xs font-bold text-[#FF9900] border border-[#374151] transition-colors cursor-pointer"
+                    className="mt-2 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-[#1F2937] dark:hover:bg-[#262A35] text-xs font-bold text-[#FF9900] border border-slate-300 dark:border-[#374151] transition-colors cursor-pointer"
                   >
                     Restablecer Filtros
                   </button>
@@ -318,20 +317,19 @@ export function CatalogPage() {
             )}
           </div>
 
-          {/* Columna Lateral: Widgets Tácticos (Stitch Screen 1) */}
+          {/* Columna Lateral: Widgets Tácticos */}
           <div className="lg:col-span-4 space-y-4">
             <SuggestedMissionWidget topChallenge={suggestedMissionChallenge} />
-            <WafPillarsRadarWidget />
             <ArchitectCliTipWidget />
           </div>
         </div>
       ) : (
-        <div className="p-12 rounded-xl bg-[#111827] border border-[#374151] text-center space-y-3 shadow-elevation-card">
+        <div className="p-12 rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#374151] text-center space-y-3 shadow-elevation-card">
           <Sparkles className="w-8 h-8 text-[#FF9900] mx-auto" />
-          <h3 className="text-base font-bold text-slate-200">
+          <h3 className="text-base font-bold text-slate-800 dark:text-slate-200">
             No hay unidades activas
           </h3>
-          <p className="text-xs text-slate-400 max-w-sm mx-auto">
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             Actualmente no hay unidades pedagógicas cargadas en el servidor.
           </p>
         </div>
@@ -339,4 +337,3 @@ export function CatalogPage() {
     </div>
   );
 }
-

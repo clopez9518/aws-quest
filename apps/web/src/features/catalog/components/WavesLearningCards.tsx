@@ -1,6 +1,6 @@
 import React from 'react';
 import { UnitResponseDto } from '../types/catalog.types';
-import { ArrowRight, Server, Cloud, ShieldCheck } from 'lucide-react';
+import { Server, Cloud, ShieldCheck } from 'lucide-react';
 
 interface WavesLearningCardsProps {
   units: UnitResponseDto[];
@@ -60,11 +60,11 @@ export const WavesLearningCards: React.FC<WavesLearningCardsProps> = ({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2 text-xs font-bold text-slate-200 uppercase tracking-wider">
+        <div className="flex items-center space-x-2 text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
           <span className="text-[#FF9900]">⚡</span>
           <span>Olas de Aprendizaje Técnico</span>
         </div>
-        <span className="text-[11px] text-slate-400 hidden sm:inline">
+        <span className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:inline">
           Selecciona una ola para filtrar el currículo
         </span>
       </div>
@@ -87,49 +87,48 @@ export const WavesLearningCards: React.FC<WavesLearningCardsProps> = ({
               key={wave.waveNumber}
               type="button"
               onClick={() => onSelectWave(isSelected ? null : wave.waveNumber)}
-              className={`p-4 rounded-xl text-left transition-all duration-150 border cursor-pointer relative overflow-hidden flex flex-col justify-between ${
+              className={`p-4 rounded-2xl text-left transition-all duration-150 border cursor-pointer relative overflow-hidden flex flex-col justify-between shadow-xs ${
                 isSelected
-                  ? 'bg-[#1F2937] border-[#FF9900] shadow-glow-amber/20 ring-1 ring-[#FF9900]'
-                  : 'bg-[#111827] border-[#374151] hover:bg-[#171B26] hover:border-slate-500'
+                  ? 'bg-amber-50/80 dark:bg-[#1F2937] border-[#FF9900] shadow-glow-amber/20 ring-1 ring-[#FF9900]'
+                  : 'bg-white dark:bg-[#111827] border-slate-200 dark:border-[#374151] hover:bg-slate-50 dark:hover:bg-[#171B26] hover:border-slate-300 dark:hover:border-slate-500'
               }`}
             >
               <div>
                 {/* Header de la Card */}
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
-                    <span className="text-[10px] font-mono font-bold text-slate-400">
+                    <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400">
                       {wave.label} • {wave.tag}
                     </span>
                   </div>
-                  <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
-                      percentage >= 75
-                        ? 'bg-emerald-950/60 text-emerald-300 border-emerald-700/60'
-                        : percentage > 0
-                        ? 'bg-sky-950/60 text-sky-300 border-sky-700/60'
-                        : 'bg-[#1F2937] text-slate-400 border-[#374151]'
-                    }`}
-                  >
-                    {percentage > 0 ? `${percentage}% Completado` : 'Acceso Abierto'}
-                  </span>
+                  <div className="p-1 rounded-md bg-slate-100 dark:bg-[#0B0F19] border border-slate-200 dark:border-[#374151]">
+                    {wave.icon}
+                  </div>
                 </div>
 
-                {/* Título y Descripción */}
-                <h3 className="text-sm font-bold text-slate-100 mb-1 flex items-center gap-1.5">
-                  {wave.icon}
-                  <span>{wave.title}</span>
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                {/* Título & Descripción */}
+                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-1">
+                  {wave.title}
+                </h4>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">
                   {wave.description}
                 </p>
               </div>
 
-              {/* Footer con Métrica y Flecha */}
-              <div className="mt-4 pt-3 border-t border-[#374151]/60 flex items-center justify-between text-xs">
-                <span className="font-mono text-[11px] text-slate-300">
-                  <strong className="text-slate-100">{completedChallenges}/{totalChallenges}</strong> Desafíos superados
-                </span>
-                <ArrowRight className={`w-4 h-4 transition-transform ${isSelected ? 'text-[#FF9900] translate-x-1' : 'text-slate-500'}`} />
+              {/* Footer con Progreso de la Ola */}
+              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-[#374151]/60">
+                <div className="flex items-center justify-between text-[11px] font-mono mb-1.5">
+                  <span className="text-slate-500 dark:text-slate-400">Progreso de la Ola:</span>
+                  <span className="font-bold text-slate-800 dark:text-slate-200">
+                    {completedChallenges}/{totalChallenges} ({percentage}%)
+                  </span>
+                </div>
+                <div className="w-full bg-slate-100 dark:bg-[#0B0F19] h-1.5 rounded-full overflow-hidden border border-slate-200 dark:border-[#374151]">
+                  <div
+                    className="bg-[#FF9900] h-full rounded-full transition-all duration-300"
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
               </div>
             </button>
           );

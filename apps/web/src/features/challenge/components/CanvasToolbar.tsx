@@ -10,12 +10,12 @@ export function CanvasToolbar({ onOpenResetModal, nodeCount }: CanvasToolbarProp
   const { zoomIn, zoomOut, fitView } = useReactFlow();
 
   return (
-    <div className="absolute bottom-4 left-4 z-10 flex items-center space-x-1.5 p-1.5 rounded-xl bg-[#111827]/95 border border-[#374151] shadow-2xl backdrop-blur-md select-none">
+    <div className="absolute bottom-4 left-4 z-10 flex items-center space-x-1.5 p-1.5 rounded-2xl bg-white/95 dark:bg-[#111827]/95 border border-slate-200 dark:border-[#374151] shadow-2xl backdrop-blur-md select-none">
       {/* Controles de Zoom */}
       <button
         type="button"
         onClick={() => zoomIn({ duration: 300 })}
-        className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#1F2937] transition-colors cursor-pointer"
+        className="p-1.5 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1F2937] transition-colors cursor-pointer"
         title="Acercar (+)"
         aria-label="Acercar zoom"
       >
@@ -25,7 +25,7 @@ export function CanvasToolbar({ onOpenResetModal, nodeCount }: CanvasToolbarProp
       <button
         type="button"
         onClick={() => zoomOut({ duration: 300 })}
-        className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#1F2937] transition-colors cursor-pointer"
+        className="p-1.5 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1F2937] transition-colors cursor-pointer"
         title="Alejar (-)"
         aria-label="Alejar zoom"
       >
@@ -35,14 +35,14 @@ export function CanvasToolbar({ onOpenResetModal, nodeCount }: CanvasToolbarProp
       <button
         type="button"
         onClick={() => fitView({ padding: 0.2, duration: 400 })}
-        className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#1F2937] transition-colors cursor-pointer"
+        className="p-1.5 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1F2937] transition-colors cursor-pointer"
         title="Ajustar a pantalla"
         aria-label="Ajustar vista a pantalla"
       >
         <Maximize className="w-4 h-4" />
       </button>
 
-      <div className="w-px h-4 bg-[#374151] mx-1" />
+      <div className="w-px h-4 bg-slate-200 dark:bg-[#374151] mx-1" />
 
       {/* Botón Reiniciar Canvas */}
       <button
@@ -50,10 +50,10 @@ export function CanvasToolbar({ onOpenResetModal, nodeCount }: CanvasToolbarProp
         type="button"
         onClick={onOpenResetModal}
         disabled={nodeCount === 0}
-        className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+        className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
           nodeCount > 0
-            ? 'text-rose-400 hover:bg-rose-950/40 cursor-pointer border border-transparent hover:border-rose-700/50'
-            : 'text-slate-600 cursor-not-allowed opacity-50'
+            ? 'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 cursor-pointer border border-transparent hover:border-rose-200 dark:hover:border-rose-700/50'
+            : 'text-slate-400 dark:text-slate-600 cursor-not-allowed opacity-50'
         }`}
         title={nodeCount > 0 ? 'Restablecer el canvas al estado inicial' : 'El canvas ya está vacío'}
         aria-label="Reiniciar canvas"
@@ -64,4 +64,3 @@ export function CanvasToolbar({ onOpenResetModal, nodeCount }: CanvasToolbarProp
     </div>
   );
 }
-

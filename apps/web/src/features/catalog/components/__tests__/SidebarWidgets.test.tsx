@@ -32,9 +32,20 @@ describe('Catalog Sidebar Widgets', () => {
     );
 
     expect(screen.getByText('⚡ MISIÓN SUGERIDA DE HOY')).toBeInTheDocument();
-    expect(screen.getByText('PRIORIDAD P1')).toBeInTheDocument();
+    expect(screen.getByText('REINTENTO P1')).toBeInTheDocument();
     expect(screen.getByText('Base de Datos RDS Saturada')).toBeInTheDocument();
-    expect(screen.getByText(/Resolver Incidente/i)).toBeInTheDocument();
+    expect(screen.getByText(/Reintentar Desafío/i)).toBeInTheDocument();
+  });
+
+  it('SuggestedMissionWidget debe renderizar el estado de felicitaciones cuando no hay misiones pendientes', () => {
+    render(
+      <MemoryRouter>
+        <SuggestedMissionWidget topChallenge={null} />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('¡Misiones al día, Arquitecto!')).toBeInTheDocument();
+    expect(screen.getByText(/Explorar Glosario Técnico/i)).toBeInTheDocument();
   });
 
   it('WafPillarsRadarWidget debe renderizar las métricas de los pilares WAF', () => {

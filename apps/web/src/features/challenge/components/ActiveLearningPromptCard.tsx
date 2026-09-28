@@ -120,15 +120,15 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
   return (
     <div
       data-testid="active-learning-prompt-card"
-      className="p-4 sm:p-5 rounded-xl bg-slate-900/90 border border-indigo-500/30 shadow-lg shadow-indigo-950/20 transition-all space-y-4 relative overflow-hidden"
+      className="p-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900/90 border border-indigo-200 dark:border-indigo-500/30 shadow-md shadow-indigo-950/10 transition-all space-y-4 relative overflow-hidden"
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
 
       {/* Header con Badges */}
       <div className="flex flex-wrap items-center justify-between gap-2 relative z-10">
         <div className="flex items-center space-x-2">
-          <span className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
-            <HelpCircle className="w-3.5 h-3.5 text-indigo-400" />
+          <span className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/30 dark:border-indigo-500/40">
+            <HelpCircle className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
             <span>Reflexión Activa</span>
           </span>
 
@@ -140,18 +140,18 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
           </span>
         </div>
 
-        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
-          <Sparkles className="w-3.5 h-3.5 mr-1 text-amber-400" />
+        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/40 shadow-xs animate-pulse">
+          <Sparkles className="w-3.5 h-3.5 mr-1 text-amber-500 dark:text-amber-400" />
           +{prompt.bonusXP || 25} Bonus XP
         </span>
       </div>
 
       {/* Pregunta Conceptual */}
       <div className="space-y-1 relative z-10">
-        <h4 className="text-sm sm:text-base font-bold text-slate-100 leading-snug">
+        <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 leading-snug">
           {prompt.question}
         </h4>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           Selecciona la justificación arquitectónica más sólida para consolidar tu aprendizaje:
         </p>
       </div>
@@ -165,22 +165,22 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
           const isRevealed = Boolean(result);
 
           let optionCardStyle =
-            'border-slate-800 bg-slate-950/50 text-slate-300 hover:border-indigo-500/50 hover:bg-slate-850/50';
+            'border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/50 text-slate-800 dark:text-slate-300 hover:border-indigo-400 dark:hover:border-indigo-500/50 hover:bg-slate-100 dark:hover:bg-slate-850/50';
 
           if (isRevealed) {
             if (isOptionCorrect) {
               optionCardStyle =
-                'border-emerald-500/60 bg-emerald-950/30 text-emerald-200';
+                'border-emerald-500/60 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-900 dark:text-emerald-200';
             } else if (isSelected && !isOptionCorrect) {
               optionCardStyle =
-                'border-rose-500/60 bg-rose-950/30 text-rose-200';
+                'border-rose-500/60 bg-rose-50 dark:bg-rose-950/30 text-rose-900 dark:text-rose-200';
             } else {
               optionCardStyle =
-                'border-slate-800/80 bg-slate-950/30 text-slate-500 opacity-60';
+                'border-slate-200 dark:border-slate-800/80 bg-slate-100/60 dark:bg-slate-950/30 text-slate-400 dark:text-slate-500 opacity-60';
             }
           } else if (isSelected) {
             optionCardStyle =
-              'border-indigo-500 bg-indigo-950/30 text-indigo-100 shadow-sm ring-1 ring-indigo-500/50';
+              'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-900 dark:text-indigo-100 shadow-xs ring-1 ring-indigo-500/50';
           }
 
           return (
@@ -201,7 +201,7 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
                   checked={isSelected}
                   onChange={() => setSelectedOptionId(option.id)}
                   disabled={isRevealed || isSubmitting || Boolean(prompt.isCompleted)}
-                  className="w-4 h-4 mt-0.5 text-indigo-500 focus:ring-indigo-400 border-slate-700 bg-slate-900"
+                  className="w-4 h-4 mt-0.5 text-indigo-600 focus:ring-indigo-400 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900"
                 />
                 <div className="flex-1 text-xs sm:text-sm font-medium leading-relaxed">
                   <span>{option.text}</span>
@@ -211,24 +211,24 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
                     <div
                       className={`mt-2 p-2.5 rounded-lg text-xs font-normal border ${
                         explanationObj.isCorrect
-                          ? 'bg-emerald-950/40 border-emerald-800 text-emerald-200'
-                          : 'bg-rose-950/40 border-rose-800 text-rose-200'
+                          ? 'bg-emerald-100/80 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200'
+                          : 'bg-rose-100/80 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 text-rose-900 dark:text-rose-200'
                       }`}
                     >
                       <div className="flex items-center gap-1.5 font-bold mb-0.5">
                         {explanationObj.isCorrect ? (
                           <>
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                             <span>¡Justificación Correcta!</span>
                           </>
                         ) : (
                           <>
-                            <XCircle className="w-3.5 h-3.5 text-rose-400" />
+                            <XCircle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
                             <span>Concepto a Mejorar</span>
                           </>
                         )}
                       </div>
-                      <p className="text-slate-300">{explanationObj.explanation}</p>
+                      <p className="text-slate-700 dark:text-slate-300">{explanationObj.explanation}</p>
                     </div>
                   )}
                 </div>
@@ -240,7 +240,7 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
 
       {/* Feedback de Error si ocurre */}
       {error && (
-        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs">
+        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs">
           {error}
         </div>
       )}
@@ -252,7 +252,11 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
             type="button"
             onClick={handleSubmit}
             disabled={!selectedOptionId || isSubmitting}
-            className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-indigo-600/30 transition-all duration-150 cursor-pointer"
+            className={`inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all duration-150 cursor-pointer ${
+              selectedOptionId && !isSubmitting
+                ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 shadow-amber-500/20'
+                : 'bg-indigo-600/60 text-white/70 disabled:opacity-50 disabled:cursor-not-allowed'
+            }`}
           >
             {isSubmitting ? (
               <>
@@ -274,15 +278,15 @@ export const ActiveLearningPromptCard: React.FC<ActiveLearningPromptCardProps> =
         <div
           className={`p-3.5 rounded-xl border flex items-center justify-between relative z-10 ${
             result.isCorrect
-              ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
-              : 'bg-amber-950/30 border-amber-500/30 text-amber-300'
+              ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
+              : 'bg-amber-50 dark:bg-amber-950/30 border-amber-300 dark:border-amber-500/30 text-amber-800 dark:text-amber-300'
           }`}
         >
           <div className="flex items-center space-x-2">
             {result.isCorrect ? (
-              <Sparkles className="w-5 h-5 text-emerald-400 shrink-0" />
+              <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
             ) : (
-              <HelpCircle className="w-5 h-5 text-amber-400 shrink-0" />
+              <HelpCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
             )}
             <span className="text-xs sm:text-sm font-bold">
               {result.isCorrect

@@ -7,7 +7,6 @@ import {
   ChevronRight,
   CheckCircle2,
   AlertTriangle,
-  Info,
   BookOpen
 } from 'lucide-react';
 import { ArchitectureRequirement } from '../types/challenge.types';
@@ -48,25 +47,25 @@ export function ProblemContextPanel({
 
   if (isCollapsed) {
     return (
-      <div className="w-10 bg-[#111827] border-r border-[#374151] flex flex-col items-center py-3 z-10 shrink-0 select-none">
+      <div className="w-10 bg-white dark:bg-[#111827] border-r border-slate-200 dark:border-[#374151] flex flex-col items-center py-3 z-10 shrink-0 select-none shadow-xs">
         <button
           type="button"
           onClick={onToggleCollapse}
-          className="p-1.5 rounded-lg border border-[#374151] hover:bg-[#1F2937] text-slate-400 hover:text-slate-100 transition-colors cursor-pointer"
+          className="p-1.5 rounded-lg border border-slate-200 dark:border-[#374151] hover:bg-slate-100 dark:hover:bg-[#1F2937] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors cursor-pointer"
           title="Expandir panel lateral"
           aria-label="Expandir panel lateral"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
 
-        <div className="mt-8 flex flex-col space-y-5 text-slate-400">
+        <div className="mt-8 flex flex-col space-y-5 text-slate-500 dark:text-slate-400">
           <button
             type="button"
             onClick={() => {
               setActiveTab('services');
               onToggleCollapse();
             }}
-            className="p-1.5 rounded-lg hover:bg-[#1F2937] hover:text-[#FF9900] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1F2937] hover:text-[#FF9900] transition-colors cursor-pointer"
             title="Abrir paleta de servicios"
             aria-label="Abrir paleta de servicios"
           >
@@ -78,7 +77,7 @@ export function ProblemContextPanel({
               setActiveTab('requirements');
               onToggleCollapse();
             }}
-            className="p-1.5 rounded-lg hover:bg-[#1F2937] hover:text-[#FF9900] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1F2937] hover:text-[#FF9900] transition-colors cursor-pointer"
             title="Abrir requisitos"
             aria-label="Abrir requisitos"
           >
@@ -90,7 +89,7 @@ export function ProblemContextPanel({
               setActiveTab('history');
               onToggleCollapse();
             }}
-            className="p-1.5 rounded-lg hover:bg-[#1F2937] hover:text-[#FF9900] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1F2937] hover:text-[#FF9900] transition-colors cursor-pointer"
             title="Abrir historial de intentos"
             aria-label="Abrir historial de intentos"
           >
@@ -103,11 +102,11 @@ export function ProblemContextPanel({
 
   return (
     <aside
-      className="w-72 sm:w-80 bg-[#111827] border-r border-[#374151] flex flex-col z-10 shrink-0 select-none transition-all shadow-elevation-card"
+      className="w-72 sm:w-80 bg-white dark:bg-[#111827] border-r border-slate-200 dark:border-[#374151] flex flex-col z-10 shrink-0 select-none transition-all shadow-xs dark:shadow-elevation-card"
       aria-label="Panel de Contexto y Herramientas"
     >
       {/* Cabecera con Tabs y botón de colapso */}
-      <div className="h-11 border-b border-[#374151] px-2.5 flex items-center justify-between">
+      <div className="h-11 border-b border-slate-200 dark:border-[#374151] px-2.5 flex items-center justify-between bg-slate-50 dark:bg-[#111827]">
         <div className="flex items-center space-x-1" role="tablist" aria-label="Secciones del panel">
           <button
             type="button"
@@ -116,10 +115,10 @@ export function ProblemContextPanel({
             aria-controls="panel-tab-content"
             id="tab-services"
             onClick={() => setActiveTab('services')}
-            className={`flex items-center space-x-1 px-2 py-1 rounded text-xs font-semibold transition-colors cursor-pointer ${
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
               activeTab === 'services'
-                ? 'bg-[#1F2937] text-[#FF9900] border border-[#374151] font-bold shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-[#1F2937]/50'
+                ? 'bg-white dark:bg-[#1F2937] text-[#FF9900] border border-slate-200 dark:border-[#374151] font-bold shadow-xs'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1F2937]/50'
             }`}
           >
             <Boxes className="w-3.5 h-3.5" />
@@ -133,10 +132,10 @@ export function ProblemContextPanel({
             aria-controls="panel-tab-content"
             id="tab-requirements"
             onClick={() => setActiveTab('requirements')}
-            className={`flex items-center space-x-1 px-2 py-1 rounded text-xs font-semibold transition-colors cursor-pointer ${
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
               activeTab === 'requirements'
-                ? 'bg-[#1F2937] text-[#FF9900] border border-[#374151] font-bold shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-[#1F2937]/50'
+                ? 'bg-white dark:bg-[#1F2937] text-[#FF9900] border border-slate-200 dark:border-[#374151] font-bold shadow-xs'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1F2937]/50'
             }`}
           >
             <FileText className="w-3.5 h-3.5" />
@@ -150,10 +149,10 @@ export function ProblemContextPanel({
             aria-controls="panel-tab-content"
             id="tab-history"
             onClick={() => setActiveTab('history')}
-            className={`flex items-center space-x-1 px-2 py-1 rounded text-xs font-semibold transition-colors cursor-pointer ${
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
               activeTab === 'history'
-                ? 'bg-[#1F2937] text-[#FF9900] border border-[#374151] font-bold shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-[#1F2937]/50'
+                ? 'bg-white dark:bg-[#1F2937] text-[#FF9900] border border-slate-200 dark:border-[#374151] font-bold shadow-xs'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1F2937]/50'
             }`}
           >
             <History className="w-3.5 h-3.5" />
@@ -164,7 +163,7 @@ export function ProblemContextPanel({
         <button
           type="button"
           onClick={onToggleCollapse}
-          className="p-1 rounded-lg border border-[#374151] hover:bg-[#1F2937] text-slate-400 hover:text-slate-100 transition-colors shrink-0 cursor-pointer"
+          className="p-1 rounded-lg border border-slate-200 dark:border-[#374151] hover:bg-slate-100 dark:hover:bg-[#1F2937] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors shrink-0 cursor-pointer"
           title="Colapsar panel lateral"
           aria-label="Colapsar panel lateral"
         >
@@ -177,113 +176,111 @@ export function ProblemContextPanel({
         id="panel-tab-content"
         role="tabpanel"
         aria-labelledby={`tab-${activeTab}`}
-        className="flex-1 p-3 overflow-hidden bg-[#111827]"
+        className="flex-1 p-3 overflow-hidden bg-white dark:bg-[#111827]"
       >
         {activeTab === 'services' && (
           <ServicePalette allowedServices={allowedServices} />
         )}
 
         {activeTab === 'requirements' && (
-          <div className="h-full overflow-y-auto space-y-3 pr-1 text-xs">
+          <div className="h-full overflow-y-auto space-y-3 pr-1 text-xs custom-scrollbar">
             {/* Aviso de Arquitectura Defectuosa en Modo FIX_ARCHITECTURE */}
             {(mode === 'fixArchitecture' ||
               (typeof mode === 'string' && mode.toLowerCase() === 'fixarchitecture')) && (
               <div
                 role="status"
                 aria-label="Aviso de modo reparación"
-                className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-300 flex items-start gap-2.5 animate-in fade-in duration-200"
+                className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-500/30 text-amber-800 dark:text-amber-300 flex items-start gap-2.5 animate-in fade-in duration-200"
               >
                 <AlertTriangle className="w-4 h-4 text-[#FF9900] shrink-0 mt-0.5" />
                 <div className="min-w-0">
-                  <h4 className="font-bold text-xs text-amber-200">
+                  <h4 className="font-bold text-xs text-amber-900 dark:text-amber-200">
                     Arquitectura con problemas detectados
                   </h4>
-                  <p className="text-[11px] text-amber-300/80 mt-1 leading-relaxed">
-                    Analiza la arquitectura precargada en el lienzo y corrige los problemas de diseño, disponibilidad y escalabilidad.
+                  <p className="text-[11px] text-amber-800/90 dark:text-amber-300/80 mt-0.5 leading-relaxed">
+                    Analiza la arquitectura precargada en el lienzo y corrige los problemas identificados para restaurar el servicio.
                   </p>
                 </div>
               </div>
             )}
 
-            {/* Botón / Banner de Acceso al Briefing */}
-            {(hasBriefing || onOpenBriefing) && onOpenBriefing && (
+            {/* Micro-Cápsula de Contexto */}
+            {hasBriefing && onOpenBriefing && (
               <button
                 type="button"
                 onClick={onOpenBriefing}
-                data-testid="panel-briefing-button"
-                className="w-full p-3 rounded-xl bg-[#0B0F19] border border-[#374151] hover:border-[#FF9900]/60 hover:bg-[#171B26] text-left transition-all group cursor-pointer"
+                className="w-full p-2.5 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20 border border-amber-200 dark:border-amber-500/30 text-left transition-all hover:border-amber-400 group cursor-pointer"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <div className="w-6 h-6 rounded-lg bg-[#1F2937] border border-[#374151] flex items-center justify-center text-[#FF9900]">
-                      <BookOpen className="w-3.5 h-3.5" />
-                    </div>
-                    <div>
-                      <span className="font-bold text-slate-100 text-xs block group-hover:text-[#FF9900] transition-colors">
-                        Ver Briefing del Desafío
-                      </span>
-                      <span className="text-[10px] text-slate-400">
-                        Conceptos clave y escenario de negocio
-                      </span>
-                    </div>
+                    <BookOpen className="w-4 h-4 text-[#FF9900]" />
+                    <span className="font-bold text-xs text-amber-900 dark:text-amber-300">
+                      Micro-Cápsula de Contexto
+                    </span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-[#FF9900] group-hover:translate-x-0.5 transition-all" />
+                  <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 group-hover:translate-x-0.5 transition-transform">
+                    Leer →
+                  </span>
                 </div>
+                <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-1 leading-snug">
+                  Escenario de negocio, metas de aprendizaje y conceptos clave.
+                </p>
               </button>
             )}
 
-            {/* Contexto del caso de negocio */}
-            <div className="p-3 rounded-xl bg-[#0B0F19] border border-[#374151] space-y-1.5">
-              <div className="flex items-center space-x-1.5 text-slate-200 font-bold">
-                <Info className="w-3.5 h-3.5 text-[#38BDF8]" />
-                <span>Caso de Negocio</span>
+            {/* Enunciado del Desafío */}
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#0B0F19] border border-slate-200 dark:border-[#374151]">
+              <div className="flex items-center space-x-1.5 text-xs font-mono font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                <FileText className="w-3.5 h-3.5 text-[#FF9900]" />
+                <span>{mode === 'fixArchitecture' ? 'Objetivo del Incidente' : 'Caso de Negocio'}</span>
               </div>
-              <p className="text-slate-400 leading-relaxed text-[11px]">
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                 {description}
               </p>
             </div>
 
-            {/* Requisitos y Reglas Específicas */}
-            <div className="space-y-2">
-              <h4 className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">
-                Requisitos de Arquitectura
-              </h4>
-
-              {requirements.length === 0 ? (
-                <div className="p-2.5 rounded-lg border border-dashed border-[#374151] text-slate-500 text-[11px] text-center">
-                  Diseña una arquitectura óptima siguiendo las mejores prácticas del AWS Well-Architected Framework.
+            {/* Requisitos y Criterios de Aceptación */}
+            {requirements.length > 0 && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    Criterios de Aceptación
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
+                    {requirements.length} requisito{requirements.length === 1 ? '' : 's'}
+                  </span>
                 </div>
-              ) : (
+
                 <div className="space-y-2">
-                  {requirements.map((req) => (
+                  {requirements.map((req, idx) => (
                     <div
-                      key={req.id}
-                      className="p-2.5 rounded-lg border border-[#374151] bg-[#0B0F19] space-y-1"
+                      key={idx}
+                      className="p-2.5 rounded-xl bg-slate-50 dark:bg-[#0B0F19] border border-slate-200 dark:border-[#374151] space-y-1 text-xs"
                     >
-                      <div className="flex items-center space-x-1.5 font-semibold text-slate-200">
-                        {req.type === 'anti_pattern' ? (
-                          <AlertTriangle className="w-3 h-3 text-rose-400 shrink-0" />
-                        ) : (
-                          <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
-                        )}
-                        <span className="truncate">{req.title}</span>
+                      <div className="flex items-start space-x-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 mt-0.5 shrink-0" />
+                        <span className="font-semibold text-slate-900 dark:text-slate-200 leading-snug">
+                          {req.title || (req as any).text}
+                        </span>
                       </div>
-                      <p className="text-[10px] text-slate-400 leading-normal pl-4.5">
-                        {req.description}
-                      </p>
+                      {(req.description || (req as any).rationale) && (
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 pl-5 leading-relaxed">
+                          {req.description || (req as any).rationale}
+                        </p>
+                      )}
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         )}
 
         {activeTab === 'history' && (
-          <div className="h-full overflow-y-auto pr-1">
+          <div className="h-full flex flex-col">
             <AttemptHistoryList
-              challengeId={challengeId}
-              onRestoreAttempt={onRestoreAttempt ?? (() => {})}
+              challengeId={challengeId ?? ''}
+              onRestoreAttempt={onRestoreAttempt}
             />
           </div>
         )}
@@ -291,4 +288,3 @@ export function ProblemContextPanel({
     </aside>
   );
 }
-

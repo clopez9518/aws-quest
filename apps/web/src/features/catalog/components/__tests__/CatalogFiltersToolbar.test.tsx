@@ -26,9 +26,9 @@ describe('CatalogFiltersToolbar', () => {
     expect(screen.getByText('Fix Incidentes (17)')).toBeInTheDocument();
     expect(screen.getByText('Todas')).toBeInTheDocument();
     expect(screen.getByText('Fácil')).toBeInTheDocument();
-    expect(screen.getByText('Medio')).toBeInTheDocument();
+    expect(screen.getByText('Intermedio')).toBeInTheDocument();
     expect(screen.getByText('Difícil')).toBeInTheDocument();
-    expect(screen.getByText('Capstone')).toBeInTheDocument();
+    expect(screen.getByText('Integrador')).toBeInTheDocument();
   });
 
   it('debe disparar onSearchChange cuando el usuario escribe en el buscador', () => {

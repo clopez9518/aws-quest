@@ -32,23 +32,23 @@ export function RestoreAttemptModal({
       <div
         data-testid="restore-attempt-modal"
         ref={modalRef}
-        className="w-full max-w-md bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 p-5 space-y-4 animate-in zoom-in-95 duration-200"
+        className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-5 space-y-4 animate-in zoom-in-95 duration-200"
       >
         {/* Cabecera con icono de alerta */}
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
+            <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <div>
               <h3
                 id="restore-attempt-title"
-                className="text-sm font-bold text-slate-100"
+                className="text-sm font-bold text-slate-900 dark:text-slate-100"
               >
                 ¿Cargar Intento #{attemptNumber}?
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Puntaje obtenido: <span className="font-mono font-semibold text-amber-400">{attemptScore}/100 pts</span>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Puntaje obtenido: <span className="font-mono font-semibold text-amber-600 dark:text-amber-400">{attemptScore}/100 pts</span>
               </p>
             </div>
           </div>
@@ -56,7 +56,7 @@ export function RestoreAttemptModal({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             title="Cerrar ventana"
             aria-label="Cerrar ventana"
           >
@@ -65,8 +65,8 @@ export function RestoreAttemptModal({
         </div>
 
         {/* Mensaje de advertencia */}
-        <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-300 leading-relaxed">
-          Al cargar este intento previo, se <span className="font-bold text-rose-400">reemplazará la arquitectura actual</span> en el lienzo ({currentNodesCount} servicio{currentNodesCount === 1 ? '' : 's'}) por el diseño guardado en este intento.
+        <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+          Al cargar este intento previo, se <span className="font-bold text-rose-600 dark:text-rose-400">reemplazará la arquitectura actual</span> en el lienzo ({currentNodesCount} servicio{currentNodesCount === 1 ? '' : 's'}) por el diseño guardado en este intento.
         </div>
 
         {/* Botones de acción */}
@@ -74,7 +74,7 @@ export function RestoreAttemptModal({
           <button
             type="button"
             onClick={onClose}
-            className="px-3.5 py-2 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+            className="px-3.5 py-2 text-xs font-semibold rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             Cancelar
           </button>

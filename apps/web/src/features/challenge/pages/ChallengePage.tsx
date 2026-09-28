@@ -306,6 +306,8 @@ export function ChallengePage() {
         onOpenBriefing={() => setIsBriefingModalOpen(true)}
         isSimulating={isSimulating}
         onToggleSimulation={() => (isSimulating ? stopSimulation() : startSimulation())}
+        isLeftPanelCollapsed={isLeftPanelCollapsed}
+        onToggleLeftPanel={() => setIsLeftPanelCollapsed((prev) => !prev)}
         onOpenHints={() => setIsHintsDrawerOpen(true)}
         onSubmit={handleSubmit}
         isSubmitting={isEvaluating}

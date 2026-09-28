@@ -86,32 +86,32 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
       <div
         ref={modalRef}
         data-testid="evaluation-modal"
-        className="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
       >
         {/* Glow de ambientación Stitch */}
         <div className="absolute top-0 right-1/4 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         {/* Cabecera */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90 relative z-10">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 relative z-10">
           <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-[10px] font-mono font-bold text-amber-500 uppercase tracking-wider">
+                <span className="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-500 uppercase tracking-wider">
                   Diagnóstico de Arquitectura
                 </span>
-                <span className="text-[10px] font-mono text-slate-500">
+                <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500">
                   • SRE Engine
                 </span>
-                <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
                   v2.4
                 </span>
               </div>
               <h2
                 id="evaluation-modal-title"
-                className="text-base sm:text-lg font-bold text-slate-100 mt-0.5"
+                className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 mt-0.5"
               >
                 {challengeTitle}
               </h2>
@@ -122,7 +122,7 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Cerrar modal de evaluación"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent hover:border-slate-700 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -132,7 +132,7 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
         <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-5 custom-scrollbar relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
             {/* Columna Izquierda: Gauge Radial */}
-            <div className="md:col-span-5 bg-slate-950/60 border border-slate-800 rounded-xl p-4 flex flex-col justify-center h-full">
+            <div className="md:col-span-5 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl p-4 flex flex-col justify-center h-full">
               <ScoreGauge
                 score={result.score}
                 passed={result.passed}
@@ -152,22 +152,22 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
 
           {/* Bloque de Consolidación Post-Desafío */}
           {result.passed && (result.feedback.keyConceptsLearned?.length || result.feedback.architecturalTradeoffs) && (
-            <div data-testid="consolidation-card" className="p-4 rounded-xl bg-slate-950/60 border border-amber-500/30 space-y-3">
-              <div className="flex items-center gap-2 text-xs font-bold text-slate-100">
-                <span className="text-amber-400">🎓</span>
+            <div data-testid="consolidation-card" className="p-4 rounded-xl bg-amber-500/5 dark:bg-slate-950/60 border border-amber-500/30 space-y-3">
+              <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-slate-100">
+                <span className="text-amber-500 dark:text-amber-400">🎓</span>
                 <span>Consolidación de Arquitectura Cloud</span>
               </div>
 
               {result.feedback.keyConceptsLearned && result.feedback.keyConceptsLearned.length > 0 && (
                 <div>
-                  <h5 className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                  <h5 className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
                     Buenas Prácticas Demostradas:
                   </h5>
                   <div className="flex flex-wrap gap-1.5">
                     {result.feedback.keyConceptsLearned.map((concept, idx) => (
                       <span
                         key={idx}
-                        className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"
+                        className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20"
                       >
                         ✓ {concept}
                       </span>
@@ -177,8 +177,8 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
               )}
 
               {result.feedback.architecturalTradeoffs && (
-                <p className="text-xs text-slate-300 leading-relaxed border-t border-slate-800 pt-2">
-                  <span className="font-bold text-amber-400">💡 Trade-offs & Evolución: </span>
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-2">
+                  <span className="font-bold text-amber-600 dark:text-amber-400">💡 Trade-offs & Evolución: </span>
                   {result.feedback.architecturalTradeoffs}
                 </p>
               )}
@@ -203,12 +203,12 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
         </div>
 
         {/* Pie de Acciones */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-t border-slate-800 bg-slate-900/90 relative z-10">
+        <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/90 dark:bg-slate-900/90 relative z-10">
           {/* Acción Secundaria: Reintentar */}
           <button
             type="button"
             onClick={handleRetry}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 bg-slate-800 border border-slate-700 hover:bg-slate-750 hover:text-white shadow-xs transition-all focus:outline-none focus:ring-2 focus:ring-slate-600"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-750 hover:text-slate-900 dark:hover:text-white shadow-xs transition-all focus:outline-none focus:ring-2 focus:ring-slate-400"
           >
             <RotateCcw className="w-4 h-4 text-slate-400" />
             <span>Reintentar solución</span>
@@ -232,7 +232,7 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
                   onClose();
                   navigate('/catalog');
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors"
               >
                 <LayoutGrid className="w-4 h-4" />
                 <span>Explorar Catálogo</span>
