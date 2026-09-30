@@ -2086,6 +2086,34 @@
         "ch-serverless-architecture"
       ],
       "displayOrder": 75
+    },
+    {
+      "slug": "amazon-ecr",
+      "title": "Amazon Elastic Container Registry (ECR)",
+      "category": "service",
+      "serviceCode": "AWS_ECR",
+      "pillar": "Security",
+      "shortDefinition": "Registro administrado de imágenes de contenedores Docker seguro, altamente escalable y de alta disponibilidad.",
+      "whatIs": "Amazon Elastic Container Registry (Amazon ECR) es un registro de imágenes de contenedores totalmente administrado por AWS que facilita a los desarrolladores el almacenamiento, la administración y la implementación de imágenes de contenedores. ECR aloja las imágenes en una arquitectura de alta disponibilidad y escalabilidad para que puedas implementar contenedores de forma confiable.",
+      "whenToUse": [
+        "Almacenamiento y versionado seguro de imágenes Docker en pipelines de integración y entrega continua (CI/CD).",
+        "Repositorio privado de imágenes de contenedor integrado nativamente con Amazon ECS, EKS y AWS Fargate.",
+        "Escaneo automático de vulnerabilidades (CVEs) y replicación de imágenes multi-región."
+      ],
+      "tradeOffs": {
+        "pros": "Integración nativa con IAM y permisos granulares por repositorio, escaneo automático de seguridad, alta durabilidad respaldada en S3.",
+        "cons": "Costos de almacenamiento por GB y transferencia de datos si no se configuran políticas de ciclo de vida (lifecycle policies) para purgar imágenes antiguas."
+      },
+      "relatedTermSlugs": [
+        "amazon-ecs",
+        "aws-fargate",
+        "seguridad-cloud",
+        "excelencia-operativa"
+      ],
+      "associatedChallengeIds": [
+        "ch-ecs-fargate-cluster"
+      ],
+      "displayOrder": 76
     }
   ]
 }

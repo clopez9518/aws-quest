@@ -102,6 +102,7 @@
         "serviceCode": "NET_VPC",
         "containerId": null,
         "config": {
+          "cidrBlock": "10.0.0.0/16",
           "cidr": "10.0.0.0/16"
         }
       },
@@ -110,7 +111,10 @@
         "serviceCode": "NET_SUBNET",
         "containerId": "vpc-crash",
         "config": {
+          "subnetTier": "Public",
+          "subnetType": "Public",
           "tier": "Public",
+          "cidrBlock": "10.0.1.0/24",
           "cidr": "10.0.1.0/24"
         }
       },

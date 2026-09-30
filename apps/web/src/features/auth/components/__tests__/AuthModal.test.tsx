@@ -51,12 +51,18 @@ describe('AuthModal', () => {
     expect(screen.getByText('Conserva tu progreso')).toBeInTheDocument();
     expect(screen.getByLabelText(/Nombre Completo/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Correo Electrónico/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Contraseña/i)).toBeInTheDocument();
+    const passwordInput = screen.getByLabelText(/^Contraseña$/i);
+    expect(passwordInput).toBeInTheDocument();
+    expect(passwordInput).toHaveAttribute('minLength', '8');
+    expect(passwordInput).toHaveAttribute('placeholder', 'Mínimo 8 caracteres');
+    expect(screen.getByTestId('password-requirements-list')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Crear Cuenta y Migrar XP/i })).toBeInTheDocument();
   });
 
   it('debe alternar entre pestañas de Crear Cuenta e Iniciar Sesión', () => {
     renderWithProviders(<AuthModal isOpen={true} onClose={mockOnClose} />);
+
+    expect(screen.getByTestId('password-requirements-list')).toBeInTheDocument();
 
     // Cambiar a Iniciar Sesión
     const loginTab = screen.getByRole('button', { name: /Iniciar Sesión/i });
@@ -64,6 +70,7 @@ describe('AuthModal', () => {
 
     expect(screen.getByText('Bienvenido de nuevo')).toBeInTheDocument();
     expect(screen.queryByLabelText(/Nombre Completo/i)).not.toBeInTheDocument();
+    expect(screen.queryByTestId('password-requirements-list')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /^Entrar$/i })).toBeInTheDocument();
   });
 
@@ -76,7 +83,7 @@ describe('AuthModal', () => {
 
     fireEvent.change(screen.getByLabelText(/Nombre Completo/i), { target: { value: 'Carlos' } });
     fireEvent.change(screen.getByLabelText(/Correo Electrónico/i), { target: { value: 'carlos@test.com' } });
-    fireEvent.change(screen.getByLabelText(/Contraseña/i), { target: { value: 'Secret123!' } });
+    fireEvent.change(screen.getByLabelText(/^Contraseña$/i), { target: { value: 'Secret123!' } });
 
     fireEvent.click(screen.getByRole('button', { name: /Crear Cuenta y Migrar XP/i }));
 

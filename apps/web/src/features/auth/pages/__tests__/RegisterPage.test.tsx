@@ -28,13 +28,18 @@ describe('RegisterPage', () => {
     vi.restoreAllMocks();
   });
 
-  it('debe renderizar los inputs de nombre, correo, contraseña y botón', () => {
+  it('debe renderizar los inputs de nombre, correo, contraseña con minLength 8, lista de requisitos y botón', () => {
     renderWithProviders(<RegisterPage />);
 
     expect(screen.getByRole('heading', { name: /Crear Cuenta/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/Nombre Completo/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Correo Electrónico/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Contraseña/i)).toBeInTheDocument();
+    const passwordInput = screen.getByLabelText(/^Contraseña$/i);
+    expect(passwordInput).toBeInTheDocument();
+    expect(passwordInput).toHaveAttribute('minLength', '8');
+    expect(passwordInput).toHaveAttribute('placeholder', 'Mínimo 8 caracteres');
+    expect(screen.getByTestId('password-requirements-list')).toBeInTheDocument();
+    expect(screen.getByText(/Mínimo 8 caracteres/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Crear Cuenta y Comenzar/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Iniciar sesión/i })).toBeInTheDocument();
   });
@@ -64,7 +69,7 @@ describe('RegisterPage', () => {
 
     fireEvent.change(screen.getByLabelText(/Nombre Completo/i), { target: { value: 'Carlos' } });
     fireEvent.change(screen.getByLabelText(/Correo Electrónico/i), { target: { value: 'carlos@test.com' } });
-    fireEvent.change(screen.getByLabelText(/Contraseña/i), { target: { value: 'secretPass123!' } });
+    fireEvent.change(screen.getByLabelText(/^Contraseña$/i), { target: { value: 'secretPass123!' } });
 
     fireEvent.click(screen.getByRole('button', { name: /Crear Cuenta y Comenzar/i }));
 

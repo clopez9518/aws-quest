@@ -62,11 +62,12 @@ function inferConnectionType(
   sourceNode?: AwsCanvasNode,
   targetNode?: AwsCanvasNode
 ): ConnectionType {
-  if (!targetNode) return 'HTTP_HTTPS';
+  if (!targetNode && !sourceNode) return 'HTTP_HTTPS';
 
-  const targetCategory = targetNode.data.category?.toLowerCase() || '';
-  const targetCode = targetNode.data.serviceCode?.toUpperCase() || '';
-  const sourceCode = sourceNode?.data.serviceCode?.toUpperCase() || '';
+  const sourceCategory = sourceNode?.data?.category?.toLowerCase() || '';
+  const targetCategory = targetNode?.data?.category?.toLowerCase() || '';
+  const sourceCode = sourceNode?.data?.serviceCode?.toUpperCase() || '';
+  const targetCode = targetNode?.data?.serviceCode?.toUpperCase() || '';
 
   // Conexión VPC <-> Internet Gateway / NAT Gateway
   if (
@@ -87,23 +88,58 @@ function inferConnectionType(
   }
 
   // Conexión Gateway (NAT Gateway, IGW a otros)
-  if (targetCode === 'NET_IGW' || targetCode === 'NET_NAT_GATEWAY' || sourceCode === 'NET_IGW' || sourceCode === 'NET_NAT_GATEWAY') {
+  if (
+    targetCode === 'NET_IGW' ||
+    targetCode === 'NET_NAT_GATEWAY' ||
+    sourceCode === 'NET_IGW' ||
+    sourceCode === 'NET_NAT_GATEWAY'
+  ) {
     return 'NETWORK_ROUTE';
   }
 
-  if (targetCategory === 'database' || targetCode === 'AWS_RDS' || targetCode === 'AWS_DYNAMODB' || targetCode === 'AWS_ELASTICACHE') {
+  // Conexión con Base de Datos (RDS, DynamoDB, ElastiCache o categoría database)
+  if (
+    targetCategory === 'database' ||
+    sourceCategory === 'database' ||
+    targetCode === 'AWS_RDS' ||
+    sourceCode === 'AWS_RDS' ||
+    targetCode === 'AWS_DYNAMODB' ||
+    sourceCode === 'AWS_DYNAMODB' ||
+    targetCode === 'AWS_ELASTICACHE' ||
+    sourceCode === 'AWS_ELASTICACHE'
+  ) {
     return 'DATABASE';
   }
 
-  if (sourceCode === 'AWS_SQS' || targetCode === 'AWS_SQS' || sourceCode === 'AWS_SNS' || targetCode === 'AWS_SNS' || sourceCode === 'AWS_EVENTBRIDGE' || targetCode === 'AWS_EVENTBRIDGE') {
+  // Mensajería y eventos asíncronos
+  if (
+    sourceCode === 'AWS_SQS' ||
+    targetCode === 'AWS_SQS' ||
+    sourceCode === 'AWS_SNS' ||
+    targetCode === 'AWS_SNS' ||
+    sourceCode === 'AWS_EVENTBRIDGE' ||
+    targetCode === 'AWS_EVENTBRIDGE'
+  ) {
     return 'ASYNC_QUEUE';
   }
 
-  if (targetCategory === 'storage' || targetCode === 'AWS_S3') {
+  // Almacenamiento (S3 o categoría storage)
+  if (
+    targetCategory === 'storage' ||
+    sourceCategory === 'storage' ||
+    targetCode === 'AWS_S3' ||
+    sourceCode === 'AWS_S3'
+  ) {
     return 'STORAGE';
   }
 
-  if (targetCode === 'NET_VPC' || targetCode === 'NET_SUBNET') {
+  // Red interna VPC / Subred
+  if (
+    targetCode === 'NET_VPC' ||
+    targetCode === 'NET_SUBNET' ||
+    sourceCode === 'NET_VPC' ||
+    sourceCode === 'NET_SUBNET'
+  ) {
     return 'INTERNAL_VPC';
   }
 
@@ -553,6 +589,8 @@ export const useCanvasStore = create<CanvasStore>()((set, get) => ({
       ? {
           components: graph.components.map((c) => ({
             ...c,
+            parentId: c.parentId || c.containerId || null,
+            containerId: c.containerId || c.parentId || null,
             config: { ...c.config }
           })),
           connections: graph.connections.map((cn) => ({ ...cn }))
@@ -588,8 +626,8 @@ export const useCanvasStore = create<CanvasStore>()((set, get) => ({
     });
 
     let vpcCount = 0;
-    let subnetCount = 0;
-    let generalCount = 0;
+    let standaloneSubnetCount = 0;
+    const childCountsByParent: Record<string, number> = {};
     const layerItemCounts: Record<number, number> = { 0: 0, 1: 0, 2: 0, 3: 0 };
 
     const reconstructedNodes: AwsCanvasNode[] = sortedComponents.map((component) => {
@@ -598,22 +636,40 @@ export const useCanvasStore = create<CanvasStore>()((set, get) => ({
       );
       const category = component.category || serviceMeta?.category || 'General';
       const nodeType = resolveNodeType(component.serviceCode);
+      const effectiveParentId = component.parentId || component.containerId || null;
 
       let x = 80;
       let y = 60;
 
       if (nodeType === 'vpcContainerNode') {
-        x = 50 + vpcCount * 650;
+        x = 50 + vpcCount * 680;
         y = 50;
         vpcCount++;
       } else if (nodeType === 'subnetContainerNode') {
-        x = 40 + (subnetCount % 2) * 290;
-        y = 60;
-        subnetCount++;
-      } else if (component.parentId) {
-        x = 30 + (generalCount % 2) * 190;
-        y = 40 + Math.floor(generalCount / 2) * 120;
-        generalCount++;
+        if (effectiveParentId) {
+          const childIndex = childCountsByParent[effectiveParentId] ?? 0;
+          childCountsByParent[effectiveParentId] = childIndex + 1;
+          x = 25 + (childIndex % 2) * 300;
+          y = 55 + Math.floor(childIndex / 2) * 310;
+        } else {
+          x = 100 + standaloneSubnetCount * 320;
+          y = 100;
+          standaloneSubnetCount++;
+        }
+      } else if (effectiveParentId) {
+        const childIndex = childCountsByParent[effectiveParentId] ?? 0;
+        childCountsByParent[effectiveParentId] = childIndex + 1;
+
+        const parentComponent = sortedComponents.find((c) => c.id === effectiveParentId);
+        const isParentSubnet = parentComponent?.serviceCode.toUpperCase() === 'NET_SUBNET';
+
+        if (isParentSubnet) {
+          x = 25 + (childIndex % 2) * 125;
+          y = 55 + Math.floor(childIndex / 2) * 105;
+        } else {
+          x = 30 + (childIndex % 2) * 200;
+          y = 60 + Math.floor(childIndex / 2) * 115;
+        }
       } else {
         const layer = LAYER_MAP[category] ?? 1;
         const count = layerItemCounts[layer] ?? 0;
@@ -626,15 +682,16 @@ export const useCanvasStore = create<CanvasStore>()((set, get) => ({
         id: component.id,
         type: nodeType,
         position: { x, y },
-        parentId: component.parentId || undefined,
-        extent: component.parentId ? 'parent' : undefined,
+        parentId: effectiveParentId || undefined,
+        extent: effectiveParentId ? 'parent' : undefined,
         data: {
           serviceCode: component.serviceCode,
           name: serviceMeta?.name || component.label || component.serviceCode,
           category,
           iconUrl: serviceMeta?.iconUrl || '/icons/aws/default.svg',
           config: { ...component.config },
-          parentId: component.parentId || null,
+          parentId: effectiveParentId,
+          containerId: effectiveParentId,
           kind: component.kind || serviceMeta?.kind,
           placementScope: serviceMeta?.placementScope,
           maxInstances: serviceMeta?.maxInstances,

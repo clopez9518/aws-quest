@@ -1,5 +1,6 @@
 namespace AwsQuest.Infrastructure.Services;
 
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using AwsQuest.Application.Common.Exceptions;
 using AwsQuest.Application.Common.Interfaces;
@@ -11,10 +12,17 @@ using AwsQuest.Domain.Enums;
 public class ChallengeService : IChallengeService
 {
     private readonly IAppDbContext _dbContext;
+    private readonly IChallengeAccessValidator _accessValidator;
+    private readonly IValidator<SubmitReflectionAnswerRequestDto>? _reflectionValidator;
 
-    public ChallengeService(IAppDbContext dbContext)
+    public ChallengeService(
+        IAppDbContext dbContext,
+        IChallengeAccessValidator? accessValidator = null,
+        IValidator<SubmitReflectionAnswerRequestDto>? reflectionValidator = null)
     {
         _dbContext = dbContext;
+        _accessValidator = accessValidator ?? new ChallengeAccessValidator(dbContext);
+        _reflectionValidator = reflectionValidator;
     }
 
     public async Task<ChallengeDetailResponseDto> GetChallengeDetailAsync(
@@ -35,44 +43,7 @@ public class ChallengeService : IChallengeService
         }
 
         // 2. Verificar política de bloqueo en modo progresivo
-        var config = await _dbContext.SystemConfigs
-            .AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Id == "global_config", cancellationToken);
-
-        var accessMode = config?.AccessMode ?? AccessMode.OpenAccess;
-
-        if (accessMode == AccessMode.Progressive)
-        {
-            var user = await _dbContext.Users
-                .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
-
-            var userTotalXp = user?.TotalXP ?? 0;
-
-            if (challenge.PrerequisiteChallengeId.HasValue)
-            {
-                var prereqCompleted = await _dbContext.UserProgresses
-                    .AsNoTracking()
-                    .AnyAsync(p => p.UserId == userId 
-                                && p.ChallengeId == challenge.PrerequisiteChallengeId.Value 
-                                && p.Status == ProgressStatus.Completed, cancellationToken);
-
-                if (!prereqCompleted)
-                {
-                    var prereqChallenge = await _dbContext.Challenges
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync(c => c.Id == challenge.PrerequisiteChallengeId.Value, cancellationToken);
-
-                    var prereqTitle = prereqChallenge?.Title ?? "anterior";
-                    throw new ChallengeLockedException($"El desafío está bloqueado. Requiere completar el desafío '{prereqTitle}'.");
-                }
-            }
-
-            if (challenge.RequiredXP > 0 && userTotalXp < challenge.RequiredXP)
-            {
-                throw new ChallengeLockedException($"El desafío está bloqueado. Requiere {challenge.RequiredXP} XP (Actual: {userTotalXp} XP).");
-            }
-        }
+        await _accessValidator.ValidateAccessAsync(challenge, userId, cancellationToken);
 
         // 3. Obtener progreso previo del usuario
         var progress = await _dbContext.UserProgresses
@@ -96,6 +67,11 @@ public class ChallengeService : IChallengeService
         SubmitReflectionAnswerRequestDto request, 
         CancellationToken cancellationToken = default)
     {
+        if (_reflectionValidator != null)
+        {
+            await _reflectionValidator.ValidateAndThrowAsync(request, cancellationToken);
+        }
+
         var challenge = await _dbContext.Challenges
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == challengeId, cancellationToken);

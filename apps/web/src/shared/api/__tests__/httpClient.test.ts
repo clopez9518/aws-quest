@@ -12,7 +12,7 @@ describe('httpClient', () => {
   });
 
   it('debe tener configurada la baseURL y los headers por defecto', () => {
-    expect(httpClient.defaults.baseURL).toBe('https://localhost:7234/api/v1');
+    expect(httpClient.defaults.baseURL).toBe('/api/v1');
     expect(httpClient.defaults.headers['Content-Type']).toBe('application/json');
     expect(httpClient.defaults.headers['Accept']).toBe('application/json');
   });

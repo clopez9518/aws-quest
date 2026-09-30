@@ -2,8 +2,10 @@ namespace AwsQuest.Infrastructure.Services;
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using AwsQuest.Application.Common.Exceptions;
 using AwsQuest.Application.Common.Interfaces;
 using AwsQuest.Application.Dtos.Evaluation;
@@ -16,6 +18,9 @@ public class EvaluationService : IEvaluationService
 {
     private readonly IAppDbContext _dbContext;
     private readonly IEvaluationEngine _evaluationEngine;
+    private readonly IChallengeAccessValidator _accessValidator;
+    private readonly IValidator<EvaluateArchitectureRequestDto>? _evaluateValidator;
+    private readonly ILogger<EvaluationService> _logger;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -24,16 +29,18 @@ public class EvaluationService : IEvaluationService
         Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
     };
 
-    private readonly ILogger<EvaluationService> _logger;
-
     public EvaluationService(
         IAppDbContext dbContext,
         IEvaluationEngine evaluationEngine,
+        IChallengeAccessValidator? accessValidator = null,
+        IValidator<EvaluateArchitectureRequestDto>? evaluateValidator = null,
         ILogger<EvaluationService>? logger = null)
     {
         _dbContext = dbContext;
         _evaluationEngine = evaluationEngine;
-        _logger = logger ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<EvaluationService>.Instance;
+        _accessValidator = accessValidator ?? new ChallengeAccessValidator(dbContext);
+        _evaluateValidator = evaluateValidator;
+        _logger = logger ?? NullLogger<EvaluationService>.Instance;
     }
 
     public async Task<EvaluateArchitectureResponseDto> EvaluateArchitectureAsync(
@@ -42,7 +49,13 @@ public class EvaluationService : IEvaluationService
         EvaluateArchitectureRequestDto request, 
         CancellationToken cancellationToken = default)
     {
-        // 1. Cargar desafío
+        // 1. Validar integridad de payload y grafo arquitectónico
+        if (_evaluateValidator != null)
+        {
+            await _evaluateValidator.ValidateAndThrowAsync(request, cancellationToken);
+        }
+
+        // 2. Cargar desafío
         var challenge = await _dbContext.Challenges
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == challengeId, cancellationToken);
@@ -53,39 +66,19 @@ public class EvaluationService : IEvaluationService
             throw new ChallengeNotFoundException(challengeId);
         }
 
-        _logger.LogInformation(
-            "[EvaluationService] Evaluando desafío '{Title}' (ID: {ChallengeId}). Longitud de EvaluationRulesJson: {RulesLength}",
-            challenge.Title,
-            challengeId,
-            challenge.EvaluationRulesJson?.Length ?? 0);
+        // 3. Validar modo progresivo mediante validador centralizado
+        await _accessValidator.ValidateAccessAsync(challenge, userId, cancellationToken);
 
-        // 2. Validar modo progresivo
-        await EnsureChallengeUnlockedAsync(challenge, userId, cancellationToken);
-
-        // 3. Deserializar reglas de evaluación y pistas
+        // 4. Deserializar reglas de evaluación y pistas
         var evaluationRules = !string.IsNullOrWhiteSpace(challenge.EvaluationRulesJson)
             ? JsonSerializer.Deserialize<ChallengeEvaluationRules>(challenge.EvaluationRulesJson, JsonOptions) ?? new()
             : new();
-
-        _logger.LogInformation(
-            "[EvaluationService] Reglas deserializadas: RequiredServices=[{RequiredServices}], MinInstances=[{MinInstances}], RequiredConnections={ReqConnCount}, AntiPatterns={AntiPatternCount}, PassingScore={PassingThreshold}",
-            string.Join(", ", evaluationRules.RequiredServices),
-            string.Join(", ", evaluationRules.MinInstances.Select(kv => $"{kv.Key}:{kv.Value}")),
-            evaluationRules.RequiredConnections.Count,
-            evaluationRules.AntiPatterns.Count,
-            evaluationRules.PassingScoreThreshold);
-
-        _logger.LogInformation(
-            "[EvaluationService] Grafo recibido del cliente: Componentes=[{Components}], Conexiones={ConnCount}, Pistas usadas={HintsUsed}",
-            string.Join(", ", request.Graph.Components.Select(c => $"{c.ServiceCode}({c.Id})")),
-            request.Graph.Connections.Count,
-            request.HintsUsed);
 
         var hintsDefinitions = !string.IsNullOrWhiteSpace(challenge.HintsJson)
             ? JsonSerializer.Deserialize<List<HintDefinition>>(challenge.HintsJson, JsonOptions) ?? []
             : [];
 
-        // 3. Obtener progreso actual para determinar pistas desbloqueadas
+        // 5. Obtener progreso actual para determinar pistas desbloqueadas
         var progress = await _dbContext.UserProgresses
             .FirstOrDefaultAsync(p => p.UserId == userId && p.ChallengeId == challengeId, cancellationToken);
 
@@ -94,7 +87,7 @@ public class EvaluationService : IEvaluationService
             .Where(h => h.OrderIndex <= hintsUsedCount)
             .Sum(h => h.PenaltyPoints);
 
-        // 4. Evaluar en memoria con IEvaluationEngine
+        // 6. Evaluar en memoria con IEvaluationEngine
         var evaluationResult = _evaluationEngine.Evaluate(
             request.Graph, 
             evaluationRules, 
@@ -102,23 +95,13 @@ public class EvaluationService : IEvaluationService
             hintPenalties: hintPenalties);
 
         _logger.LogInformation(
-            "[EvaluationService] Resultado de evaluación: Score={Score}, Passed={Passed}, TotalPenalties={TotalPenalties}, Summary='{Summary}'",
+            "[EvaluationService] Desafío '{Title}' evaluado. User={UserId}, Score={Score}, Passed={Passed}",
+            challenge.Title,
+            userId,
             evaluationResult.Score,
-            evaluationResult.Passed,
-            evaluationResult.TotalErrorPenalties,
-            evaluationResult.Feedback.Summary);
+            evaluationResult.Passed);
 
-        foreach (var item in evaluationResult.Feedback.Items)
-        {
-            _logger.LogInformation(
-                "[EvaluationService] -> Feedback Item: [{Status}] {Title} | Penalización: -{Penalty} pts | Categ: {Category}",
-                item.Status,
-                item.Title,
-                item.PenaltyApplied,
-                item.Category);
-        }
-
-        // 5. Ejecutar persistencia atómica con CreateExecutionStrategy (RNF-13)
+        // 7. Ejecutar persistencia atómica con CreateExecutionStrategy (RNF-13)
         var strategy = _dbContext.Database.CreateExecutionStrategy();
         EvaluateArchitectureResponseDto response = null!;
 
@@ -141,9 +124,12 @@ public class EvaluationService : IEvaluationService
                     throw new UserNotFoundException(userId);
                 }
 
-                if (progress == null)
+                var currentProgress = await _dbContext.UserProgresses
+                    .FirstOrDefaultAsync(p => p.UserId == userId && p.ChallengeId == challengeId, cancellationToken);
+
+                if (currentProgress == null)
                 {
-                    progress = new UserProgress
+                    currentProgress = new UserProgress
                     {
                         Id = Guid.NewGuid(),
                         UserId = userId,
@@ -153,31 +139,31 @@ public class EvaluationService : IEvaluationService
                         HintsUsed = 0,
                         UpdatedAt = DateTime.UtcNow
                     };
-                    _dbContext.UserProgresses.Add(progress);
+                    _dbContext.UserProgresses.Add(currentProgress);
                 }
 
-                var previousHighScore = progress.HighScore;
+                var previousHighScore = currentProgress.HighScore;
                 var isNewHighScore = evaluationResult.Score > previousHighScore;
                 var earnedXp = GameScoringRules.CalculateEarnedXp(evaluationResult.Score, previousHighScore, challenge.BaseXP);
 
                 // Actualizar progreso
                 if (isNewHighScore)
                 {
-                    progress.HighScore = evaluationResult.Score;
+                    currentProgress.HighScore = evaluationResult.Score;
                 }
 
                 if (evaluationResult.Passed)
                 {
-                    progress.Status = ProgressStatus.Completed;
-                    progress.FirstCompletedAt ??= DateTime.UtcNow;
+                    currentProgress.Status = ProgressStatus.Completed;
+                    currentProgress.FirstCompletedAt ??= DateTime.UtcNow;
                 }
-                else if (progress.Status == ProgressStatus.NotStarted)
+                else if (currentProgress.Status == ProgressStatus.NotStarted)
                 {
-                    progress.Status = ProgressStatus.InProgress;
+                    currentProgress.Status = ProgressStatus.InProgress;
                 }
 
-                progress.LastAttemptGraphJson = JsonSerializer.Serialize(request.Graph, JsonOptions);
-                progress.UpdatedAt = DateTime.UtcNow;
+                currentProgress.LastAttemptGraphJson = JsonSerializer.Serialize(request.Graph, JsonOptions);
+                currentProgress.UpdatedAt = DateTime.UtcNow;
 
                 // Actualizar usuario XP y Nivel
                 user.TotalXP += earnedXp;
@@ -188,10 +174,10 @@ public class EvaluationService : IEvaluationService
                 var attempt = new ChallengeAttempt
                 {
                     Id = Guid.NewGuid(),
-                    ProgressId = progress.Id,
+                    ProgressId = currentProgress.Id,
                     Score = evaluationResult.Score,
                     Passed = evaluationResult.Passed,
-                    HintsUsed = progress.HintsUsed,
+                    HintsUsed = currentProgress.HintsUsed,
                     GraphSubmittedJson = JsonSerializer.Serialize(request.Graph, JsonOptions),
                     EvaluationResultJson = JsonSerializer.Serialize(evaluationResult, JsonOptions),
                     CreatedAt = DateTime.UtcNow
@@ -244,10 +230,12 @@ public class EvaluationService : IEvaluationService
             return [];
         }
 
+        // Límite de 30 intentos más recientes para optimizar memoria y ancho de banda
         var attempts = await _dbContext.ChallengeAttempts
             .AsNoTracking()
             .Where(a => a.ProgressId == progress.Id)
             .OrderByDescending(a => a.CreatedAt)
+            .Take(30)
             .ToListAsync(cancellationToken);
 
         return attempts.Select(a =>
@@ -275,46 +263,5 @@ public class EvaluationService : IEvaluationService
                 GraphSubmitted = graph
             };
         }).ToList();
-    }
-
-    private async Task EnsureChallengeUnlockedAsync(Challenge challenge, Guid userId, CancellationToken cancellationToken)
-    {
-        var config = await _dbContext.SystemConfigs
-            .AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Id == "global_config", cancellationToken);
-
-        var accessMode = config?.AccessMode ?? AccessMode.OpenAccess;
-        if (accessMode == AccessMode.Progressive)
-        {
-            var user = await _dbContext.Users
-                .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
-
-            var userTotalXp = user?.TotalXP ?? 0;
-
-            if (challenge.PrerequisiteChallengeId.HasValue)
-            {
-                var prereqCompleted = await _dbContext.UserProgresses
-                    .AsNoTracking()
-                    .AnyAsync(p => p.UserId == userId 
-                                && p.ChallengeId == challenge.PrerequisiteChallengeId.Value 
-                                && p.Status == ProgressStatus.Completed, cancellationToken);
-
-                if (!prereqCompleted)
-                {
-                    var prereqChallenge = await _dbContext.Challenges
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync(c => c.Id == challenge.PrerequisiteChallengeId.Value, cancellationToken);
-
-                    var prereqTitle = prereqChallenge?.Title ?? "anterior";
-                    throw new ChallengeLockedException($"El desafío está bloqueado. Requiere completar el desafío '{prereqTitle}'.");
-                }
-            }
-
-            if (challenge.RequiredXP > 0 && userTotalXp < challenge.RequiredXP)
-            {
-                throw new ChallengeLockedException($"El desafío está bloqueado. Requiere {challenge.RequiredXP} XP (Actual: {userTotalXp} XP).");
-            }
-        }
     }
 }

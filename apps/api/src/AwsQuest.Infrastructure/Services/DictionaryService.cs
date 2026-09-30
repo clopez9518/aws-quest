@@ -82,6 +82,24 @@ public class DictionaryService : IDictionaryService
 
         if (term == null)
         {
+            var resolvedSlug = AwsQuest.Application.Common.DictionarySlugResolver.ResolveSlug(slug).ToLower();
+            if (!string.IsNullOrWhiteSpace(resolvedSlug) && resolvedSlug != normalizedSlug)
+            {
+                term = await _context.DictionaryTerms
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(t => t.Slug.ToLower() == resolvedSlug, cancellationToken);
+            }
+        }
+
+        if (term == null)
+        {
+            term = await _context.DictionaryTerms
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.ServiceCode != null && t.ServiceCode.ToLower() == normalizedSlug, cancellationToken);
+        }
+
+        if (term == null)
+        {
             return null;
         }
 
@@ -150,17 +168,17 @@ public class DictionaryService : IDictionaryService
     public async Task<List<DictionaryCategoryCountDto>> GetCategoriesSummaryAsync(
         CancellationToken cancellationToken = default)
     {
-        var terms = await _context.DictionaryTerms
+        var rawGroups = await _context.DictionaryTerms
             .AsNoTracking()
-            .Select(t => t.Category)
+            .GroupBy(t => t.Category)
+            .Select(g => new { Category = g.Key, Count = g.Count() })
             .ToListAsync(cancellationToken);
 
-        var groups = terms
-            .GroupBy(c => c, StringComparer.OrdinalIgnoreCase)
+        var groups = rawGroups
             .Select(g => new DictionaryCategoryCountDto(
-                Category: g.Key,
-                Count: g.Count(),
-                Label: FormatCategoryLabel(g.Key)
+                Category: g.Category,
+                Count: g.Count,
+                Label: FormatCategoryLabel(g.Category)
             ))
             .OrderByDescending(c => c.Count)
             .ThenBy(c => c.Label)

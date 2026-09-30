@@ -38,6 +38,7 @@ public static class DependencyInjection
         services.AddScoped<ICurrentUserService, AwsQuest.Infrastructure.Services.CurrentUserService>();
 
         // Catálogo y Desafíos
+        services.AddScoped<IChallengeAccessValidator, AwsQuest.Infrastructure.Services.ChallengeAccessValidator>();
         services.AddScoped<ICatalogService, AwsQuest.Infrastructure.Services.CatalogService>();
         services.AddScoped<IChallengeService, AwsQuest.Infrastructure.Services.ChallengeService>();
 

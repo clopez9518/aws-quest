@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { UserPlus, AlertCircle, Sparkles, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { ApiHttpError } from '../../../shared/api/ApiHttpError';
+import { PasswordRequirementsList } from '../components/PasswordRequirementsList';
 
 export function RegisterPage() {
   const [name, setName] = useState('');
@@ -95,12 +96,13 @@ export function RegisterPage() {
               id="register-page-password"
               type="password"
               required
-              minLength={6}
+              minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Mínimo 6 caracteres"
+              placeholder="Mínimo 8 caracteres"
               className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100 text-xs placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
             />
+            <PasswordRequirementsList password={password} />
           </div>
 
           <button

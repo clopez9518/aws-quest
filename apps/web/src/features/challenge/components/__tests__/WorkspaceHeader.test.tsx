@@ -85,11 +85,22 @@ describe('WorkspaceHeader Component', () => {
     expect(onOpenBriefing).toHaveBeenCalledTimes(1);
   });
 
-  it('debe renderizar el botón de Simular Tráfico y responder al clic', () => {
+  it('no debe renderizar el botón de Simular Tráfico por defecto (oculto para el usuario)', () => {
     const onToggleSimulation = vi.fn();
     render(
       <MemoryRouter>
         <WorkspaceHeader {...defaultProps} onToggleSimulation={onToggleSimulation} isSimulating={false} />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByRole('button', { name: /iniciar simulación de tráfico/i })).not.toBeInTheDocument();
+  });
+
+  it('debe renderizar el botón de Simular Tráfico y responder al clic cuando showSimulation es true', () => {
+    const onToggleSimulation = vi.fn();
+    render(
+      <MemoryRouter>
+        <WorkspaceHeader {...defaultProps} showSimulation={true} onToggleSimulation={onToggleSimulation} isSimulating={false} />
       </MemoryRouter>
     );
 
@@ -101,11 +112,11 @@ describe('WorkspaceHeader Component', () => {
     expect(onToggleSimulation).toHaveBeenCalledTimes(1);
   });
 
-  it('debe mostrar estado activo cuando isSimulating es true', () => {
+  it('debe mostrar estado activo cuando isSimulating y showSimulation son true', () => {
     const onToggleSimulation = vi.fn();
     render(
       <MemoryRouter>
-        <WorkspaceHeader {...defaultProps} onToggleSimulation={onToggleSimulation} isSimulating={true} />
+        <WorkspaceHeader {...defaultProps} showSimulation={true} onToggleSimulation={onToggleSimulation} isSimulating={true} />
       </MemoryRouter>
     );
 

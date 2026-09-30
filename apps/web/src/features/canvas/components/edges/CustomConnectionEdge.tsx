@@ -174,7 +174,8 @@ export function CustomConnectionEdge({
           style={{
             position: 'absolute',
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-            pointerEvents: 'all'
+            pointerEvents: 'all',
+            zIndex: 1000
           }}
           className={cn(
             'nodrag nopan flex items-center gap-1 px-2 py-0.5 rounded-full border shadow-md transition-all select-none',

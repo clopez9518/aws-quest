@@ -13,6 +13,7 @@ interface WorkspaceHeaderProps {
   nodeCount: number;
   hasBriefing?: boolean;
   onOpenBriefing?: () => void;
+  showSimulation?: boolean;
   isSimulating?: boolean;
   onToggleSimulation?: () => void;
   isLeftPanelCollapsed?: boolean;
@@ -62,6 +63,7 @@ export function WorkspaceHeader({
   nodeCount,
   hasBriefing,
   onOpenBriefing,
+  showSimulation = false,
   isSimulating,
   onToggleSimulation,
   isLeftPanelCollapsed = false,
@@ -155,8 +157,8 @@ export function WorkspaceHeader({
           </button>
         )}
 
-        {/* Simulador de Tráfico Táctico */}
-        {onToggleSimulation && (
+        {/* Simulador de Tráfico Táctico (Oculto en UI por ahora) */}
+        {showSimulation && onToggleSimulation && (
           <button
             type="button"
             data-testid="traffic-simulation-toggle"

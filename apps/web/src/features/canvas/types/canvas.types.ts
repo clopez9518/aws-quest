@@ -73,7 +73,9 @@ export interface ComponentConfig {
 
   // Nuevas propiedades de Infraestructura y Redes
   subnetTier?: SubnetTier | null;
+  tier?: SubnetTier | string | null;
   cidrBlock?: string | null;
+  cidr?: string | null;
   routeTableId?: string | null;
   attachedVpcId?: string | null;
   securityGroupIds?: string[];
@@ -146,6 +148,7 @@ export interface GraphComponentDto {
   serviceCode: string;
   label?: string | null;
   parentId?: string | null;
+  containerId?: string | null;
   kind?: ResourceKind;
   category?: string;
   config: ComponentConfig;

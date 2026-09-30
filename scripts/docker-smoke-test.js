@@ -114,24 +114,25 @@ async function runSmokeTests() {
     });
     if (res.statusCode !== 200 && res.statusCode !== 201) throw new Error(`HTTP ${res.statusCode}`);
     const json = JSON.parse(res.body);
-    if (!json.success || !json.data?.token) throw new Error('Token JWT no encontrado en respuesta');
-    guestToken = json.data.token;
+    const token = json.data?.accessToken || json.data?.token;
+    if (!json.success || !token) throw new Error('Token JWT no encontrado en respuesta');
+    guestToken = token;
   });
 
   // 6. Consulta de Catálogo con Token de Invitado
-  await check('Backend entrega 4 unidades y 8 desafíos en GET /api/v1/units', async () => {
+  await check('Backend entrega 12 unidades y 49 desafíos en GET /api/v1/units', async () => {
     if (!guestToken) throw new Error('Se requiere guestToken del paso anterior');
     const res = await request(`${API_URL}/api/v1/units`, {
       headers: { Authorization: `Bearer ${guestToken}` }
     });
     if (res.statusCode !== 200) throw new Error(`HTTP ${res.statusCode}`);
     const json = JSON.parse(res.body);
-    if (!json.success || !Array.isArray(json.data) || json.data.length !== 4) {
-      throw new Error(`Unidades esperadas 4, obtenidas: ${json.data?.length ?? 0}`);
+    if (!json.success || !Array.isArray(json.data) || json.data.length !== 12) {
+      throw new Error(`Unidades esperadas 12, obtenidas: ${json.data?.length ?? 0}`);
     }
     const totalChallenges = json.data.reduce((acc, u) => acc + (u.challenges?.length ?? 0), 0);
-    if (totalChallenges !== 8) {
-      throw new Error(`Desafíos esperados 8, obtenidos: ${totalChallenges}`);
+    if (totalChallenges !== 49) {
+      throw new Error(`Desafíos esperados 49, obtenidos: ${totalChallenges}`);
     }
   });
 

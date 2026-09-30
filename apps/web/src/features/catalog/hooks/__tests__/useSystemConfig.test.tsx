@@ -5,6 +5,7 @@ import React from 'react';
 import { useSystemConfig } from '../useSystemConfig';
 import * as systemConfigApi from '../../api/systemConfigApi';
 import { SystemConfigResponseDto } from '../../types/systemConfig.types';
+import { useAuthStore } from '../../../../shared/stores/useAuthStore';
 
 vi.mock('../../api/systemConfigApi');
 
@@ -19,6 +20,14 @@ describe('useSystemConfig', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    useAuthStore.getState().setSession('mock-token', {
+      id: 'usr-1',
+      name: 'Test User',
+      email: null,
+      isGuest: true,
+      totalXP: 0,
+      level: 1
+    });
     queryClient = new QueryClient({
       defaultOptions: {
         queries: { retry: false },

@@ -2,25 +2,11 @@ import { useState } from 'react';
 import { GripVertical, AlertCircle, Layers, HelpCircle } from 'lucide-react';
 import { ServicePaletteItem } from '../../canvas/types/canvas.types';
 import { useDictionaryStore } from '../../dictionary/stores/useDictionaryStore';
+import { resolveDictionarySlug } from '../../dictionary/utils/dictionarySlugResolver';
 
 interface ServicePaletteItemCardProps {
   service: ServicePaletteItem;
   currentCount: number;
-}
-
-function getDictionarySlug(title: string, serviceCode?: string): string {
-  if (serviceCode) {
-    const code = serviceCode.toLowerCase().replace(/_/g, '-');
-    if (code.startsWith('aws-')) return `amazon-${code.substring(4)}`;
-    if (code.startsWith('net-')) return `amazon-${code.substring(4)}`;
-    return code;
-  }
-  return title
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
 }
 
 export function ServicePaletteItemCard({
@@ -100,7 +86,7 @@ export function ServicePaletteItemCard({
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                openDrawer(getDictionarySlug(service.name, service.code));
+                openDrawer(resolveDictionarySlug(service.code, service.name, (service as any).dictionarySlug));
               }}
               className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 text-slate-400 hover:text-[#38BDF8] rounded hover:bg-slate-100 dark:hover:bg-[#1F2937]"
               aria-label={`Ver ficha de ${service.name} en el glosario`}

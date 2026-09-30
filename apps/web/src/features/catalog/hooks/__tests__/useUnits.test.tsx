@@ -5,6 +5,7 @@ import React from 'react';
 import { useUnits } from '../useUnits';
 import * as catalogApi from '../../api/catalogApi';
 import { UnitResponseDto } from '../../types/catalog.types';
+import { useAuthStore } from '../../../../shared/stores/useAuthStore';
 
 vi.mock('../../api/catalogApi');
 
@@ -22,6 +23,25 @@ function createWrapper() {
 describe('useUnits', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    useAuthStore.getState().setSession('mock-token', {
+      id: 'usr-1',
+      name: 'Test User',
+      email: null,
+      isGuest: true,
+      totalXP: 0,
+      level: 1
+    });
+  });
+
+  it('no debe disparar la petición si no está autenticado (enabled: false)', () => {
+    useAuthStore.getState().clearSession();
+
+    const { result } = renderHook(() => useUnits(), {
+      wrapper: createWrapper(),
+    });
+
+    expect(result.current.fetchStatus).toBe('idle');
+    expect(catalogApi.getUnitsCatalog).not.toHaveBeenCalled();
   });
 
   it('debe obtener y retornar las unidades del catálogo exitosamente', async () => {

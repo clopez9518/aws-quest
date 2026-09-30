@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider } from 'react-router-dom';
 import { router } from '../routes';
 import { useGuestSession } from '../features/auth/hooks/useGuestSession';
-
+import { CatalogSkeleton } from '../features/catalog/components/CatalogSkeleton';
 import { ApiHttpError } from '../shared/api/ApiHttpError';
 
 export const queryClient = new QueryClient({
@@ -29,7 +29,20 @@ export const queryClient = new QueryClient({
 
 function AppContent() {
   // Inicializa la sesión de invitado de manera transparente si no hay sesión activa
-  useGuestSession();
+  const { isInitialized } = useGuestSession();
+
+  if (!isInitialized) {
+    return (
+      <div
+        data-testid="app-bootstrapping-loader"
+        className="min-h-screen bg-slate-100 dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 flex flex-col items-center justify-center p-6"
+      >
+        <div className="w-full max-w-6xl mx-auto space-y-6">
+          <CatalogSkeleton />
+        </div>
+      </div>
+    );
+  }
 
   return <RouterProvider router={router} />;
 }

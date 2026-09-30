@@ -18,13 +18,18 @@ export function SubnetContainerNode({
     removeNode(id);
   };
 
-  const tier: SubnetTier =
+  const rawTier =
     data.config?.subnetTier ||
-    (data.config?.subnetType?.toLowerCase() === 'public'
+    (data.config as any)?.tier ||
+    data.config?.subnetType ||
+    data.subnetTier;
+
+  const tier: SubnetTier =
+    rawTier?.toLowerCase() === 'public'
       ? 'Public'
-      : data.config?.subnetType?.toLowerCase() === 'isolated'
+      : rawTier?.toLowerCase() === 'isolated'
       ? 'Isolated'
-      : 'Private');
+      : 'Private';
 
   const handleTierChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.stopPropagation();
@@ -34,12 +39,17 @@ export function SubnetContainerNode({
 
     updateNodeConfig(id, {
       subnetTier: newTier,
+      tier: newTier,
       subnetType: newTier,
-      cidrBlock: data.config?.cidrBlock || defaultCidr
+      cidrBlock: data.config?.cidrBlock || (data.config as any)?.cidr || defaultCidr,
+      cidr: data.config?.cidrBlock || (data.config as any)?.cidr || defaultCidr
     });
   };
 
-  const cidr = data.config?.cidrBlock || (tier === 'Public' ? '10.0.1.0/24' : tier === 'Private' ? '10.0.2.0/24' : '10.0.3.0/24');
+  const cidr =
+    data.config?.cidrBlock ||
+    (data.config as any)?.cidr ||
+    (tier === 'Public' ? '10.0.1.0/24' : tier === 'Private' ? '10.0.2.0/24' : '10.0.3.0/24');
 
   const tierConfig = {
     Public: {

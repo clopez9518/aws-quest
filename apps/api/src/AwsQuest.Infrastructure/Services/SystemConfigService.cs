@@ -1,5 +1,6 @@
 namespace AwsQuest.Infrastructure.Services;
 
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using AwsQuest.Application.Common.Interfaces;
 using AwsQuest.Application.Dtos.SystemConfig;
@@ -11,10 +12,14 @@ public class SystemConfigService : ISystemConfigService
 {
     private const string GlobalConfigId = "global_config";
     private readonly IAppDbContext _dbContext;
+    private readonly IValidator<UpdateSystemConfigRequestDto>? _validator;
 
-    public SystemConfigService(IAppDbContext dbContext)
+    public SystemConfigService(
+        IAppDbContext dbContext,
+        IValidator<UpdateSystemConfigRequestDto>? validator = null)
     {
         _dbContext = dbContext;
+        _validator = validator;
     }
 
     public async Task<SystemConfigResponseDto> GetConfigAsync(CancellationToken cancellationToken = default)
@@ -40,6 +45,11 @@ public class SystemConfigService : ISystemConfigService
 
     public async Task<SystemConfigResponseDto> UpdateConfigAsync(UpdateSystemConfigRequestDto request, CancellationToken cancellationToken = default)
     {
+        if (_validator != null)
+        {
+            await _validator.ValidateAndThrowAsync(request, cancellationToken);
+        }
+
         var config = await _dbContext.SystemConfigs
             .FirstOrDefaultAsync(c => c.Id == GlobalConfigId, cancellationToken);
 

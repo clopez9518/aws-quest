@@ -28,7 +28,22 @@ public class ChallengeSeeder(
 
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
-        var contentPath = configuration["Content:Path"];
+        var configuredPath = configuration["ContentSettings:RootPath"] 
+            ?? configuration["ContentSettings:ChallengesPath"] 
+            ?? configuration["Content:Path"];
+
+        string? contentPath = null;
+        if (!string.IsNullOrWhiteSpace(configuredPath))
+        {
+            if (Directory.Exists(configuredPath))
+            {
+                // Si la ruta configurada apunta a challenges, tomar el directorio content padre
+                contentPath = Directory.Exists(Path.Combine(configuredPath, "challenges"))
+                    ? configuredPath
+                    : Directory.GetParent(configuredPath)?.FullName;
+            }
+        }
+
         if (string.IsNullOrWhiteSpace(contentPath) || !Directory.Exists(contentPath))
         {
             contentPath = FindContentRootDirectory();

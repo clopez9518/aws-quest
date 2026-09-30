@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useFocusTrap } from '../../../shared/hooks/useFocusTrap';
 import { useDictionaryStore } from '../../dictionary/stores/useDictionaryStore';
+import { resolveDictionarySlug } from '../../dictionary/utils/dictionarySlugResolver';
 import { ChallengeBriefingDto } from '../types/challenge.types';
 
 export interface BriefingModalProps {
@@ -22,73 +23,6 @@ export interface BriefingModalProps {
   challengeTitle: string;
   briefing?: ChallengeBriefingDto | null;
   challengeId: string;
-}
-
-const SERVICE_CODE_TO_SLUG: Record<string, string> = {
-  AWS_EC2: 'amazon-ec2',
-  AWS_S3: 'amazon-s3',
-  AWS_RDS: 'amazon-rds',
-  AWS_DYNAMODB: 'amazon-dynamodb',
-  AWS_CLOUDFRONT: 'amazon-cloudfront',
-  AWS_ROUTE53: 'amazon-route-53',
-  AWS_ALB: 'application-load-balancer',
-  AWS_NLB: 'network-load-balancer',
-  AWS_ASG: 'auto-scaling-group',
-  AWS_EBS: 'amazon-ebs',
-  AWS_EFS: 'amazon-efs',
-  AWS_LAMBDA: 'aws-lambda',
-  AWS_APIGW: 'amazon-api-gateway',
-  AWS_SQS: 'amazon-sqs',
-  AWS_SNS: 'amazon-sns',
-  AWS_EVENTBRIDGE: 'amazon-eventbridge',
-  AWS_ECS: 'amazon-ecs',
-  AWS_FARGATE: 'aws-fargate',
-  AWS_WAF: 'aws-waf',
-  AWS_SECRETS: 'aws-secrets-manager',
-  AWS_CLOUDWATCH: 'amazon-cloudwatch',
-  AWS_CLOUDTRAIL: 'aws-cloudtrail',
-  AWS_CLOUDFORMATION: 'aws-cloudformation',
-  AWS_ELASTICACHE: 'amazon-elasticache',
-  AWS_AURORA: 'amazon-aurora',
-  AWS_STEPFUNCTIONS: 'aws-step-functions',
-  AWS_KMS: 'aws-kms',
-  AWS_IAM: 'aws-iam',
-  AWS_ATHENA: 'amazon-athena',
-  AWS_OPENSEARCH: 'amazon-opensearch',
-  AWS_COGNITO: 'amazon-cognito',
-  NET_VPC: 'amazon-vpc',
-  NET_SUBNET_PUB: 'subnet-publica',
-  NET_SUBNET_PRIV: 'subnet-privada',
-  NET_IGW: 'internet-gateway',
-  NET_NATGW: 'nat-gateway',
-  SEC_SG: 'security-group',
-  SEC_NACL: 'network-acl',
-  NET_RT: 'route-table',
-  SEC_BASTION: 'bastion-host',
-  NET_PEERING: 'vpc-peering',
-  NET_TGW: 'transit-gateway',
-  NET_CIDR: 'cidr-block',
-  NET_TG: 'target-group-health-checks',
-  NET_VPCE: 'vpc-endpoint-privatelink',
-};
-
-function getDictionarySlug(title: string, serviceCode?: string | null, explicitSlug?: string | null): string {
-  if (explicitSlug) return explicitSlug;
-  if (serviceCode && SERVICE_CODE_TO_SLUG[serviceCode.toUpperCase()]) {
-    return SERVICE_CODE_TO_SLUG[serviceCode.toUpperCase()];
-  }
-  if (serviceCode) {
-    const code = serviceCode.toLowerCase().replace(/_/g, '-');
-    if (code.startsWith('aws-')) return `amazon-${code.substring(4)}`;
-    if (code.startsWith('net-')) return `amazon-${code.substring(4)}`;
-    return code;
-  }
-  return title
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
 }
 
 export function BriefingModal({
@@ -227,14 +161,14 @@ export function BriefingModal({
                 aria-expanded={isComponentsOpen}
                 aria-controls="briefing-key-components-content"
                 data-testid="briefing-key-components-toggle"
-                className="w-full px-3.5 py-3 sm:px-4 flex items-center justify-between text-left hover:bg-slate-100 dark:hover:bg-slate-850/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer"
+                className="w-full px-3.5 py-3 sm:px-4 flex items-center justify-between text-left hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer group"
               >
                 <div className="flex items-center space-x-2.5">
                   <div className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
                     <Key className="w-3.5 h-3.5" />
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
+                    <span className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-slate-950 dark:group-hover:text-white transition-colors text-xs sm:text-sm">
                       Conceptos y componentes clave
                     </span>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30">
@@ -243,14 +177,14 @@ export function BriefingModal({
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                <div className="flex items-center space-x-1 text-xs font-semibold text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors">
                   <span className="hidden sm:inline">
                     {isComponentsOpen ? 'Plegar' : 'Desplegar'}
                   </span>
                   {isComponentsOpen ? (
-                    <ChevronUp className="w-4 h-4 text-slate-400 transition-transform duration-200" />
+                    <ChevronUp className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-transform duration-200" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400 transition-transform duration-200" />
+                    <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-transform duration-200" />
                   )}
                 </div>
               </button>
@@ -265,7 +199,7 @@ export function BriefingModal({
                     const isService =
                       item.category === 'service' ||
                       (item.serviceCode && item.serviceCode.startsWith('AWS_'));
-                    const termSlug = getDictionarySlug(item.title, item.serviceCode, item.slug);
+                    const termSlug = resolveDictionarySlug(item.serviceCode, item.title, item.slug);
                     return (
                       <div
                         key={idx}

@@ -104,6 +104,7 @@ function ArchitectureCanvasInner() {
           type: 'customConnectionEdge',
           animated: true
         }}
+        elevateEdgesOnSelect={true}
         proOptions={{ hideAttribution: true }}
       >
         {/* Dot Grid adaptativo */}

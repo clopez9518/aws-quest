@@ -28,7 +28,7 @@ public static class CatalogMappingExtensions
             Id = challenge.Id,
             Title = challenge.Title,
             Difficulty = challenge.Difficulty,
-            Mode = Enum.TryParse<ChallengeMode>(challenge.Mode.Replace("_", ""), true, out var m) ? m : ChallengeMode.Builder,
+            Mode = ParseChallengeMode(challenge.Mode, challenge.InitialGraphJson),
             BaseXP = challenge.BaseXP,
             RequiredXP = challenge.RequiredXP,
             OrderIndex = challenge.OrderIndex,
@@ -199,7 +199,7 @@ public static class CatalogMappingExtensions
             Title = challenge.Title,
             Description = challenge.Description,
             Difficulty = challenge.Difficulty,
-            Mode = Enum.TryParse<ChallengeMode>(challenge.Mode.Replace("_", ""), true, out var m) ? m : ChallengeMode.Builder,
+            Mode = ParseChallengeMode(challenge.Mode, challenge.InitialGraphJson),
             BaseXP = challenge.BaseXP,
             AllowedServices = allowedServices,
             HintsSummary = hintsSummary,
@@ -208,5 +208,30 @@ public static class CatalogMappingExtensions
             LastAttemptGraph = lastAttemptGraph,
             InitialGraph = initialGraph
         };
+    }
+
+    public static ChallengeMode ParseChallengeMode(string? rawMode, string? initialGraphJson = null)
+    {
+        if (string.IsNullOrWhiteSpace(rawMode))
+        {
+            return !string.IsNullOrWhiteSpace(initialGraphJson) 
+                ? ChallengeMode.FixArchitecture 
+                : ChallengeMode.Builder;
+        }
+
+        var normalized = rawMode.Trim().ToUpperInvariant().Replace("_", "");
+        if (normalized is "FIXARCHITECTURE" or "FIX" or "REPAIR" or "DIAGNOSE" or "AUDIT" or "INCIDENT")
+        {
+            return ChallengeMode.FixArchitecture;
+        }
+
+        if (Enum.TryParse<ChallengeMode>(normalized, true, out var parsed))
+        {
+            return parsed;
+        }
+
+        return !string.IsNullOrWhiteSpace(initialGraphJson) 
+            ? ChallengeMode.FixArchitecture 
+            : ChallengeMode.Builder;
     }
 }

@@ -2,13 +2,17 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { systemConfigKeys, catalogKeys } from './catalogQueryKeys';
 import { getSystemConfig, updateSystemConfig } from '../api/systemConfigApi';
 import { AccessMode, SystemConfigResponseDto } from '../types/systemConfig.types';
+import { useAuthStore } from '../../../shared/stores/useAuthStore';
 
 export function useSystemConfig() {
   const queryClient = useQueryClient();
+  const isInitialized = useAuthStore((state) => state.isInitialized);
+  const accessToken = useAuthStore((state) => state.accessToken);
 
   const configQuery = useQuery<SystemConfigResponseDto, Error>({
     queryKey: systemConfigKeys.config(),
     queryFn: getSystemConfig,
+    enabled: isInitialized && Boolean(accessToken),
     staleTime: 1000 * 60 * 5,
   });
 

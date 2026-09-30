@@ -17,7 +17,7 @@ export function VpcContainerNode({
     removeNode(id);
   };
 
-  const cidr = data.config?.cidrBlock || '10.0.0.0/16';
+  const cidr = data.config?.cidrBlock || (data.config as any)?.cidr || '10.0.0.0/16';
 
   return (
     <div

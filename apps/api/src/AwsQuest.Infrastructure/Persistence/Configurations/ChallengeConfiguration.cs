@@ -52,7 +52,6 @@ public class ChallengeConfiguration : IEntityTypeConfiguration<Challenge>
 
         // Índices
         builder.HasIndex(e => new { e.UnitId, e.OrderIndex }).IsUnique();
-        builder.HasIndex(e => e.UnitId);
         builder.HasIndex(e => e.PrerequisiteChallengeId);
 
         // Relaciones

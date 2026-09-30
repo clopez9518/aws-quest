@@ -3,6 +3,7 @@ import { X, Sparkles, UserPlus, LogIn, AlertCircle } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useFocusTrap } from '../../../shared/hooks/useFocusTrap';
 import { ApiHttpError } from '../../../shared/api/ApiHttpError';
+import { PasswordRequirementsList } from './PasswordRequirementsList';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -159,12 +160,13 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               data-testid="auth-password-input"
               type="password"
               required
-              minLength={6}
+              minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Mínimo 6 caracteres"
+              placeholder="Mínimo 8 caracteres"
               className="w-full px-3.5 py-2 rounded bg-slate-50 dark:bg-[#0B0F19] border border-slate-300 dark:border-[#374151] text-slate-900 dark:text-slate-100 text-xs placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF9900] focus:ring-1 focus:ring-[#FF9900] transition-all"
             />
+            {mode === 'register' && <PasswordRequirementsList password={password} />}
           </div>
 
           <button

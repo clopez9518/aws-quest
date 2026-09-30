@@ -19,6 +19,11 @@ public static class AuthenticationExtensions
         var jwtSettings = jwtSettingsSection.Get<JwtSettings>() 
             ?? throw new InvalidOperationException("Sección 'JwtSettings' no encontrada en la configuración.");
 
+        if (string.IsNullOrWhiteSpace(jwtSettings.Secret) || jwtSettings.Secret.Length < 32)
+        {
+            throw new InvalidOperationException("JwtSettings:Secret debe tener al menos 32 caracteres. Configure la variable de entorno 'JwtSettings__Secret'.");
+        }
+
         var key = Encoding.UTF8.GetBytes(jwtSettings.Secret);
 
         services.AddAuthentication(options =>

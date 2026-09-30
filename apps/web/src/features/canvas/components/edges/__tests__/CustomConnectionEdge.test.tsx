@@ -122,6 +122,13 @@ describe('CustomConnectionEdge', () => {
     expect(removeEdgeSpy).toHaveBeenCalledWith('edge_1_to_2');
   });
 
+  it('debe renderizar el contenedor de la etiqueta con zIndex 1000 y pointerEvents all para evitar solapamiento', () => {
+    const { container } = renderWithContainer(<CustomConnectionEdge {...defaultEdgeProps} />);
+    const labelContainer = container.querySelector('.react-flow__edgelabel-renderer > div');
+    expect(labelContainer).toBeInTheDocument();
+    expect(labelContainer).toHaveStyle({ zIndex: '1000', pointerEvents: 'all' });
+  });
+
   it('debe aplicar estilos visuales de selección cuando selected = true', () => {
     const { container } = renderWithContainer(
       <CustomConnectionEdge {...defaultEdgeProps} selected={true} />

@@ -3,7 +3,7 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { ApiErrorResponse, ErrorCodes } from '../types/api.types';
 import { ApiHttpError } from './ApiHttpError';
 
-const API_BASE_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL) || 'https://localhost:7234/api/v1';
+const API_BASE_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL) || '/api/v1';
 
 export const httpClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,

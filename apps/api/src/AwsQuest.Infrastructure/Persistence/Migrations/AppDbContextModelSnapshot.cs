@@ -162,8 +162,6 @@ namespace AwsQuest.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("PrerequisiteChallengeId");
 
-                    b.HasIndex("UnitId");
-
                     b.HasIndex("UnitId", "OrderIndex")
                         .IsUnique();
 

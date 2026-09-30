@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { User, LogOut, ShieldAlert, Sparkles, ChevronDown, Bell } from 'lucide-react';
+import { User, LogOut, ShieldAlert, Sparkles, ChevronDown } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
 interface UserSessionMenuProps {
@@ -47,16 +47,6 @@ export function UserSessionMenu({ onOpenAuthModal }: UserSessionMenuProps) {
 
   return (
     <div className="flex items-center space-x-2">
-      {/* Botón de Notificaciones */}
-      <button
-        type="button"
-        aria-label="Ver notificaciones del sistema"
-        className="relative p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 bg-white dark:bg-[#111827] hover:bg-slate-100 dark:hover:bg-[#1F2937] border border-slate-200 dark:border-[#374151] transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#FF9900] shadow-xs"
-      >
-        <Bell className="w-4 h-4" />
-        <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-[#0B0F19]" />
-      </button>
-
       {/* Menú de Usuario */}
       <div className="relative" ref={menuRef}>
         <button

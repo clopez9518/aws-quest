@@ -311,6 +311,28 @@ describe('useCanvasStore', () => {
     expect(edges.find(e => e.target === s3.id)?.data?.connectionType).toBe('STORAGE');
   });
 
+  it('debe inferir DATABASE al conectar EC2 con Auto Scaling hacia RDS y en sentido bidireccional (RDS -> EC2)', () => {
+    useCanvasStore.getState().addNode(ec2Service, { x: 0, y: 0 });
+    useCanvasStore.getState().addNode(rdsService, { x: 0, y: 100 });
+
+    const [ec2, rds] = useCanvasStore.getState().nodes;
+    // Activar Auto Scaling en EC2
+    useCanvasStore.getState().updateNodeConfig(ec2.id, { autoScaling: true, instanceCount: 3 });
+
+    // EC2 (con Auto Scaling) -> RDS
+    useCanvasStore.getState().onConnect({ source: ec2.id, target: rds.id });
+
+    let edges = useCanvasStore.getState().edges;
+    expect(edges[0]?.data?.connectionType).toBe('DATABASE');
+
+    // Limpiar aristas y probar sentido inverso: RDS -> EC2
+    useCanvasStore.setState({ edges: [] });
+    useCanvasStore.getState().onConnect({ source: rds.id, target: ec2.id });
+
+    edges = useCanvasStore.getState().edges;
+    expect(edges[0]?.data?.connectionType).toBe('DATABASE');
+  });
+
   it('debe permitir eliminar una arista individualmente (removeEdge)', () => {
     useCanvasStore.getState().addNode(albService, { x: 0, y: 0 });
     useCanvasStore.getState().addNode(ec2Service, { x: 0, y: 100 });
@@ -681,5 +703,32 @@ describe('useCanvasStore', () => {
     const exportedGraph = useCanvasStore.getState().toSemanticGraph();
     expect(exportedGraph.components.find(c => c.id === 'sub_1')?.parentId).toBe('vpc_1');
     expect(exportedGraph.components.find(c => c.id === 'ec2_1')?.parentId).toBe('sub_1');
+  });
+
+  it('debe soportar y asignar parentId y extent cuando el initialGraph usa containerId', () => {
+    const jsonStyleGraph: SemanticGraphDto = {
+      components: [
+        { id: 'vpc-1', serviceCode: 'NET_VPC', containerId: null, config: { cidrBlock: '10.0.0.0/16' } },
+        { id: 'subnet-pub-1', serviceCode: 'NET_SUBNET', containerId: 'vpc-1', config: { subnetTier: 'Public', cidrBlock: '10.0.1.0/24' } },
+        { id: 'ec2-web', serviceCode: 'AWS_EC2', containerId: 'subnet-pub-1', config: {} },
+        { id: 'rds-db-vuln', serviceCode: 'AWS_RDS', containerId: 'subnet-pub-1', config: { isPublic: true } }
+      ],
+      connections: []
+    };
+
+    useCanvasStore.getState().loadSemanticGraph(jsonStyleGraph);
+    const nodes = useCanvasStore.getState().nodes;
+
+    expect(nodes.length).toBe(4);
+    const subnetNode = nodes.find(n => n.id === 'subnet-pub-1');
+    const ec2Node = nodes.find(n => n.id === 'ec2-web');
+    const rdsNode = nodes.find(n => n.id === 'rds-db-vuln');
+
+    expect(subnetNode?.parentId).toBe('vpc-1');
+    expect(subnetNode?.extent).toBe('parent');
+    expect(ec2Node?.parentId).toBe('subnet-pub-1');
+    expect(ec2Node?.extent).toBe('parent');
+    expect(rdsNode?.parentId).toBe('subnet-pub-1');
+    expect(rdsNode?.extent).toBe('parent');
   });
 });

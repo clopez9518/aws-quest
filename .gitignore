@@ -4,6 +4,8 @@ obj/
 out/
 dist/
 build/
+*.tsbuildinfo
+.turbo/
 .vs/
 .vscode/
 .idea/
@@ -18,11 +20,15 @@ node_modules/
 packages/
 *.nupkg
 
-## Test Results and Coverage
+## Test Results, Reports and Coverage
 TestResults/
 *.trx
 coverage/
 *.cobertura.xml
+playwright-report/
+test-results/
+blob-report/
+playwright/.cache/
 
 ## Environment & Secrets
 .env

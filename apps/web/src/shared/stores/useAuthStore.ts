@@ -57,10 +57,13 @@ function loadPersistedToken(): string | null {
   }
 }
 
+const initialToken = loadPersistedToken();
+const initialUser = loadPersistedUser();
+
 export const useAuthStore = create<AuthState>((set, get) => ({
-  accessToken: loadPersistedToken(),
-  user: loadPersistedUser(),
-  isInitialized: false,
+  accessToken: initialToken,
+  user: initialUser,
+  isInitialized: Boolean(initialToken && initialUser),
   isLoading: false,
 
   isAuthenticated: () => {

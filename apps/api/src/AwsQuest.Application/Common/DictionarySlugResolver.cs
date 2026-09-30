@@ -7,45 +7,69 @@ public static class DictionarySlugResolver
 {
     private static readonly Dictionary<string, string> CodeToSlug = new(StringComparer.OrdinalIgnoreCase)
     {
+        // Compute
         ["AWS_EC2"] = "amazon-ec2",
+        ["AWS_LAMBDA"] = "aws-lambda",
+        ["AWS_ECS"] = "amazon-ecs",
+        ["AWS_ECR"] = "amazon-ecr",
+        ["AWS_FARGATE"] = "aws-fargate",
+        ["AWS_ASG"] = "auto-scaling-group",
+
+        // Storage & Database
         ["AWS_S3"] = "amazon-s3",
+        ["AWS_EBS"] = "amazon-ebs",
+        ["AWS_EFS"] = "amazon-efs",
         ["AWS_RDS"] = "amazon-rds",
+        ["AWS_AURORA"] = "amazon-aurora",
         ["AWS_DYNAMODB"] = "amazon-dynamodb",
+        ["AWS_ELASTICACHE"] = "amazon-elasticache",
+
+        // Networking & Content Delivery
         ["AWS_CLOUDFRONT"] = "amazon-cloudfront",
         ["AWS_ROUTE53"] = "amazon-route-53",
         ["AWS_ALB"] = "application-load-balancer",
         ["AWS_NLB"] = "network-load-balancer",
-        ["AWS_ASG"] = "auto-scaling-group",
-        ["AWS_EBS"] = "amazon-ebs",
-        ["AWS_EFS"] = "amazon-efs",
-        ["AWS_LAMBDA"] = "aws-lambda",
+        ["AWS_APIGATEWAY"] = "amazon-api-gateway",
         ["AWS_APIGW"] = "amazon-api-gateway",
+
+        // Integration & Messaging
         ["AWS_SQS"] = "amazon-sqs",
         ["AWS_SNS"] = "amazon-sns",
         ["AWS_EVENTBRIDGE"] = "amazon-eventbridge",
-        ["AWS_ECS"] = "amazon-ecs",
-        ["AWS_FARGATE"] = "aws-fargate",
+        ["AWS_STEPFUNCTIONS"] = "aws-step-functions",
+
+        // Security & Identity
+        ["AWS_IAM"] = "aws-iam",
         ["AWS_WAF"] = "aws-waf",
+        ["AWS_KMS"] = "aws-kms",
+        ["AWS_SECRETS_MANAGER"] = "aws-secrets-manager",
         ["AWS_SECRETS"] = "aws-secrets-manager",
+        ["AWS_COGNITO"] = "amazon-cognito",
+
+        // Monitoring & Management
         ["AWS_CLOUDWATCH"] = "amazon-cloudwatch",
         ["AWS_CLOUDTRAIL"] = "aws-cloudtrail",
         ["AWS_CLOUDFORMATION"] = "aws-cloudformation",
-        ["AWS_ELASTICACHE"] = "amazon-elasticache",
-        ["AWS_AURORA"] = "amazon-aurora",
-        ["AWS_STEPFUNCTIONS"] = "aws-step-functions",
-        ["AWS_KMS"] = "aws-kms",
-        ["AWS_IAM"] = "aws-iam",
+
+        // Analytics & Search
         ["AWS_ATHENA"] = "amazon-athena",
         ["AWS_OPENSEARCH"] = "amazon-opensearch",
-        ["AWS_COGNITO"] = "amazon-cognito",
+
+        // Network Infrastructure & VPC
         ["NET_VPC"] = "amazon-vpc",
+        ["NET_SUBNET"] = "subnet-publica",
         ["NET_SUBNET_PUB"] = "subnet-publica",
         ["NET_SUBNET_PRIV"] = "subnet-privada",
         ["NET_IGW"] = "internet-gateway",
+        ["NET_INTERNET_GATEWAY"] = "internet-gateway",
+        ["NET_NAT_GATEWAY"] = "nat-gateway",
         ["NET_NATGW"] = "nat-gateway",
-        ["SEC_SG"] = "security-group",
-        ["SEC_NACL"] = "network-acl",
+        ["NET_ROUTE_TABLE"] = "route-table",
         ["NET_RT"] = "route-table",
+        ["NET_SECURITY_GROUP"] = "security-group",
+        ["SEC_SG"] = "security-group",
+        ["NET_NACL"] = "network-acl",
+        ["SEC_NACL"] = "network-acl",
         ["SEC_BASTION"] = "bastion-host",
         ["NET_PEERING"] = "vpc-peering",
         ["NET_TGW"] = "transit-gateway",
