@@ -48,3 +48,5 @@ postgres_data/
 
 ## Temporary scratch scripts
 scratch/
+
+docs/25-aws-ec2-backend-migration-plan.md
