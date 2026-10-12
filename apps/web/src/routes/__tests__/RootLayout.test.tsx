@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { RootLayout } from '../RootLayout';
 import { useAuthStore } from '../../shared/stores/useAuthStore';
@@ -46,4 +46,28 @@ describe('RootLayout', () => {
     expect(screen.getByRole('button', { name: /Guardar progreso/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Cambiar a modo/i })).toBeInTheDocument();
   });
+
+  it('debe abrir el tutorial de bienvenida automáticamente si es la primera visita y permitir cerrarlo', () => {
+    renderWithProviders(<RootLayout />);
+
+    expect(screen.getByTestId('onboarding-tutorial-modal')).toBeInTheDocument();
+    expect(screen.getByText(/Bienvenido a AWS Quest Architecture Arena/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId('skip-onboarding-tutorial'));
+    expect(screen.queryByTestId('onboarding-tutorial-modal')).not.toBeInTheDocument();
+  });
+
+  it('no debe abrir el tutorial automáticamente si ya fue completado previamente, pero permite abrirlo con el botón Tutorial del header', () => {
+    localStorage.setItem('awsquest_onboarding_completed', 'true');
+    renderWithProviders(<RootLayout />);
+
+    expect(screen.queryByTestId('onboarding-tutorial-modal')).not.toBeInTheDocument();
+
+    const tutorialBtn = screen.getByTestId('header-tutorial-button');
+    fireEvent.click(tutorialBtn);
+
+    expect(screen.getByTestId('onboarding-tutorial-modal')).toBeInTheDocument();
+    expect(screen.getByText(/Bienvenido a AWS Quest Architecture Arena/i)).toBeInTheDocument();
+  });
 });
+
