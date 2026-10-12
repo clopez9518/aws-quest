@@ -119,8 +119,8 @@ describe('ChallengePage', () => {
 
     renderChallengePage();
 
-    expect(screen.getByText('Arquitectura Web Resiliente en EC2')).toBeInTheDocument();
-    expect(screen.getByText('Amazon EC2')).toBeInTheDocument();
+    expect(screen.getAllByText('Arquitectura Web Resiliente en EC2').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Amazon EC2').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByRole('tab', { name: /historial/i })).toBeInTheDocument();
   });
 
@@ -227,11 +227,13 @@ describe('ChallengePage', () => {
 
     renderChallengePage('c-202');
 
-    expect(screen.getByText('Reparación de Monolito sin Balanceo')).toBeInTheDocument();
+    expect(screen.getAllByText('Reparación de Monolito sin Balanceo').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Reparar')).toBeInTheDocument();
   });
 
-  it('debe abrir y cerrar el modal de Caso de Negocio al pulsar el botón del header', () => {
+  it('debe abrir automáticamente el Caso de Negocio al cargar por primera vez y permitir alternar con Briefing', () => {
+    localStorage.clear();
+
     const mockChallenge: ChallengeDetailResponseDto = {
       id: 'c-303',
       title: 'Caso de Negocio FinTech',
@@ -239,6 +241,12 @@ describe('ChallengePage', () => {
       difficulty: 'hard',
       mode: 'builder',
       baseXP: 300,
+      briefing: {
+        keyConcept: 'Alta disponibilidad con multi-AZ',
+        businessScenario: '10k transacciones bancarias concurrentes.',
+        learningObjective: 'Diseñar arquitectura bancaria tolerante a fallos.',
+        keyTakeaways: ['Usa subredes privadas para bases de datos.']
+      },
       allowedServices: [
         {
           code: 'AWS_EC2',
@@ -262,20 +270,25 @@ describe('ChallengePage', () => {
 
     renderChallengePage('c-303');
 
-    const businessCaseButton = screen.getByRole('button', { name: /abrir caso de negocio/i });
-    expect(businessCaseButton).toBeInTheDocument();
-
-    // Abrir modal
-    fireEvent.click(businessCaseButton);
-
-    expect(screen.getByTestId('business-case-modal')).toBeInTheDocument();
+    // Se abre automáticamente con Caso de Negocio visible primero
+    expect(screen.getByTestId('challenge-context-modal')).toBeInTheDocument();
     expect(screen.getByText('Migración bancaria crítica con cero tiempo de inactividad.')).toBeInTheDocument();
 
-    // Cerrar modal
-    const closeBtn = screen.getByTestId('close-business-case-modal');
-    fireEvent.click(closeBtn);
+    // Cambiar a pestaña Briefing
+    const briefingTab = screen.getByTestId('modal-tab-briefing');
+    fireEvent.click(briefingTab);
+    expect(screen.getByText('Alta disponibilidad con multi-AZ')).toBeInTheDocument();
 
-    expect(screen.queryByTestId('business-case-modal')).not.toBeInTheDocument();
+    // Cerrar modal
+    const closeBtn = screen.getByTestId('close-challenge-context-modal');
+    fireEvent.click(closeBtn);
+    expect(screen.queryByTestId('challenge-context-modal')).not.toBeInTheDocument();
+
+    // Reabrir desde el botón del header
+    const businessCaseButton = screen.getByRole('button', { name: /abrir caso de negocio/i });
+    fireEvent.click(businessCaseButton);
+    expect(screen.getByTestId('challenge-context-modal')).toBeInTheDocument();
   });
 });
+
 

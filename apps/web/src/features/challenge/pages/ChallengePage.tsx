@@ -16,8 +16,10 @@ import { EvaluationModal } from '../../evaluation/components/EvaluationModal';
 import { LevelUpModal } from '../../../shared/components/LevelUpModal';
 import { AuthModal } from '../../auth/components/AuthModal';
 import { RestoreAttemptModal } from '../../evaluation/components/RestoreAttemptModal';
-import { BriefingModal } from '../components/BriefingModal';
-import { BusinessCaseModal } from '../components/BusinessCaseModal';
+import {
+  ChallengeContextModal,
+  ChallengeContextTab
+} from '../components/ChallengeContextModal';
 import {
   EvaluateArchitectureResponseDto,
   ChallengeAttemptHistoryDto
@@ -48,8 +50,8 @@ export function ChallengePage() {
   // Estados visuales del Workspace, Modales y Evaluación
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(false);
   const [isHintsDrawerOpen, setIsHintsDrawerOpen] = useState(false);
-  const [isBriefingModalOpen, setIsBriefingModalOpen] = useState(false);
-  const [isBusinessCaseModalOpen, setIsBusinessCaseModalOpen] = useState(false);
+  const [isContextModalOpen, setIsContextModalOpen] = useState(false);
+  const [contextModalTab, setContextModalTab] = useState<ChallengeContextTab>('businessCase');
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [levelUpData, setLevelUpData] = useState<{ newLevel: number; totalXp: number } | null>(null);
@@ -182,13 +184,12 @@ export function ChallengePage() {
         loadSemanticGraph(graphToLoad, allowedServices);
         loadedChallengeIdRef.current = challengeDto.id;
 
-        // Auto-abrir briefing si existe y el usuario no lo ha silenciado
-        if (challengeDto.briefing) {
-          const isHidden =
-            localStorage.getItem(`awsquest_hide_briefing_${challengeDto.id}`) === 'true';
-          if (!isHidden) {
-            setIsBriefingModalOpen(true);
-          }
+        // Auto-abrir modal de contexto con la pestaña de Caso de Negocio por defecto si el usuario no lo ha silenciado
+        const isHidden =
+          localStorage.getItem(`awsquest_hide_briefing_${challengeDto.id}`) === 'true';
+        if (!isHidden) {
+          setContextModalTab('businessCase');
+          setIsContextModalOpen(true);
         }
       } else {
         setAllowedServices(allowedServices);
@@ -305,8 +306,14 @@ export function ChallengePage() {
         unlockedHintsCount={unlockedHintsCount}
         nodeCount={nodeCount}
         hasBriefing={Boolean(challengeDto.briefing)}
-        onOpenBriefing={() => setIsBriefingModalOpen(true)}
-        onOpenBusinessCase={() => setIsBusinessCaseModalOpen(true)}
+        onOpenBriefing={() => {
+          setContextModalTab('briefing');
+          setIsContextModalOpen(true);
+        }}
+        onOpenBusinessCase={() => {
+          setContextModalTab('businessCase');
+          setIsContextModalOpen(true);
+        }}
         isSimulating={isSimulating}
         onToggleSimulation={() => (isSimulating ? stopSimulation() : startSimulation())}
         isLeftPanelCollapsed={isLeftPanelCollapsed}
@@ -327,8 +334,14 @@ export function ChallengePage() {
           allowedServices={allowedServices}
           isCollapsed={isLeftPanelCollapsed}
           hasBriefing={Boolean(challengeDto.briefing)}
-          onOpenBriefing={() => setIsBriefingModalOpen(true)}
-          onOpenBusinessCase={() => setIsBusinessCaseModalOpen(true)}
+          onOpenBriefing={() => {
+            setContextModalTab('briefing');
+            setIsContextModalOpen(true);
+          }}
+          onOpenBusinessCase={() => {
+            setContextModalTab('businessCase');
+            setIsContextModalOpen(true);
+          }}
           onToggleCollapse={() => setIsLeftPanelCollapsed((prev) => !prev)}
           onRestoreAttempt={handleRestoreAttempt}
         />
@@ -349,26 +362,19 @@ export function ChallengePage() {
         />
       </div>
 
-      {/* Modal de Micro-Cápsula de Contexto (Briefing) */}
-      <BriefingModal
-        isOpen={isBriefingModalOpen}
-        onClose={() => setIsBriefingModalOpen(false)}
+      {/* Modal Unificado de Contexto: Caso de Negocio y Briefing Técnico */}
+      <ChallengeContextModal
+        isOpen={isContextModalOpen}
+        onClose={() => setIsContextModalOpen(false)}
         challengeTitle={challengeDto.title}
-        briefing={challengeDto.briefing}
         challengeId={challengeDto.id}
-      />
-
-      {/* Modal de Caso de Negocio y Requerimientos */}
-      <BusinessCaseModal
-        isOpen={isBusinessCaseModalOpen}
-        onClose={() => setIsBusinessCaseModalOpen(false)}
-        challengeTitle={challengeDto.title}
         description={challengeDto.description}
         mode={challengeDto.mode}
         difficulty={challengeDto.difficulty}
-        businessScenario={challengeDto.briefing?.businessScenario}
+        briefing={challengeDto.briefing}
         requirements={requirements}
         allowedServices={allowedServices}
+        initialTab={contextModalTab}
       />
 
       {/* Modal de Resultados y Feedback Pedagógico */}
