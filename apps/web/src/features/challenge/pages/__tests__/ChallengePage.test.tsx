@@ -119,8 +119,8 @@ describe('ChallengePage', () => {
 
     renderChallengePage();
 
-    expect(screen.getByText('Arquitectura Web Resiliente en EC2')).toBeInTheDocument();
-    expect(screen.getByText('Amazon EC2')).toBeInTheDocument();
+    expect(screen.getAllByText('Arquitectura Web Resiliente en EC2').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Amazon EC2').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByRole('tab', { name: /historial/i })).toBeInTheDocument();
   });
 
@@ -227,7 +227,68 @@ describe('ChallengePage', () => {
 
     renderChallengePage('c-202');
 
-    expect(screen.getByText('Reparación de Monolito sin Balanceo')).toBeInTheDocument();
+    expect(screen.getAllByText('Reparación de Monolito sin Balanceo').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Reparar')).toBeInTheDocument();
   });
+
+  it('debe abrir automáticamente el Caso de Negocio al cargar por primera vez y permitir alternar con Briefing', () => {
+    localStorage.clear();
+
+    const mockChallenge: ChallengeDetailResponseDto = {
+      id: 'c-303',
+      title: 'Caso de Negocio FinTech',
+      description: 'Migración bancaria crítica con cero tiempo de inactividad.',
+      difficulty: 'hard',
+      mode: 'builder',
+      baseXP: 300,
+      briefing: {
+        keyConcept: 'Alta disponibilidad con multi-AZ',
+        businessScenario: '10k transacciones bancarias concurrentes.',
+        learningObjective: 'Diseñar arquitectura bancaria tolerante a fallos.',
+        keyTakeaways: ['Usa subredes privadas para bases de datos.']
+      },
+      allowedServices: [
+        {
+          code: 'AWS_EC2',
+          name: 'Amazon EC2',
+          category: 'Compute',
+          iconUrl: '/icons/aws/ec2.svg',
+          maxInstances: 2,
+          isDistractor: false
+        }
+      ],
+      hintsSummary: { totalHints: 2, unlockedCount: 0, unlockedHints: [] }
+    };
+
+    vi.mocked(useChallengeHook.useChallenge).mockReturnValue({
+      data: mockChallenge,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn()
+    } as any);
+
+    renderChallengePage('c-303');
+
+    // Se abre automáticamente con Caso de Negocio visible primero
+    expect(screen.getByTestId('challenge-context-modal')).toBeInTheDocument();
+    expect(screen.getByText('Migración bancaria crítica con cero tiempo de inactividad.')).toBeInTheDocument();
+
+    // Cambiar a pestaña Briefing
+    const briefingTab = screen.getByTestId('modal-tab-briefing');
+    fireEvent.click(briefingTab);
+    expect(screen.getByText('Alta disponibilidad con multi-AZ')).toBeInTheDocument();
+
+    // Cerrar modal
+    const closeBtn = screen.getByTestId('close-challenge-context-modal');
+    fireEvent.click(closeBtn);
+    expect(screen.queryByTestId('challenge-context-modal')).not.toBeInTheDocument();
+
+    // Reabrir desde el botón del header
+    const businessCaseButton = screen.getByRole('button', { name: /abrir caso de negocio/i });
+    fireEvent.click(businessCaseButton);
+    expect(screen.getByTestId('challenge-context-modal')).toBeInTheDocument();
+  });
 });
+
+

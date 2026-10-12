@@ -7,7 +7,8 @@ import {
   ChevronRight,
   CheckCircle2,
   AlertTriangle,
-  BookOpen
+  BookOpen,
+  ExternalLink
 } from 'lucide-react';
 import { ArchitectureRequirement } from '../types/challenge.types';
 import { ChallengeMode } from '../../catalog/types/catalog.types';
@@ -27,6 +28,7 @@ export interface ProblemContextPanelProps {
   isCollapsed: boolean;
   hasBriefing?: boolean;
   onOpenBriefing?: () => void;
+  onOpenBusinessCase?: () => void;
   onToggleCollapse: () => void;
   onRestoreAttempt?: (attempt: ChallengeAttemptHistoryDto, attemptNumber: number) => void;
 }
@@ -40,6 +42,7 @@ export function ProblemContextPanel({
   isCollapsed,
   hasBriefing = false,
   onOpenBriefing,
+  onOpenBusinessCase,
   onToggleCollapse,
   onRestoreAttempt
 }: ProblemContextPanelProps) {
@@ -230,9 +233,22 @@ export function ProblemContextPanel({
 
             {/* Enunciado del Desafío */}
             <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#0B0F19] border border-slate-200 dark:border-[#374151]">
-              <div className="flex items-center space-x-1.5 text-xs font-mono font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-                <FileText className="w-3.5 h-3.5 text-[#FF9900]" />
-                <span>{mode === 'fixArchitecture' ? 'Objetivo del Incidente' : 'Caso de Negocio'}</span>
+              <div className="flex items-center justify-between mb-1.5">
+                <div className="flex items-center space-x-1.5 text-xs font-mono font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  <FileText className="w-3.5 h-3.5 text-[#FF9900]" />
+                  <span>{mode === 'fixArchitecture' ? 'Objetivo del Incidente' : 'Caso de Negocio'}</span>
+                </div>
+                {onOpenBusinessCase && (
+                  <button
+                    type="button"
+                    onClick={onOpenBusinessCase}
+                    className="text-[10px] font-mono text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 hover:underline cursor-pointer inline-flex items-center gap-0.5"
+                    title="Ver caso de negocio completo en modal"
+                  >
+                    <span>Ver modal</span>
+                    <ExternalLink className="w-2.5 h-2.5" />
+                  </button>
+                )}
               </div>
               <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                 {description}

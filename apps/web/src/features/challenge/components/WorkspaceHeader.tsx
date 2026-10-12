@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Clock, Lightbulb, Send, Zap, BookOpen, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { ArrowLeft, Clock, Lightbulb, Send, Zap, BookOpen, Briefcase, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { DifficultyLevel, ChallengeMode } from '../../catalog/types/catalog.types';
 
 interface WorkspaceHeaderProps {
@@ -13,6 +13,7 @@ interface WorkspaceHeaderProps {
   nodeCount: number;
   hasBriefing?: boolean;
   onOpenBriefing?: () => void;
+  onOpenBusinessCase?: () => void;
   showSimulation?: boolean;
   isSimulating?: boolean;
   onToggleSimulation?: () => void;
@@ -63,6 +64,7 @@ export function WorkspaceHeader({
   nodeCount,
   hasBriefing,
   onOpenBriefing,
+  onOpenBusinessCase,
   showSimulation = false,
   isSimulating,
   onToggleSimulation,
@@ -140,7 +142,7 @@ export function WorkspaceHeader({
         </div>
       </div>
 
-      {/* Sección Derecha: Micro-cápsula, Simulación, Pistas, Timer y Evaluación */}
+      {/* Sección Derecha: Micro-cápsula, Caso de Negocio, Simulación, Pistas, Timer y Evaluación */}
       <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
         {/* Micro-Cápsula de Contexto (Briefing) */}
         {(hasBriefing ?? Boolean(onOpenBriefing)) && onOpenBriefing && (
@@ -154,6 +156,21 @@ export function WorkspaceHeader({
           >
             <BookOpen className="w-3.5 h-3.5 text-[#FF9900]" />
             <span className="hidden sm:inline">Briefing</span>
+          </button>
+        )}
+
+        {/* Caso de Negocio */}
+        {onOpenBusinessCase && (
+          <button
+            type="button"
+            data-testid="business-case-button"
+            onClick={onOpenBusinessCase}
+            className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 py-1.5 rounded-xl border border-sky-300 dark:border-sky-500/40 bg-sky-50 dark:bg-sky-500/10 text-sky-700 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-500/20 text-xs font-semibold transition-all cursor-pointer shadow-xs"
+            title="Abrir Caso de Negocio y Requerimientos"
+            aria-label="Abrir caso de negocio"
+          >
+            <Briefcase className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+            <span className="hidden sm:inline">Caso de Negocio</span>
           </button>
         )}
 

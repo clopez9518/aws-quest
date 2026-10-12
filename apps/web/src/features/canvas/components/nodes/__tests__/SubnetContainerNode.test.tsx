@@ -51,7 +51,7 @@ describe('SubnetContainerNode', () => {
     renderWithReactFlow(<SubnetContainerNode {...defaultSubnetProps} />);
 
     expect(screen.getByText('Public Subnet')).toBeInTheDocument();
-    expect(screen.getByText('10.0.1.0/24')).toBeInTheDocument();
+    expect(screen.getAllByText('10.0.1.0/24').length).toBeGreaterThanOrEqual(1);
   });
 
   it('debe renderizar correctamente los estilos y textos para una Subred Privada', () => {
@@ -71,7 +71,51 @@ describe('SubnetContainerNode', () => {
     renderWithReactFlow(<SubnetContainerNode {...privateProps} />);
 
     expect(screen.getByText('Private Subnet')).toBeInTheDocument();
-    expect(screen.getByText('10.0.2.0/24')).toBeInTheDocument();
+    expect(screen.getAllByText('10.0.2.0/24').length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('debe permitir seleccionar un nuevo rango CIDR mediante el selector', () => {
+    const updateNodeConfigSpy = vi.fn();
+    useCanvasStore.setState({ updateNodeConfig: updateNodeConfigSpy });
+
+    renderWithReactFlow(<SubnetContainerNode {...defaultSubnetProps} />);
+
+    const cidrSelect = screen.getByTestId('subnet-cidr-select');
+    fireEvent.change(cidrSelect, { target: { value: '10.0.4.0/24' } });
+
+    expect(updateNodeConfigSpy).toHaveBeenCalledWith('subnet_public_1', {
+      cidrBlock: '10.0.4.0/24',
+      cidr: '10.0.4.0/24'
+    });
+  });
+
+  it('debe mostrar una alerta visual cuando el CIDR colisiona con otra subred en la misma VPC', () => {
+    useCanvasStore.setState({
+      nodes: [
+        {
+          id: 'subnet_hermana',
+          type: 'subnetContainerNode',
+          position: { x: 0, y: 0 },
+          parentId: 'vpc_1',
+          data: {
+            serviceCode: 'NET_SUBNET',
+            name: 'Subred Hermana',
+            category: 'NetworkVpc',
+            iconUrl: '',
+            config: { cidrBlock: '10.0.1.0/24' }
+          }
+        }
+      ]
+    });
+
+    const conflictingProps: NodeProps<AwsCanvasNode> = {
+      ...defaultSubnetProps,
+      parentId: 'vpc_1'
+    };
+
+    renderWithReactFlow(<SubnetContainerNode {...conflictingProps} />);
+
+    expect(screen.getByTestId('subnet-cidr-warning')).toBeInTheDocument();
   });
 
   it('debe invocar removeNode al hacer clic en el botón de eliminar Subred', () => {

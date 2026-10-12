@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../shared/stores/useAuthStore';
 import { useDictionaryStore } from '../features/dictionary/stores/useDictionaryStore';
@@ -8,16 +8,35 @@ import { XpProgressBar } from '../shared/components/XpProgressBar';
 import { UserSessionMenu } from '../features/auth/components/UserSessionMenu';
 import { AuthModal } from '../features/auth/components/AuthModal';
 import { ThemeToggle } from '../shared/components/ThemeToggle';
-import { Search } from 'lucide-react';
+import { Search, HelpCircle } from 'lucide-react';
+import {
+  OnboardingTutorialModal,
+  ONBOARDING_STORAGE_KEY
+} from '../features/catalog/components/OnboardingTutorialModal';
 
 export function RootLayout() {
   const user = useAuthStore((state) => state.user);
   const openSpotlight = useDictionaryStore((state) => state.openSpotlight);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const location = useLocation();
 
   const isCatalog = location.pathname.startsWith('/catalog');
   const isDictionary = location.pathname.startsWith('/dictionary');
+
+  // Comprobar si es la primera visita del usuario a la aplicación
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const completed = localStorage.getItem(ONBOARDING_STORAGE_KEY);
+        if (!completed) {
+          setIsOnboardingOpen(true);
+        }
+      }
+    } catch {
+      // Ignorar restricciones en entornos sin acceso a localStorage
+    }
+  }, []);
 
   return (
     <div className="h-screen flex flex-col bg-slate-100 dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 antialiased selection:bg-[#FF9900] selection:text-slate-950 overflow-hidden">
@@ -108,6 +127,19 @@ export function RootLayout() {
             </kbd>
           </button>
 
+          {/* Botón de Tutorial / Ayuda */}
+          <button
+            type="button"
+            data-testid="header-tutorial-button"
+            onClick={() => setIsOnboardingOpen(true)}
+            className="flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-[#FF9900] dark:hover:text-[#FFC082] bg-white dark:bg-[#111827] hover:bg-slate-100 dark:hover:bg-[#1F2937] rounded-lg border border-slate-300 dark:border-[#374151] transition-all cursor-pointer shadow-xs focus-visible:ring-2 focus-visible:ring-[#FF9900]"
+            title="Abrir Tutorial y Guía Rápida"
+            aria-label="Abrir Tutorial de Bienvenida"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-[#FF9900]" />
+            <span className="hidden md:inline">Tutorial</span>
+          </button>
+
           <XpProgressBar totalXp={user?.totalXP ?? 0} />
           <ThemeToggle />
           <UserSessionMenu onOpenAuthModal={() => setIsAuthModalOpen(true)} />
@@ -123,6 +155,13 @@ export function RootLayout() {
       >
         <Outlet />
       </main>
+
+      {/* Modal de Onboarding / Tutorial de Bienvenida */}
+      <OnboardingTutorialModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+        onComplete={() => setIsOnboardingOpen(false)}
+      />
 
       {/* Modal de Autenticación / Migración */}
       <AuthModal

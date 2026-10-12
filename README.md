@@ -170,3 +170,4 @@ Para más información técnica, consulta los documentos en el directorio [`docs
 - [`08-api-spec.md`](docs/08-api-spec.md): Especificación formal de la API REST.
 - [`10-game-mechanics.md`](docs/10-game-mechanics.md): Mecánicas de gamificación, puntuación y XP.
 - [`24-production-deployment-audit-and-plan.md`](docs/24-production-deployment-audit-and-plan.md): Auditoría completa y plan de implementación para producción (Vercel, Render y Neon).
+- [`25-aws-ec2-backend-migration-plan.md`](docs/25-aws-ec2-backend-migration-plan.md): Plan de migración del Backend a AWS EC2 (Free Tier + Docker + Nginx SSL).

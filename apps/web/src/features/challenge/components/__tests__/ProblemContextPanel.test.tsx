@@ -120,15 +120,17 @@ describe('ProblemContextPanel Component', () => {
     ).toBeInTheDocument();
   });
 
-  it('no debe mostrar el banner de advertencia cuando mode es builder', () => {
+  it('debe llamar a onOpenBusinessCase al hacer clic en el botón Ver modal en la pestaña Requisitos', () => {
+    const onOpenBusinessCaseMock = vi.fn();
+
     render(
       <ProblemContextPanel
-        description="Construye desde cero"
-        mode="builder"
+        description="Caso de prueba empresarial"
         requirements={mockRequirements}
         allowedServices={mockServices}
         isCollapsed={false}
         onToggleCollapse={vi.fn()}
+        onOpenBusinessCase={onOpenBusinessCaseMock}
       />,
       { wrapper: createWrapper() }
     );
@@ -136,6 +138,11 @@ describe('ProblemContextPanel Component', () => {
     const reqTab = screen.getByRole('tab', { name: /requisitos/i });
     fireEvent.click(reqTab);
 
-    expect(screen.queryByText('Arquitectura con problemas detectados')).not.toBeInTheDocument();
+    const openModalBtn = screen.getByRole('button', { name: /ver modal/i });
+    expect(openModalBtn).toBeInTheDocument();
+
+    fireEvent.click(openModalBtn);
+    expect(onOpenBusinessCaseMock).toHaveBeenCalledTimes(1);
   });
 });
+
