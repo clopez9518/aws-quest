@@ -91,10 +91,10 @@ export function HintDrawer({
                 data-testid="hint-card"
                 className={`p-3.5 rounded-xl border transition-all ${
                   isUnlocked
-                    ? 'bg-amber-500/5 dark:bg-slate-950/60 border-amber-500/30 dark:border-amber-500/40 shadow-xs'
+                    ? 'bg-amber-500/5 dark:bg-amber-950/20 border-amber-500/30 dark:border-amber-500/40 shadow-xs'
                     : isNext
-                    ? 'bg-slate-50 dark:bg-slate-850/50 border-slate-300 dark:border-slate-700'
-                    : 'bg-slate-100/50 dark:bg-slate-950/30 border-slate-200 dark:border-slate-850 opacity-60'
+                    ? 'bg-slate-50 dark:bg-slate-800/80 border-slate-300 dark:border-amber-500/30 shadow-xs dark:shadow-inner'
+                    : 'bg-slate-100/50 dark:bg-slate-800/30 border-slate-200 dark:border-slate-800 opacity-60'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -102,7 +102,7 @@ export function HintDrawer({
                     {isUnlocked ? (
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                     ) : (
-                      <Lock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+                      <Lock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400" />
                     )}
                     <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100">
                       Pista #{hint.orderIndex}
@@ -113,6 +113,8 @@ export function HintDrawer({
                     className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
                       isUnlocked
                         ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300 font-bold border border-amber-500/20'
+                        : isNext
+                        ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 font-bold border border-amber-300 dark:border-amber-500/30'
                         : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
                     }`}
                   >
@@ -126,7 +128,7 @@ export function HintDrawer({
                   </p>
                 ) : isNext ? (
                   <div className="space-y-2 mt-2">
-                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
                       Esta pista está disponible. Puedes revelarla asumiendo la penalización de puntuación.
                     </p>
                     <button
