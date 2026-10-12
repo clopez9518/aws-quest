@@ -1,15 +1,20 @@
 import React from 'react';
 import { Handle, Position, NodeProps, NodeResizer } from '@xyflow/react';
-import { Trash2, Globe, Shield, Lock } from 'lucide-react';
+import { Trash2, Globe, Shield, Lock, AlertTriangle } from 'lucide-react';
 import { AwsCanvasNode, SubnetTier } from '../../types/canvas.types';
 import { useCanvasStore } from '../../stores/useCanvasStore';
 import { cn } from '../../../../shared/utils/cn';
+import {
+  DEFAULT_SUBNET_CIDR_PRESETS,
+  validateSubnetCidrInCanvas
+} from '../../utils/cidrUtils';
 
 export function SubnetContainerNode({
   id,
   data,
   selected
 }: NodeProps<AwsCanvasNode>) {
+  const nodes = useCanvasStore((state) => state.nodes);
   const removeNode = useCanvasStore((state) => state.removeNode);
   const updateNodeConfig = useCanvasStore((state) => state.updateNodeConfig);
 
@@ -31,6 +36,13 @@ export function SubnetContainerNode({
       ? 'Isolated'
       : 'Private';
 
+  const cidr =
+    data.config?.cidrBlock ||
+    (data.config as any)?.cidr ||
+    (tier === 'Public' ? '10.0.1.0/24' : tier === 'Private' ? '10.0.2.0/24' : '10.0.3.0/24');
+
+  const cidrValidation = validateSubnetCidrInCanvas(id, cidr, nodes);
+
   const handleTierChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.stopPropagation();
     const newTier = e.target.value as SubnetTier;
@@ -46,10 +58,14 @@ export function SubnetContainerNode({
     });
   };
 
-  const cidr =
-    data.config?.cidrBlock ||
-    (data.config as any)?.cidr ||
-    (tier === 'Public' ? '10.0.1.0/24' : tier === 'Private' ? '10.0.2.0/24' : '10.0.3.0/24');
+  const handleCidrChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.stopPropagation();
+    const newCidr = e.target.value;
+    updateNodeConfig(id, {
+      cidrBlock: newCidr,
+      cidr: newCidr
+    });
+  };
 
   const tierConfig = {
     Public: {
@@ -162,8 +178,14 @@ export function SubnetContainerNode({
                 {data.name || tierConfig.label}
               </span>
               <span
-                className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-bold border ${tierConfig.badgeBg}`}
+                className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-bold border transition-colors ${
+                  !cidrValidation.isValid
+                    ? 'bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 border-rose-400'
+                    : tierConfig.badgeBg
+                }`}
+                title={!cidrValidation.isValid ? cidrValidation.error || 'CIDR Inválido' : undefined}
               >
+                {!cidrValidation.isValid && '⚠️ '}
                 {cidr}
               </span>
             </div>
@@ -181,23 +203,62 @@ export function SubnetContainerNode({
         </button>
       </div>
 
-      {/* Selector Rápido de Tipo de Subred */}
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400">Tipo de Acceso:</span>
-        <select
-          aria-label="Tipo de subred"
-          value={tier}
-          onChange={handleTierChange}
-          className="nodrag nopan text-[9px] font-mono font-bold rounded px-1.5 py-0.5 border border-slate-200 dark:border-[#374151] bg-white dark:bg-[#0B0F19] text-slate-800 dark:text-slate-200 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#FF9900]"
-        >
-          <option value="Public">Public (Internet)</option>
-          <option value="Private">Private (Internal)</option>
-          <option value="Isolated">Isolated (DB Only)</option>
-        </select>
+      {/* Selectores Rápidos: Tipo de Acceso y Rango CIDR */}
+      <div className="space-y-1.5 mb-2">
+        <div className="flex items-center justify-between">
+          <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400">Tipo de Acceso:</span>
+          <select
+            aria-label="Tipo de subred"
+            value={tier}
+            onChange={handleTierChange}
+            className="nodrag nopan text-[9px] font-mono font-bold rounded px-1.5 py-0.5 border border-slate-200 dark:border-[#374151] bg-white dark:bg-[#0B0F19] text-slate-800 dark:text-slate-200 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#FF9900]"
+          >
+            <option value="Public">Public (Internet)</option>
+            <option value="Private">Private (Internal)</option>
+            <option value="Isolated">Isolated (DB Only)</option>
+          </select>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400">Rango CIDR:</span>
+          <select
+            aria-label="Rango CIDR de subred"
+            data-testid="subnet-cidr-select"
+            value={cidr}
+            onChange={handleCidrChange}
+            className={`nodrag nopan text-[9px] font-mono font-bold rounded px-1.5 py-0.5 border bg-white dark:bg-[#0B0F19] text-slate-800 dark:text-slate-200 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#FF9900] ${
+              !cidrValidation.isValid
+                ? 'border-rose-400 dark:border-rose-600 text-rose-600 dark:text-rose-400 ring-1 ring-rose-500'
+                : 'border-slate-200 dark:border-[#374151]'
+            }`}
+          >
+            {!DEFAULT_SUBNET_CIDR_PRESETS.some((p) => p.cidr === cidr) && (
+              <option value={cidr}>{cidr} (Personalizado)</option>
+            )}
+            {DEFAULT_SUBNET_CIDR_PRESETS.map((p) => (
+              <option key={p.cidr} value={p.cidr}>
+                {p.cidr}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Alerta de Solapamiento o Fuera de VPC */}
+        {!cidrValidation.isValid && cidrValidation.error && (
+          <div
+            role="alert"
+            data-testid="subnet-cidr-warning"
+            className="p-1 rounded bg-rose-50 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-700/60 flex items-start gap-1 text-[8px] text-rose-700 dark:text-rose-300"
+            title={cidrValidation.error}
+          >
+            <AlertTriangle className="w-2.5 h-2.5 text-rose-500 shrink-0 mt-0.5" />
+            <span className="leading-tight truncate">{cidrValidation.error}</span>
+          </div>
+        )}
       </div>
 
       {/* Contenedor interior de recursos */}
-      <div className="w-full h-[calc(100%-60px)] rounded-lg border border-dashed border-slate-300/60 dark:border-slate-700/40 bg-white/40 dark:bg-[#0B0F19]/20 p-2 pointer-events-none flex flex-col justify-end">
+      <div className="w-full flex-1 min-h-[90px] rounded-lg border border-dashed border-slate-300/60 dark:border-slate-700/40 bg-white/40 dark:bg-[#0B0F19]/20 p-2 pointer-events-none flex flex-col justify-end">
         <span className="text-[8px] font-mono text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right select-none">
           Subnet Scope
         </span>

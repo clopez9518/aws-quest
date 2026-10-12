@@ -65,4 +65,71 @@ describe('NodeInspectorPanel Component', () => {
     fireEvent.click(toggleButton);
     expect(useCanvasStore.getState().nodes[0].data.config?.autoScaling).toBe(true);
   });
+
+  it('debe renderizar configuración de Subred cuando un nodo NET_SUBNET está seleccionado', () => {
+    useCanvasStore.setState({
+      nodes: [
+        {
+          id: 'sub-node-1',
+          type: 'subnetContainerNode',
+          position: { x: 0, y: 0 },
+          selected: true,
+          data: {
+            serviceCode: 'NET_SUBNET',
+            name: 'Public Subnet Alpha',
+            category: 'NetworkVpc',
+            iconUrl: '',
+            config: {
+              subnetTier: 'Public',
+              cidrBlock: '10.0.1.0/24'
+            }
+          }
+        }
+      ]
+    });
+
+    render(<NodeInspectorPanel />);
+
+    expect(screen.getByText('Configuración Subred VPC')).toBeInTheDocument();
+    expect(screen.getByText('251 IPs')).toBeInTheDocument();
+
+    // Cambiar Tier en el inspector
+    const tierSelect = screen.getByLabelText(/Tipo de Acceso \(Tier\)/i);
+    fireEvent.change(tierSelect, { target: { value: 'Private' } });
+    expect(useCanvasStore.getState().nodes[0].data.config?.subnetTier).toBe('Private');
+
+    // Cambiar CIDR usando preset
+    const presetSelect = screen.getByLabelText(/Presets de Rango CIDR/i);
+    fireEvent.change(presetSelect, { target: { value: '10.0.2.0/24' } });
+    expect(useCanvasStore.getState().nodes[0].data.config?.cidrBlock).toBe('10.0.2.0/24');
+  });
+
+  it('debe renderizar configuración de VPC cuando un nodo NET_VPC está seleccionado', () => {
+    useCanvasStore.setState({
+      nodes: [
+        {
+          id: 'vpc-node-1',
+          type: 'vpcContainerNode',
+          position: { x: 0, y: 0 },
+          selected: true,
+          data: {
+            serviceCode: 'NET_VPC',
+            name: 'VPC Enterprise',
+            category: 'NetworkVpc',
+            iconUrl: '',
+            config: {
+              cidrBlock: '10.0.0.0/16'
+            }
+          }
+        }
+      ]
+    });
+
+    render(<NodeInspectorPanel />);
+
+    expect(screen.getByText('Virtual Private Cloud (VPC)')).toBeInTheDocument();
+    const vpcInput = screen.getByLabelText(/Bloque CIDR de la VPC/i);
+    fireEvent.change(vpcInput, { target: { value: '172.16.0.0/16' } });
+    expect(useCanvasStore.getState().nodes[0].data.config?.cidrBlock).toBe('172.16.0.0/16');
+  });
 });
