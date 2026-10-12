@@ -17,6 +17,7 @@ import { LevelUpModal } from '../../../shared/components/LevelUpModal';
 import { AuthModal } from '../../auth/components/AuthModal';
 import { RestoreAttemptModal } from '../../evaluation/components/RestoreAttemptModal';
 import { BriefingModal } from '../components/BriefingModal';
+import { BusinessCaseModal } from '../components/BusinessCaseModal';
 import {
   EvaluateArchitectureResponseDto,
   ChallengeAttemptHistoryDto
@@ -48,6 +49,7 @@ export function ChallengePage() {
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(false);
   const [isHintsDrawerOpen, setIsHintsDrawerOpen] = useState(false);
   const [isBriefingModalOpen, setIsBriefingModalOpen] = useState(false);
+  const [isBusinessCaseModalOpen, setIsBusinessCaseModalOpen] = useState(false);
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [levelUpData, setLevelUpData] = useState<{ newLevel: number; totalXp: number } | null>(null);
@@ -304,6 +306,7 @@ export function ChallengePage() {
         nodeCount={nodeCount}
         hasBriefing={Boolean(challengeDto.briefing)}
         onOpenBriefing={() => setIsBriefingModalOpen(true)}
+        onOpenBusinessCase={() => setIsBusinessCaseModalOpen(true)}
         isSimulating={isSimulating}
         onToggleSimulation={() => (isSimulating ? stopSimulation() : startSimulation())}
         isLeftPanelCollapsed={isLeftPanelCollapsed}
@@ -325,6 +328,7 @@ export function ChallengePage() {
           isCollapsed={isLeftPanelCollapsed}
           hasBriefing={Boolean(challengeDto.briefing)}
           onOpenBriefing={() => setIsBriefingModalOpen(true)}
+          onOpenBusinessCase={() => setIsBusinessCaseModalOpen(true)}
           onToggleCollapse={() => setIsLeftPanelCollapsed((prev) => !prev)}
           onRestoreAttempt={handleRestoreAttempt}
         />
@@ -352,6 +356,19 @@ export function ChallengePage() {
         challengeTitle={challengeDto.title}
         briefing={challengeDto.briefing}
         challengeId={challengeDto.id}
+      />
+
+      {/* Modal de Caso de Negocio y Requerimientos */}
+      <BusinessCaseModal
+        isOpen={isBusinessCaseModalOpen}
+        onClose={() => setIsBusinessCaseModalOpen(false)}
+        challengeTitle={challengeDto.title}
+        description={challengeDto.description}
+        mode={challengeDto.mode}
+        difficulty={challengeDto.difficulty}
+        businessScenario={challengeDto.briefing?.businessScenario}
+        requirements={requirements}
+        allowedServices={allowedServices}
       />
 
       {/* Modal de Resultados y Feedback Pedagógico */}

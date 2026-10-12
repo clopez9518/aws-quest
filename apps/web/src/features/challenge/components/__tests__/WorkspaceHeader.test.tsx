@@ -112,16 +112,30 @@ describe('WorkspaceHeader Component', () => {
     expect(onToggleSimulation).toHaveBeenCalledTimes(1);
   });
 
-  it('debe mostrar estado activo cuando isSimulating y showSimulation son true', () => {
-    const onToggleSimulation = vi.fn();
+  it('debe renderizar el botón de Caso de Negocio y responder al clic', () => {
+    const onOpenBusinessCase = vi.fn();
     render(
       <MemoryRouter>
-        <WorkspaceHeader {...defaultProps} showSimulation={true} onToggleSimulation={onToggleSimulation} isSimulating={true} />
+        <WorkspaceHeader {...defaultProps} onOpenBusinessCase={onOpenBusinessCase} />
       </MemoryRouter>
     );
 
-    const simButton = screen.getByRole('button', { name: /detener simulación de tráfico/i });
-    expect(simButton).toBeInTheDocument();
-    expect(screen.getByText('Simulando')).toBeInTheDocument();
+    const businessCaseButton = screen.getByRole('button', { name: /abrir caso de negocio/i });
+    expect(businessCaseButton).toBeInTheDocument();
+    expect(screen.getByText('Caso de Negocio')).toBeInTheDocument();
+
+    fireEvent.click(businessCaseButton);
+    expect(onOpenBusinessCase).toHaveBeenCalledTimes(1);
+  });
+
+  it('no debe renderizar el botón de Caso de Negocio si onOpenBusinessCase no está provisto', () => {
+    render(
+      <MemoryRouter>
+        <WorkspaceHeader {...defaultProps} />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByRole('button', { name: /abrir caso de negocio/i })).not.toBeInTheDocument();
   });
 });
+

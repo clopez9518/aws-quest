@@ -230,4 +230,52 @@ describe('ChallengePage', () => {
     expect(screen.getByText('Reparación de Monolito sin Balanceo')).toBeInTheDocument();
     expect(screen.getByText('Reparar')).toBeInTheDocument();
   });
+
+  it('debe abrir y cerrar el modal de Caso de Negocio al pulsar el botón del header', () => {
+    const mockChallenge: ChallengeDetailResponseDto = {
+      id: 'c-303',
+      title: 'Caso de Negocio FinTech',
+      description: 'Migración bancaria crítica con cero tiempo de inactividad.',
+      difficulty: 'hard',
+      mode: 'builder',
+      baseXP: 300,
+      allowedServices: [
+        {
+          code: 'AWS_EC2',
+          name: 'Amazon EC2',
+          category: 'Compute',
+          iconUrl: '/icons/aws/ec2.svg',
+          maxInstances: 2,
+          isDistractor: false
+        }
+      ],
+      hintsSummary: { totalHints: 2, unlockedCount: 0, unlockedHints: [] }
+    };
+
+    vi.mocked(useChallengeHook.useChallenge).mockReturnValue({
+      data: mockChallenge,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn()
+    } as any);
+
+    renderChallengePage('c-303');
+
+    const businessCaseButton = screen.getByRole('button', { name: /abrir caso de negocio/i });
+    expect(businessCaseButton).toBeInTheDocument();
+
+    // Abrir modal
+    fireEvent.click(businessCaseButton);
+
+    expect(screen.getByTestId('business-case-modal')).toBeInTheDocument();
+    expect(screen.getByText('Migración bancaria crítica con cero tiempo de inactividad.')).toBeInTheDocument();
+
+    // Cerrar modal
+    const closeBtn = screen.getByTestId('close-business-case-modal');
+    fireEvent.click(closeBtn);
+
+    expect(screen.queryByTestId('business-case-modal')).not.toBeInTheDocument();
+  });
 });
+
