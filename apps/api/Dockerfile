@@ -48,9 +48,9 @@ USER $APP_UID
 # Exponer puerto HTTP del backend
 EXPOSE 8080
 
-# Healthcheck interno del contenedor API
+# Healthcheck interno del contenedor API (Liveness probe: no accede a PostgreSQL para evitar despertar el compute de Neon)
 HEALTHCHECK --interval=15s --timeout=5s --retries=3 --start-period=10s \
-  CMD curl -f http://localhost:8080/health || exit 1
+  CMD curl -f http://localhost:8080/health/live || exit 1
 
 # Punto de entrada
 ENTRYPOINT ["dotnet", "AwsQuest.Api.dll"]

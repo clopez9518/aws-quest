@@ -13,42 +13,60 @@ public static class HealthCheckExtensions
     public static IServiceCollection AddHealthCheckServices(this IServiceCollection services)
     {
         services.AddHealthChecks()
-            .AddCheck<DatabaseHealthCheck>("postgresql", tags: ["db", "ready", "live"]);
+            .AddCheck("live", () => HealthCheckResult.Healthy("API is alive and responding."), tags: ["live"])
+            .AddCheck<DatabaseHealthCheck>("postgresql", tags: ["db", "ready"]);
 
         return services;
     }
 
     public static IApplicationBuilder UseHealthCheckEndpoint(this IApplicationBuilder app)
     {
+        // 1. Sonda de Liveness: verifica que el proceso de la API esté vivo en memoria, sin tocar PostgreSQL ni servicios externos
+        app.UseHealthChecks("/health/live", new HealthCheckOptions
+        {
+            Predicate = check => check.Tags.Contains("live"),
+            ResponseWriter = WriteJsonResponse
+        });
+
+        // 2. Sonda de Readiness: verifica la disponibilidad de PostgreSQL y dependencias para recibir tráfico
+        app.UseHealthChecks("/health/ready", new HealthCheckOptions
+        {
+            Predicate = check => check.Tags.Contains("ready"),
+            ResponseWriter = WriteJsonResponse
+        });
+
+        // 3. Endpoint /health general (conserva compatibilidad hacia atrás ejecutando todas las comprobaciones registradas)
         app.UseHealthChecks("/health", new HealthCheckOptions
         {
-            ResponseWriter = async (context, report) =>
-            {
-                context.Response.ContentType = "application/json";
-
-                var response = new
-                {
-                    status = report.Status.ToString(),
-                    durationMs = report.TotalDuration.TotalMilliseconds,
-                    checks = report.Entries.Select(e => new
-                    {
-                        component = e.Key,
-                        status = e.Value.Status.ToString(),
-                        description = e.Value.Description,
-                        durationMs = e.Value.Duration.TotalMilliseconds,
-                        error = e.Value.Exception?.Message
-                    })
-                };
-
-                await context.Response.WriteAsync(JsonSerializer.Serialize(response, new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                    WriteIndented = true
-                }));
-            }
+            ResponseWriter = WriteJsonResponse
         });
 
         return app;
+    }
+
+    private static async Task WriteJsonResponse(HttpContext context, HealthReport report)
+    {
+        context.Response.ContentType = "application/json";
+
+        var response = new
+        {
+            status = report.Status.ToString(),
+            durationMs = report.TotalDuration.TotalMilliseconds,
+            checks = report.Entries.Select(e => new
+            {
+                component = e.Key,
+                status = e.Value.Status.ToString(),
+                description = e.Value.Description,
+                durationMs = e.Value.Duration.TotalMilliseconds,
+                error = e.Value.Exception?.Message
+            })
+        };
+
+        await context.Response.WriteAsync(JsonSerializer.Serialize(response, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true
+        }));
     }
 }
 
